@@ -11,4 +11,7 @@ public class Account : GeneralModel
     [Column("otp", TypeName = "int")]
     public int Otp { get; set; }
 
+	public Employee? Employee { get; set; }
+	public ICollection<Notification>? Notifications { get; set; }
+	public ICollection<AccountRole>? AccountRoles { get; set; }
 }

@@ -10,4 +10,6 @@ public class AccountRole : GeneralModel
     [Column("role_guid", TypeName = "uniqueidentifier")]
     public Guid RoleGuid { get; set; }
 
+    public Account? Account { get; set; }
+    public Role? Role { get; set; }
 }
