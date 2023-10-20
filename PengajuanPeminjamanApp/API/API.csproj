@@ -17,10 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
     <Folder Include="Contracts\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Utilities\Handlers\" />
     <Folder Include="Utilities\Validations\" />
   </ItemGroup>
 
