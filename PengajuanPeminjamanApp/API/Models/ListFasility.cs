@@ -8,7 +8,7 @@ public class ListFasility : GeneralModel
 	[Column("request_guid")]
 	public Guid RequestGuid { get; set; }
 	[Column("fasility_guid")]
-	public string FasilityGuid { get; set;}
+	public Guid FasilityGuid { get; set;}
 	[Column("total_fasility")]
 	public int TotalFasility { get; set;}
 
