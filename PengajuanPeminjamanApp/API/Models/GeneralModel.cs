@@ -10,5 +10,5 @@ public abstract class GeneralModel
     [Column("create_date")]
     public DateTime CreateDate { get; set; }
     [Column("modified_date")]
-    public DateTime ModifiedeDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 }
