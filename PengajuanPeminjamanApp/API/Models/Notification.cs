@@ -3,7 +3,7 @@
 namespace API.Model;
 
 [Table("tb_m_notification")]
-public class Notification
+public class Notification : GeneralModel
 {
 	[Column("account_guid")]
 	public Guid AccountGuid { get; set; }
@@ -14,4 +14,5 @@ public class Notification
 	[Column("created_date")]
 	public DateTime CreatedDate { get; set; }
 
+	public Account? Account { get; set; }
 }
