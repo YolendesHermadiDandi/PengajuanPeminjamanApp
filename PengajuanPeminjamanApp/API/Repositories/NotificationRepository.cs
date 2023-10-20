@@ -6,8 +6,8 @@ namespace API.Repositories;
 
 public class NotificationRepository : GeneralRepository<Notification>, INotificationRepository
 {
-    public NotificationRepository(RequestFasilityDbContext context) : base(context)
+	public NotificationRepository(RequestFasilityDbContext context) : base(context)
 	{
-        
-    }
+
+	}
 }

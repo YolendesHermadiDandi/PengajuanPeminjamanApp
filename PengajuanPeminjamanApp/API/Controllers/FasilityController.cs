@@ -2,7 +2,6 @@
 using API.DTOs.Fasilities;
 using API.Model;
 using API.Utilities.Handlers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -15,13 +14,13 @@ public class FasilityController : ControllerBase
 	private readonly IFasilityRepository _fasilityRepository;
 	public FasilityController(IFasilityRepository fasilityRepository)
 	{
-		_fasilityRepository= fasilityRepository;
+		_fasilityRepository = fasilityRepository;
 	}
 
 
 
 	[HttpGet]
-    public IActionResult GetAll()
+	public IActionResult GetAll()
 	{
 		var result = _fasilityRepository.GetAll();
 		if (!result.Any())

@@ -6,8 +6,8 @@ namespace API.Repositories;
 
 public class RequestRespository : GeneralRepository<Request>, IRequestRepository
 {
-    public RequestRespository(RequestFasilityDbContext context) : base(context)
+	public RequestRespository(RequestFasilityDbContext context) : base(context)
 	{
-        
-    }
+
+	}
 }

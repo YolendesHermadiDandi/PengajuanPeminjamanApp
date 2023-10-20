@@ -2,7 +2,7 @@
 
 namespace API.Contracts
 {
-    public interface IListFasilityRepository : IGeneralRepository<ListFasility>
-    {
-    }
+	public interface IListFasilityRepository : IGeneralRepository<ListFasility>
+	{
+	}
 }

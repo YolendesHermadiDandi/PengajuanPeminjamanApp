@@ -15,10 +15,10 @@ public class Request : GeneralModel
 	[Column("start_date")]
 	public DateTime StartDate { get; set; }
 	[Column("end_date")]
-	public DateTime EndDate{ get; set; }
+	public DateTime EndDate { get; set; }
 
 	public Room? Room { get; set; }
 	public Employee? Employee { get; set; }
-	public ICollection<ListFasility> ListFasilities { get; set;}
+	public ICollection<ListFasility> ListFasilities { get; set; }
 
 }

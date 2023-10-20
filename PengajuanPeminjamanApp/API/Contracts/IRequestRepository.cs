@@ -2,7 +2,7 @@
 
 namespace API.Contracts
 {
-    public interface IRequestRepository : IGeneralRepository<Request>
-    {
-    }
+	public interface IRequestRepository : IGeneralRepository<Request>
+	{
+	}
 }

@@ -6,8 +6,8 @@ namespace API.Repositories;
 
 public class FasilityRepository : GeneralRepository<Fasility>, IFasilityRepository
 {
-    public FasilityRepository(RequestFasilityDbContext context) : base(context)
+	public FasilityRepository(RequestFasilityDbContext context) : base(context)
 	{
-        
-    }
+
+	}
 }

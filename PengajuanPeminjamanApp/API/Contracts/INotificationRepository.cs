@@ -2,7 +2,7 @@
 
 namespace API.Contracts
 {
-    public interface INotificationRepository : IGeneralRepository<Notification>
-    {
-    }
+	public interface INotificationRepository : IGeneralRepository<Notification>
+	{
+	}
 }

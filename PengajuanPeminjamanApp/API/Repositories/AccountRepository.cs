@@ -6,7 +6,7 @@ namespace API.Repositories;
 
 public class AccountRepository : GeneralRepository<Account>, IAccountRepository
 {
-    public AccountRepository(RequestFasilityDbContext context) : base(context)
-	{    
-    }
+	public AccountRepository(RequestFasilityDbContext context) : base(context)
+	{
+	}
 }

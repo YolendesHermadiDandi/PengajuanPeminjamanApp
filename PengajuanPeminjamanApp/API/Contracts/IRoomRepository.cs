@@ -2,7 +2,7 @@
 
 namespace API.Contracts
 {
-    public interface IRoomRepository : IGeneralRepository<Room>
-    {
-    }
+	public interface IRoomRepository : IGeneralRepository<Room>
+	{
+	}
 }

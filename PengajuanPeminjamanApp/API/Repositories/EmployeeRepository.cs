@@ -6,8 +6,8 @@ namespace API.Repositories;
 
 public class EmployeeRepository : GeneralRepository<Employee>, IEmployeeRepository
 {
-    public EmployeeRepository(RequestFasilityDbContext context) : base(context)
+	public EmployeeRepository(RequestFasilityDbContext context) : base(context)
 	{
-        
-    }
+
+	}
 }
