@@ -1,4 +1,6 @@
+using API.Contracts;
 using API.Data;
+using API.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AfifConnection");
 builder.Services.AddDbContext<RequestFasilityDbContext>(option => option.UseSqlServer(connectionString));
 
+// Add repositories to the container.
 
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IFasilityRepository, FasilityRepository>();
+builder.Services.AddScoped<IListFasilityRepository, ListFasilityRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IRequestRepository, RequestRespository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepositroy>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

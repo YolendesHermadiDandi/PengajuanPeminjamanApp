@@ -2,13 +2,13 @@
 
 public enum StatusLevel
 {
-	Requested,
-	Approved,
-	OnProssesed,
-	Ready,
-	Rejected,
-	Canceled,
-	OnGoing,
-	Completed,
-	Deleted,
+    Requested,
+    Approved,
+    OnProssesed,
+    Ready,
+    Rejected,
+    Canceled,
+    OnGoing,
+    Completed,
+    Deleted,
 }

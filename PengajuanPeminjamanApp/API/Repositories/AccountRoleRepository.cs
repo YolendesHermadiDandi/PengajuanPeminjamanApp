@@ -1,5 +1,6 @@
-﻿using API.Data;
-using API.Model;
+﻿using API.Contracts;
+using API.Data;
+using API.Models;
 
 namespace API.Repositories;
 
@@ -7,6 +8,6 @@ public class AccountRoleRepository : GeneralRepository<AccountRole>, IAccountRol
 {
     public AccountRoleRepository(RequestFasilityDbContext context) : base(context)
     {
-        
+
     }
 }
