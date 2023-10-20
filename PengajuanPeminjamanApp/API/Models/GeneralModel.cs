@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Model;
+namespace API.Models;
 
 public abstract class GeneralModel
 {

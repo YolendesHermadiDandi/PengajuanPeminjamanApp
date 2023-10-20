@@ -1,6 +1,6 @@
 ﻿using API.Contracts;
 using API.DTOs.Fasilities;
-using API.Model;
+using API.Models;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;

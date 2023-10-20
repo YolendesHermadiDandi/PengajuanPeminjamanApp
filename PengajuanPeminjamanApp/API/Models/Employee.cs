@@ -1,7 +1,7 @@
 ﻿using API.Utilities.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Model;
+namespace API.Models;
 
 [Table("tb_m_employee")]
 public class Employee : GeneralModel

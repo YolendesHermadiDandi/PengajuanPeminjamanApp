@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Model;
+namespace API.Models;
 
 [Table("tb_m_list_fasility")]
 public class ListFasility : GeneralModel

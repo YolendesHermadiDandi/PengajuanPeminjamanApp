@@ -1,7 +1,7 @@
 ﻿using API.Utilities.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Model;
+namespace API.Models;
 
 [Table("tr_m_request")]
 public class Request : GeneralModel
