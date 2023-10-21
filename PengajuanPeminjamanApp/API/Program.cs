@@ -17,7 +17,7 @@ builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepositroy>();
-builder.Services.AddScoped<IRequestRepository, RequestRespository>();
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 
 
 builder.Services.AddControllers();
