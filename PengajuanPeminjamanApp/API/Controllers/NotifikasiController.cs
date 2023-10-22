@@ -51,7 +51,7 @@ namespace API.Controllers
             return Ok(new ResponseOKHandler<IEnumerable<NotificationDto>>(data));
         }
 
-        [HttpGet("unread-emp-notification")]
+        [HttpGet("unreadEmpNotification")]
         public IActionResult GetUnreadEmpNotif(Guid empGuid)
         {
             var result = _notificationRepository.GetUnreadNotification(empGuid);
@@ -68,7 +68,7 @@ namespace API.Controllers
             return Ok(new ResponseOKHandler<IEnumerable<NotificationDto>>(data));
         }
 
-        [HttpGet("all-emp-notification")]
+        [HttpGet("allEmpNotification")]
         public IActionResult GetAllEmpNotif(Guid empGuid)
         {
             var result = _notificationRepository.GetAllNotification(empGuid);
@@ -107,7 +107,7 @@ namespace API.Controllers
             return Ok(new ResponseOKHandler<NotificationDto>((NotificationDto)result)); //konversi explisit
         }
 
-        [HttpPost("send-emp-notification")]
+        [HttpPost("sendEmpNotification")]
         public IActionResult AdminToEmployeeNotification(CreateNotificationDto createNotificationDto)
         {
             try
@@ -135,7 +135,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("send-admin-notification")]
+        [HttpPost("sendAdminNotification")]
         public IActionResult EmployeeToAdminNotification(CreateNotificationDto createNotificationDto)
         {
             try
@@ -173,8 +173,8 @@ namespace API.Controllers
         {
             try
             {
-                var existingRole = _notificationRepository.GetByGuid(notificationDto.Guid);
-                if (existingRole is null)
+                var existingNotification = _notificationRepository.GetByGuid(notificationDto.Guid);
+                if (existingNotification is null)
                 {
                     return NotFound(new ResponseErrorHandler
                     {
@@ -183,7 +183,7 @@ namespace API.Controllers
                         Message = "ID NOT FOUND"
                     });
                 }
-                Notification toUpdate = existingRole;
+                Notification toUpdate = existingNotification;
                 if (notificationDto.IsSeen == false)
                 {
                     toUpdate.IsSeen = true ;

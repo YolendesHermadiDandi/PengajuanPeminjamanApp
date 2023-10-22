@@ -19,6 +19,7 @@ namespace API.Controllers
             _employeeRepository = employeeRepository;
         }
 
+
         [HttpGet]//get All data
         public IActionResult GetAll()
         {
