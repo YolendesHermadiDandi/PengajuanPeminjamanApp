@@ -13,10 +13,42 @@ namespace API.Controllers;
 public class RoomController : ControllerBase
 {
 	private readonly IRoomRepository _roomRepository;
+	private readonly IRequestRepository _requestRepository;
 
-	public RoomController(IRoomRepository roomRepository)
+	public RoomController(IRoomRepository roomRepository, IRequestRepository requestRepository)
 	{
 		_roomRepository = roomRepository;
+		_requestRepository = requestRepository;
+	}
+
+	[HttpGet("GetRoomStatus")]
+	public IActionResult GetRoomIdle()
+	{
+		var room = _roomRepository.GetAll();
+		var requests = _requestRepository.GetAll();
+
+		if (!(requests.Any() && room.Any()))
+		{
+			return NotFound(new ResponseErrorHandler
+			{
+				Code = StatusCodes.Status404NotFound,
+				Status = HttpStatusCode.NotFound.ToString(),
+				Message = "No Room Is Empty"
+			});
+		}
+
+		var result = from roo in room
+					 join req in requests on roo.Guid equals req.RoomGuid into roomRequests
+					 from req in roomRequests.DefaultIfEmpty()
+					 select new RoomStatusDto 
+						{ 
+							Guid = roo.Guid, 
+							Name = roo.Name, 
+							Floor = roo.Floor,
+							Status = req != null ? req.Status : 0
+					 };
+
+		return Ok(new ResponseOKHandler<IEnumerable<RoomStatusDto>>(result));
 	}
 
 	[HttpGet]

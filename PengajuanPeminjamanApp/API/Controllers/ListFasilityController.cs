@@ -14,10 +14,14 @@ namespace API.Controllers;
 public class ListFasilityController : ControllerBase
 {
 	private readonly IListFasilityRepository _listFasilityRepository;
+	private readonly IFasilityRepository _fasilityRepository;
+	private readonly IRequestRepository _requestRepository;
 
-	public ListFasilityController(IListFasilityRepository listFasilityRepository)
+	public ListFasilityController(IListFasilityRepository listFasilityRepository, IFasilityRepository fasilityRepository, IRequestRepository requestRepository)
 	{
 		_listFasilityRepository = listFasilityRepository;
+		_fasilityRepository = fasilityRepository;
+		_requestRepository = requestRepository;
 	}
 
 	[HttpGet]
@@ -70,10 +74,44 @@ public class ListFasilityController : ControllerBase
 					Message = "Data Not Found"
 				});
 			}
+			var request = _requestRepository.GetByGuid(listFasilityDto.RequestGuid);
+			if (request.Status != 0)
+			{
+				return NotFound(new ResponseErrorHandler
+				{
+					Code = StatusCodes.Status400BadRequest,
+					Status = HttpStatusCode.BadRequest.ToString(),
+					Message = "Sorry You Cant Change Fasility Anymore"
+				});
+			}
+
+			var fasility = _fasilityRepository.GetByGuid(listFasilityDto.FasilityGuid);
+			if (fasility is null)
+			{
+				return NotFound(new ResponseErrorHandler
+				{
+					Code = StatusCodes.Status404NotFound,
+					Status = HttpStatusCode.NotFound.ToString(),
+					Message = "Fasility Not Found"
+				});
+			}
+			fasility.Stock = fasility.Stock + check.TotalFasility;
+			if ((fasility.Stock - listFasilityDto.TotalFasility) < 1)
+			{
+				return NotFound(new ResponseErrorHandler
+				{
+					Code = StatusCodes.Status400BadRequest,
+					Status = HttpStatusCode.BadRequest.ToString(),
+					Message = "Fasility Not Enough"
+				});
+			}
+			fasility.Stock = fasility.Stock - listFasilityDto.TotalFasility;
+			_fasilityRepository.Update(fasility);
+
 			ListFasility toUpdate = (ListFasility)listFasilityDto;
 			toUpdate.CreateDate = check.CreateDate;
 			var result = _listFasilityRepository.Update(toUpdate);
-			return Ok(new ResponseOKHandler<String>("Updated Data Success"));
+			return Ok(new ResponseOKHandler<String>("Updated Fasility Success"));
 		}
 		catch (Exception ex)
 		{
@@ -92,7 +130,30 @@ public class ListFasilityController : ControllerBase
 	{
 		try
 		{
+			var check = _fasilityRepository.GetByGuid(listFasilityDto.FasilityGuid);
+			if (check is null)
+			{
+				return NotFound(new ResponseErrorHandler
+				{
+					Code = StatusCodes.Status404NotFound,
+					Status = HttpStatusCode.NotFound.ToString(),
+					Message = "Fasility Not Found"
+				});
+			}
+
+			if((check.Stock - listFasilityDto.TotalFasility) < 1)
+			{
+				return NotFound(new ResponseErrorHandler
+				{
+					Code = StatusCodes.Status400BadRequest,
+					Status = HttpStatusCode.BadRequest.ToString(),
+					Message = "Fasility Not Enough"
+				});
+			}
+			check.Stock = check.Stock - listFasilityDto.TotalFasility;
+			_fasilityRepository.Update(check);
 			var result = _listFasilityRepository.Create(listFasilityDto);
+
 			return Ok(new ResponseOKHandler<ListFasilityDto>((ListFasilityDto)result));
 		}
 		catch (Exception ex)
@@ -101,7 +162,7 @@ public class ListFasilityController : ControllerBase
 			{
 				Code = StatusCodes.Status500InternalServerError,
 				Status = HttpStatusCode.InternalServerError.ToString(),
-				Message = "Failed to Create data",
+				Message = "Failed to Request Fasility",
 				Error = ex.Message
 			});
 		}
