@@ -7,6 +7,7 @@ namespace API.DTOs.Notifications
     {
         public Guid Guid { get; set; }
         public Guid AccountGuid { get; set; }
+        public Guid RequestGuid { get; set; }
         public string Message { get; set; }
         public bool IsSeen { get; set; }
 
@@ -18,6 +19,7 @@ namespace API.DTOs.Notifications
                 Guid = notification.Guid,
                 AccountGuid = notification.AccountGuid,
                 Message = notification.Massage,
+                RequestGuid = notification.RequestGuid,
                 IsSeen = notification.IsSeen,
                
             };
@@ -29,6 +31,7 @@ namespace API.DTOs.Notifications
             {
                 Guid = notificationDto.Guid,
                 AccountGuid = notificationDto.AccountGuid,
+                RequestGuid = notificationDto.RequestGuid,
                 Massage = notificationDto.Message,
                 IsSeen = notificationDto.IsSeen,
               

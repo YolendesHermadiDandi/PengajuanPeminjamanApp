@@ -52,7 +52,7 @@ public class RequestFasilityDbContext : DbContext
                     .HasOne(a => a.Account)
                     .WithMany(n => n.Notifications)
                     .HasForeignKey(n => n.AccountGuid)
-                    .OnDelete(DeleteBehavior.Restrict);
+                    .OnDelete(DeleteBehavior.Restrict); 
 
         modelBuilder.Entity<Employee>()
                     .HasOne(a => a.Account)
@@ -70,6 +70,11 @@ public class RequestFasilityDbContext : DbContext
                     .WithOne(rq => rq.Request)
                     .HasForeignKey<Request>(rq => rq.RoomGuid);
 
+        modelBuilder.Entity<Notification>()
+                    .HasOne(rq => rq.Request)
+                    .WithMany(n => n.Notification)
+                    .HasForeignKey(n => n.RequestGuid);
+
         modelBuilder.Entity<ListFasility>()
                     .HasOne(r => r.Request)
                     .WithMany(l => l.ListFasilities)
@@ -81,6 +86,8 @@ public class RequestFasilityDbContext : DbContext
                     .WithMany(l => l.ListFasilities)
                     .HasForeignKey(l => l.FasilityGuid)
                     .OnDelete(DeleteBehavior.Restrict);
+
+        
     }
 
 }

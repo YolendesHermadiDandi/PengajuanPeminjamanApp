@@ -4,6 +4,7 @@ namespace API.Contracts
 {
     public interface INotificationRepository : IGeneralRepository<Notification>
     {
-        IEnumerable<Notification> GetUnreadNotification();
+        IEnumerable<Notification> GetUnreadNotification(Guid empGuid);
+        IEnumerable<Notification> GetAllNotification(Guid empGuid);
     }
 }

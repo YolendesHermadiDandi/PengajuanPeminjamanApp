@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Security.Principal;
+using API.DTOs.Requests;
 
 namespace API.Controllers
 {
@@ -20,12 +21,14 @@ namespace API.Controllers
         private readonly INotificationRepository _notificationRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmailHandlerRepository _emailHandlerRepository;
+        private readonly IRequestRepository _requestRepository;
 
-        public NotifikasiController(INotificationRepository notificationRepository, IEmployeeRepository employeeRepository, IEmailHandlerRepository emailHandlerRepository)
+        public NotifikasiController(INotificationRepository notificationRepository, IEmployeeRepository employeeRepository, IEmailHandlerRepository emailHandlerRepository, IRequestRepository requestRepository = null)
         {
             _notificationRepository = notificationRepository;
             _employeeRepository = employeeRepository;
             _emailHandlerRepository = emailHandlerRepository;
+            _requestRepository = requestRepository;
         }
 
         [HttpGet] //http request method
@@ -48,10 +51,10 @@ namespace API.Controllers
             return Ok(new ResponseOKHandler<IEnumerable<NotificationDto>>(data));
         }
 
-        [HttpGet("{unread}")]
-        public IActionResult GetUnreead()
+        [HttpGet("unread-emp-notification")]
+        public IActionResult GetUnreadEmpNotif(Guid empGuid)
         {
-            var result = _notificationRepository.GetUnreadNotification();
+            var result = _notificationRepository.GetUnreadNotification(empGuid);
             if (result is null)
             {
                 return NotFound(new ResponseErrorHandler
@@ -61,7 +64,25 @@ namespace API.Controllers
                     Message = "Data NOT FOUND"
                 });
             }
-            return Ok(new ResponseOKHandler<NotificationDto>((NotificationDto)result));
+            var data = result.Select(x => (NotificationDto)x);
+            return Ok(new ResponseOKHandler<IEnumerable<NotificationDto>>(data));
+        }
+
+        [HttpGet("all-emp-notification")]
+        public IActionResult GetAllEmpNotif(Guid empGuid)
+        {
+            var result = _notificationRepository.GetAllNotification(empGuid);
+            if (result is null)
+            {
+                return NotFound(new ResponseErrorHandler
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data NOT FOUND"
+                });
+            }
+            var data = result.Select(x => (NotificationDto)x);
+            return Ok(new ResponseOKHandler<IEnumerable<NotificationDto>>(data));
         }
 
         [HttpGet("{guid}")]
@@ -86,22 +107,47 @@ namespace API.Controllers
             return Ok(new ResponseOKHandler<NotificationDto>((NotificationDto)result)); //konversi explisit
         }
 
-        [HttpPost()]
-        /*
-         * Method dibawah digunakan untuk memasukan data dengan menggunakan parameter dari method DTO
-         * 
-         * PHARAM :
-         * - createRoleDto : kumpulan parameter/method yang sudah ditentukan dari suatu class/objek
-         */
-        public IActionResult NotificationAdminSend(CreateNotificationDto createNotificationDto)
+        [HttpPost("send-emp-notification")]
+        public IActionResult AdminToEmployeeNotification(CreateNotificationDto createNotificationDto)
         {
             try
             {
                 var employee = _employeeRepository.GetByGuid(createNotificationDto.AccountGuid);
-                
-                var result = _notificationRepository.Create(createNotificationDto); 
+                var request = _requestRepository.GetByGuid(createNotificationDto.RequestGuid);
+
+                var message = "Pengajuan peminjaman anda" + request.Status.ToString();
+
+                var result = _notificationRepository.Create(createNotificationDto);
+
                 _emailHandlerRepository.Send("Pengajuan Peminjaman",createNotificationDto.Message, employee.Email, "Admin@no-replay.com");
-                return Ok(new ResponseOKHandler<IEnumerable<ForgotPasswordAccountDto>>("Success send Notification"));
+                return Ok(new ResponseOKHandler<NotificationDto>("Success send Notification",(NotificationDto)result));
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 new ResponseErrorHandler
+                 {
+                     Code = StatusCodes.Status500InternalServerError,
+                     Status = HttpStatusCode.NotFound.ToString(),
+                     Message = "FAILED TO CREATE DATA"
+                 });
+            }
+        }
+
+        [HttpPost("send-admin-notification")]
+        public IActionResult EmployeeToAdminNotification(CreateNotificationDto createNotificationDto)
+        {
+            try
+            {
+                var employee = _employeeRepository.GetByGuid(createNotificationDto.AccountGuid);
+
+                var message = string.Concat("Pengajuan oleh ", employee.FirstName, " ", employee.LastName, " ",createNotificationDto.Message);
+
+                var result = _notificationRepository.Create(createNotificationDto);
+
+                _emailHandlerRepository.Send("Pengajuan Peminjaman", createNotificationDto.Message, "Admin@no-replay.com", employee.Email);
+                return Ok(new ResponseOKHandler<NotificationDto>("Success send Notification", (NotificationDto)result));
 
             }
             catch (Exception ex)

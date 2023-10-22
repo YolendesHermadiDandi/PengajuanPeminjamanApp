@@ -11,8 +11,13 @@ public class NotificationRepository : GeneralRepository<Notification>, INotifica
 
     }
 
-    public IEnumerable<Notification> GetUnreadNotification()
+    public IEnumerable<Notification> GetUnreadNotification(Guid empGuid)
     {
-        return _context.Set<Notification>().Where(n => n.IsSeen == false).ToList(); 
+        return _context.Set<Notification>().Where(n => n.IsSeen == false && n.AccountGuid == empGuid ).ToList();
+    }
+
+    public IEnumerable<Notification> GetAllNotification(Guid empGuid)
+    {
+        return _context.Set<Notification>().Where(n => n.AccountGuid == empGuid).ToList();
     }
 }

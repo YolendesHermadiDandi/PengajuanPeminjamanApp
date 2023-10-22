@@ -12,10 +12,13 @@ public class Notification
     public Guid AccountGuid { get; set; }
     [Column("massage", TypeName = "nvarchar(100)")]
     public string Massage { get; set; }
+    [Column("request_guid")]
+    public Guid RequestGuid { get; set; }
     [Column("is_seen")]
     public Boolean IsSeen { get; set; }
     [Column("created_date")]
     public DateTime CreatedDate { get; set; }
 
     public Account? Account { get; set; }
+    public Request? Request { get; set; }
 }

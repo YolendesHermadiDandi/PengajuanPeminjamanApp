@@ -7,6 +7,7 @@ namespace API.DTOs.Notifications
     {
         public Guid AccountGuid { get; set; }
         public string Message { get; set; }
+        public Guid RequestGuid { get; set; }
         //public bool IsSeen {  get; set; }
 
         public static implicit operator Notification(CreateNotificationDto createNotificationDto)
@@ -15,6 +16,7 @@ namespace API.DTOs.Notifications
             {
                 AccountGuid = createNotificationDto.AccountGuid,
                 Massage = createNotificationDto.Message,
+                RequestGuid = createNotificationDto.RequestGuid,
                 IsSeen = false,
                 CreatedDate = DateTime.Now,
                 
