@@ -6,8 +6,21 @@ namespace API.Repositories;
 
 public class EmployeeRepository : GeneralRepository<Employee>, IEmployeeRepository
 {
-	public EmployeeRepository(RequestFasilityDbContext context) : base(context)
-	{
+    public EmployeeRepository(RequestFasilityDbContext context) : base(context)
+    {
 
-	}
+    }
+    public string? GetLastNik()
+    {
+
+        return _context.Set<Employee>().OrderBy(e => e.Nik).LastOrDefault()?.Nik;
+
+    }
+
+    public Employee GetEmail(string email)
+    {
+        var entity = _context.Set<Employee>().FirstOrDefault(e => e.Email == email);
+        _context.ChangeTracker.Clear();
+        return entity;
+    }
 }

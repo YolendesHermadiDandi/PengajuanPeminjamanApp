@@ -22,7 +22,7 @@ namespace API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("API.Model.Account", b =>
+            modelBuilder.Entity("API.Models.Account", b =>
                 {
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier")
@@ -32,7 +32,15 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("create_date");
 
-                    b.Property<DateTime>("ModifiedeDate")
+                    b.Property<DateTime>("ExpiredTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("expired_time");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_used");
+
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
 
@@ -42,7 +50,7 @@ namespace API.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(25)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("password");
 
                     b.HasKey("Guid");
@@ -50,7 +58,7 @@ namespace API.Migrations
                     b.ToTable("tb_m_account");
                 });
 
-            modelBuilder.Entity("API.Model.AccountRole", b =>
+            modelBuilder.Entity("API.Models.AccountRole", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -65,7 +73,7 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("create_date");
 
-                    b.Property<DateTime>("ModifiedeDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
 
@@ -82,12 +90,16 @@ namespace API.Migrations
                     b.ToTable("tb_m_account_role");
                 });
 
-            modelBuilder.Entity("API.Model.Employee", b =>
+            modelBuilder.Entity("API.Models.Employee", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("guid");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("birth_date");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2")
@@ -107,11 +119,15 @@ namespace API.Migrations
                         .HasColumnType("int")
                         .HasColumnName("gender");
 
+                    b.Property<DateTime>("HiringDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("hiring_date");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("last_name");
 
-                    b.Property<DateTime>("ModifiedeDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
 
@@ -139,7 +155,7 @@ namespace API.Migrations
                     b.ToTable("tb_m_employee");
                 });
 
-            modelBuilder.Entity("API.Model.Fasility", b =>
+            modelBuilder.Entity("API.Models.Fasility", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -150,7 +166,7 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("create_date");
 
-                    b.Property<DateTime>("ModifiedeDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
 
@@ -168,7 +184,7 @@ namespace API.Migrations
                     b.ToTable("tb_m_fasility");
                 });
 
-            modelBuilder.Entity("API.Model.ListFasility", b =>
+            modelBuilder.Entity("API.Models.ListFasility", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -183,7 +199,7 @@ namespace API.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("fasility_guid");
 
-                    b.Property<DateTime>("ModifiedeDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
 
@@ -204,7 +220,7 @@ namespace API.Migrations
                     b.ToTable("tb_m_list_fasility");
                 });
 
-            modelBuilder.Entity("API.Model.Notification", b =>
+            modelBuilder.Entity("API.Models.Notification", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -214,10 +230,6 @@ namespace API.Migrations
                     b.Property<Guid>("AccountGuid")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("account_guid");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("create_date");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
@@ -232,10 +244,6 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("massage");
 
-                    b.Property<DateTime>("ModifiedeDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("modified_date");
-
                     b.HasKey("Guid");
 
                     b.HasIndex("AccountGuid");
@@ -243,7 +251,7 @@ namespace API.Migrations
                     b.ToTable("tb_m_notification");
                 });
 
-            modelBuilder.Entity("API.Model.Request", b =>
+            modelBuilder.Entity("API.Models.Request", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -262,7 +270,7 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("end_date");
 
-                    b.Property<DateTime>("ModifiedeDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
 
@@ -288,7 +296,7 @@ namespace API.Migrations
                     b.ToTable("tr_m_request");
                 });
 
-            modelBuilder.Entity("API.Model.Role", b =>
+            modelBuilder.Entity("API.Models.Role", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -299,7 +307,7 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("create_date");
 
-                    b.Property<DateTime>("ModifiedeDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
 
@@ -313,7 +321,7 @@ namespace API.Migrations
                     b.ToTable("tb_m_role");
                 });
 
-            modelBuilder.Entity("API.Model.Room", b =>
+            modelBuilder.Entity("API.Models.Room", b =>
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -328,7 +336,7 @@ namespace API.Migrations
                         .HasColumnType("int")
                         .HasColumnName("floor");
 
-                    b.Property<DateTime>("ModifiedeDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
 
@@ -342,26 +350,26 @@ namespace API.Migrations
                     b.ToTable("tb_m_rooms");
                 });
 
-            modelBuilder.Entity("API.Model.Account", b =>
+            modelBuilder.Entity("API.Models.Account", b =>
                 {
-                    b.HasOne("API.Model.Employee", "Employee")
+                    b.HasOne("API.Models.Employee", "Employee")
                         .WithOne("Account")
-                        .HasForeignKey("API.Model.Account", "Guid")
+                        .HasForeignKey("API.Models.Account", "Guid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("API.Model.AccountRole", b =>
+            modelBuilder.Entity("API.Models.AccountRole", b =>
                 {
-                    b.HasOne("API.Model.Account", "Account")
+                    b.HasOne("API.Models.Account", "Account")
                         .WithMany("AccountRoles")
                         .HasForeignKey("AccountGuid")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("API.Model.Role", "Role")
+                    b.HasOne("API.Models.Role", "Role")
                         .WithMany("AccountRoles")
                         .HasForeignKey("RoleGuid")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -372,15 +380,15 @@ namespace API.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("API.Model.ListFasility", b =>
+            modelBuilder.Entity("API.Models.ListFasility", b =>
                 {
-                    b.HasOne("API.Model.Fasility", "Fasility")
+                    b.HasOne("API.Models.Fasility", "Fasility")
                         .WithMany("ListFasilities")
                         .HasForeignKey("FasilityGuid")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("API.Model.Request", "Request")
+                    b.HasOne("API.Models.Request", "Request")
                         .WithMany("ListFasilities")
                         .HasForeignKey("RequestGuid")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -391,9 +399,9 @@ namespace API.Migrations
                     b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("API.Model.Notification", b =>
+            modelBuilder.Entity("API.Models.Notification", b =>
                 {
-                    b.HasOne("API.Model.Account", "Account")
+                    b.HasOne("API.Models.Account", "Account")
                         .WithMany("Notifications")
                         .HasForeignKey("AccountGuid")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -402,17 +410,17 @@ namespace API.Migrations
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("API.Model.Request", b =>
+            modelBuilder.Entity("API.Models.Request", b =>
                 {
-                    b.HasOne("API.Model.Employee", "Employee")
+                    b.HasOne("API.Models.Employee", "Employee")
                         .WithMany("Request")
                         .HasForeignKey("EmployeeGuid")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("API.Model.Room", "Room")
+                    b.HasOne("API.Models.Room", "Room")
                         .WithOne("Request")
-                        .HasForeignKey("API.Model.Request", "RoomGuid")
+                        .HasForeignKey("API.Models.Request", "RoomGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -421,36 +429,36 @@ namespace API.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("API.Model.Account", b =>
+            modelBuilder.Entity("API.Models.Account", b =>
                 {
                     b.Navigation("AccountRoles");
 
                     b.Navigation("Notifications");
                 });
 
-            modelBuilder.Entity("API.Model.Employee", b =>
+            modelBuilder.Entity("API.Models.Employee", b =>
                 {
                     b.Navigation("Account");
 
                     b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("API.Model.Fasility", b =>
+            modelBuilder.Entity("API.Models.Fasility", b =>
                 {
                     b.Navigation("ListFasilities");
                 });
 
-            modelBuilder.Entity("API.Model.Request", b =>
+            modelBuilder.Entity("API.Models.Request", b =>
                 {
                     b.Navigation("ListFasilities");
                 });
 
-            modelBuilder.Entity("API.Model.Role", b =>
+            modelBuilder.Entity("API.Models.Role", b =>
                 {
                     b.Navigation("AccountRoles");
                 });
 
-            modelBuilder.Entity("API.Model.Room", b =>
+            modelBuilder.Entity("API.Models.Room", b =>
                 {
                     b.Navigation("Request");
                 });

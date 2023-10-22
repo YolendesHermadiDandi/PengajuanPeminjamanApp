@@ -2,7 +2,8 @@
 
 namespace API.Contracts
 {
-	public interface IAccountRepository : IGeneralRepository<Account>
-	{
-	}
+    public interface IAccountRepository : IGeneralRepository<Account>
+    {
+       
+    }
 }

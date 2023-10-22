@@ -2,7 +2,9 @@
 
 namespace API.Contracts
 {
-	public interface IEmployeeRepository : IGeneralRepository<Employee>
-	{
-	}
+    public interface IEmployeeRepository : IGeneralRepository<Employee>
+    {
+        string? GetLastNik();
+        Employee GetEmail(string email);
+    }
 }

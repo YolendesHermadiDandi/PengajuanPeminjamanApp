@@ -6,8 +6,8 @@ namespace API.Repositories;
 
 public class RoomRepository : GeneralRepository<Room>, IRoomRepository
 {
-	public RoomRepository(RequestFasilityDbContext context) : base(context)
-	{
+    public RoomRepository(RequestFasilityDbContext context) : base(context)
+    {
 
-	}
+    }
 }

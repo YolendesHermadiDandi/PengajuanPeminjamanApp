@@ -7,8 +7,8 @@ using System.Net;
 
 namespace API.Controllers;
 
-[ApiController]
 [Route("API/[controller]")]
+[ApiController]
 public class FasilityController : ControllerBase
 {
 	private readonly IFasilityRepository _fasilityRepository;
