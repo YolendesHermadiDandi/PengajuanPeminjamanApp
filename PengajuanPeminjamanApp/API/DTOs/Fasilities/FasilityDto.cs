@@ -1,4 +1,4 @@
-﻿using API.Model;
+﻿using API.Models;
 
 namespace API.DTOs.Fasilities;
 

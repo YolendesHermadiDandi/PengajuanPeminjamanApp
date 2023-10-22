@@ -42,21 +42,21 @@ public class RequestFasilityDbContext : DbContext
                     .HasForeignKey(ar => ar.RoleGuid)
                     .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<AccountRole>()
-                    .HasOne(a => a.Account)
-                    .WithMany(ar => ar.AccountRoles)
+        modelBuilder.Entity<Account>()
+                    .HasMany(ar => ar.AccountRoles)
+                    .WithOne(a => a.Account)
                     .HasForeignKey(ar => ar.AccountGuid)
                     .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Account>()
-                    .HasMany(n => n.Notifications)
-                    .WithOne(a => a.Account)
+        modelBuilder.Entity<Notification>()
+                    .HasOne(a => a.Account)
+                    .WithMany(n => n.Notifications)
                     .HasForeignKey(n => n.AccountGuid)
                     .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Account>()
-                    .HasOne(e => e.Employee)
-                    .WithOne(a => a.Account)
+        modelBuilder.Entity<Employee>()
+                    .HasOne(a => a.Account)
+                    .WithOne(a => a.Employee)
                     .HasForeignKey<Account>(a => a.Guid);
 
         modelBuilder.Entity<Request>()

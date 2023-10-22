@@ -18,6 +18,10 @@ public class Employee : GeneralModel
     public string PhoneNumber { get; set; }
     [Column("gender", TypeName = "int")]
     public GenderLevel Gender { get; set; }
+    [Column("birth_date", TypeName = "datetime2")]
+    public DateTime BirthDate { get; set; }
+    [Column("hiring_date", TypeName = "datetime2")]
+    public DateTime HiringDate {  get; set; }
 
     public Account? Account { get; set; }
     public ICollection<Request> Request { get; set; }

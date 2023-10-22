@@ -17,7 +17,7 @@ namespace API.DTOs.Roles
             {
                 Name = createRoleDto.Name,
                 CreateDate = DateTime.Now,
-                ModifiedeDate = DateTime.Now,
+                ModifiedDate = DateTime.Now,
             };
         }
     }

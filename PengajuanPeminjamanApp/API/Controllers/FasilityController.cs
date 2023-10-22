@@ -1,6 +1,6 @@
 ﻿using API.Contracts;
 using API.DTOs.Fasilities;
-using API.Model;
+using API.Models;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +8,8 @@ using System.Net;
 
 namespace API.Controllers;
 
-[ApiController]
 [Route("API/[controller]")]
+[ApiController]
 public class FasilityController : ControllerBase
 {
 	private readonly IFasilityRepository _fasilityRepository;

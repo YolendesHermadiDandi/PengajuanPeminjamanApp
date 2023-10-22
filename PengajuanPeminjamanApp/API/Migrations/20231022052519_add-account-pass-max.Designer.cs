@@ -4,6 +4,7 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(RequestFasilityDbContext))]
-    partial class RequestFasilityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231022052519_add-account-pass-max")]
+    partial class addaccountpassmax
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,6 +233,10 @@ namespace API.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("account_guid");
 
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("create_date");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("created_date");
@@ -243,6 +249,10 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("massage");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("modified_date");
 
                     b.HasKey("Guid");
 

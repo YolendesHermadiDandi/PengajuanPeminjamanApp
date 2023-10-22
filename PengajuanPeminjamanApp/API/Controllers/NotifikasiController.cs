@@ -1,28 +1,38 @@
 ﻿using API.Contracts;
+using API.DTOs.Accounts;
+using API.DTOs.Notifications;
 using API.DTOs.Roles;
 using API.Models;
+using API.Repositories;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Security.Principal;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoleController : ControllerBase
+    public class NotifikasiController : ControllerBase
     {
-        private readonly IRoleRepository _roleRepository;
+        private readonly INotificationRepository _notificationRepository;
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IEmailHandlerRepository _emailHandlerRepository;
 
-        public RoleController(IRoleRepository roleRepository)
+        public NotifikasiController(INotificationRepository notificationRepository, IEmployeeRepository employeeRepository, IEmailHandlerRepository emailHandlerRepository)
         {
-            _roleRepository = roleRepository;
+            _notificationRepository = notificationRepository;
+            _employeeRepository = employeeRepository;
+            _emailHandlerRepository = emailHandlerRepository;
         }
 
         [HttpGet] //http request method
         //get All data
         public IActionResult GetAll()
         {
-            var result = _roleRepository.GetAll();
+            var result = _notificationRepository.GetAll();
             if (!result.Any())
             {
                 return NotFound(new ResponseErrorHandler
@@ -33,9 +43,25 @@ namespace API.Controllers
                 });
             }
 
-            var data = result.Select(x => (RoleDto)x);
+            var data = result.Select(x => (NotificationDto)x);
 
-            return Ok(new ResponseOKHandler<IEnumerable<RoleDto>>(data));
+            return Ok(new ResponseOKHandler<IEnumerable<NotificationDto>>(data));
+        }
+
+        [HttpGet("{unread}")]
+        public IActionResult GetUnreead()
+        {
+            var result = _notificationRepository.GetUnreadNotification();
+            if (result is null)
+            {
+                return NotFound(new ResponseErrorHandler
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data NOT FOUND"
+                });
+            }
+            return Ok(new ResponseOKHandler<NotificationDto>((NotificationDto)result));
         }
 
         [HttpGet("{guid}")]
@@ -47,7 +73,7 @@ namespace API.Controllers
         */
         public IActionResult GetByGuid(Guid guid)
         {
-            var result = _roleRepository.GetByGuid(guid);
+            var result = _notificationRepository.GetByGuid(guid);
             if (result is null)
             {
                 return NotFound(new ResponseErrorHandler
@@ -57,22 +83,26 @@ namespace API.Controllers
                     Message = "Data NOT FOUND"
                 });
             }
-            return Ok(new ResponseOKHandler<RoleDto>((RoleDto)result)); //konversi explisit
+            return Ok(new ResponseOKHandler<NotificationDto>((NotificationDto)result)); //konversi explisit
         }
 
-        [HttpPost]
+        [HttpPost()]
         /*
          * Method dibawah digunakan untuk memasukan data dengan menggunakan parameter dari method DTO
          * 
          * PHARAM :
          * - createRoleDto : kumpulan parameter/method yang sudah ditentukan dari suatu class/objek
          */
-        public IActionResult Create(CreateRoleDto createRoleDto)
+        public IActionResult NotificationAdminSend(CreateNotificationDto createNotificationDto)
         {
             try
             {
-                var result = _roleRepository.Create(createRoleDto);
-                return Ok(new ResponseOKHandler<RoleDto>((RoleDto)result));
+                var employee = _employeeRepository.GetByGuid(createNotificationDto.AccountGuid);
+                
+                var result = _notificationRepository.Create(createNotificationDto); 
+                _emailHandlerRepository.Send("Pengajuan Peminjaman",createNotificationDto.Message, employee.Email, "Admin@no-replay.com");
+                return Ok(new ResponseOKHandler<IEnumerable<ForgotPasswordAccountDto>>("Success send Notification"));
+
             }
             catch (Exception ex)
             {
@@ -93,11 +123,11 @@ namespace API.Controllers
       * PHARAM :
       * - roleDto : kumpulan parameter/method yang sudah ditentukan dari suatu class/objek
       */
-        public IActionResult Update(RoleDto roleDto)
+        public IActionResult Update(NotificationDto notificationDto)
         {
             try
             {
-                var existingRole = _roleRepository.GetByGuid(roleDto.Guid);
+                var existingRole = _notificationRepository.GetByGuid(notificationDto.Guid);
                 if (existingRole is null)
                 {
                     return NotFound(new ResponseErrorHandler
@@ -107,10 +137,13 @@ namespace API.Controllers
                         Message = "ID NOT FOUND"
                     });
                 }
-                Role toUpdate = roleDto;
-                toUpdate.CreateDate = existingRole.CreateDate;
+                Notification toUpdate = existingRole;
+                if (notificationDto.IsSeen == false)
+                {
+                    toUpdate.IsSeen = true ;
+                }
 
-                var result = _roleRepository.Update(toUpdate);
+                var result = _notificationRepository.Update(toUpdate);
                 return Ok(new ResponseOKHandler<string>("DATA UPDATED"));
             }
             catch (Exception ex)
@@ -138,7 +171,7 @@ namespace API.Controllers
             {
 
 
-                var existingRole = _roleRepository.GetByGuid(guid); ;
+                var existingRole = _notificationRepository.GetByGuid(guid); ;
                 if (existingRole is null)
                 {
                     return NotFound(new ResponseErrorHandler
@@ -149,7 +182,7 @@ namespace API.Controllers
                     });
                 }
 
-                var result = _roleRepository.Delete(existingRole);
+                var result = _notificationRepository.Delete(existingRole);
                 return Ok(new ResponseOKHandler<string>("DATA DELETED"));
             }
             catch (Exception ex)
@@ -163,7 +196,5 @@ namespace API.Controllers
                  });
             }
         }
-
-
     }
 }

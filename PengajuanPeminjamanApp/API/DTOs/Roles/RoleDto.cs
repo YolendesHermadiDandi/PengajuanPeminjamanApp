@@ -34,7 +34,8 @@ namespace API.DTOs.Roles
             {
                 Guid = roleDto.Guid,
                 Name = roleDto.Name,
-                ModifiedeDate = DateTime.Now
+                CreateDate = DateTime.Now,
+                ModifiedDate = DateTime.Now
             };
         }
     }

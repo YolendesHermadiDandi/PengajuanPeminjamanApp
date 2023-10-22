@@ -10,4 +10,9 @@ public class NotificationRepository : GeneralRepository<Notification>, INotifica
     {
 
     }
+
+    public IEnumerable<Notification> GetUnreadNotification()
+    {
+        return _context.Set<Notification>().Where(n => n.IsSeen == false).ToList(); 
+    }
 }
