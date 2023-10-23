@@ -7,7 +7,7 @@ namespace API.Models;
 public class Request : GeneralModel
 {
     [Column("room_guid")]
-    public Guid RoomGuid { get; set; }
+    public Guid? RoomGuid { get; set; }
     [Column("employee_guid")]
     public Guid EmployeeGuid { get; set; }
     [Column("status")]

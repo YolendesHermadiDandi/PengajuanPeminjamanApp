@@ -4,6 +4,7 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(RequestFasilityDbContext))]
-    partial class RequestFasilityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231022112007_Add-Nullable-RoomRequest")]
+    partial class AddNullableRoomRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,15 +246,9 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("massage");
 
-                    b.Property<Guid>("RequestGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("request_guid");
-
                     b.HasKey("Guid");
 
                     b.HasIndex("AccountGuid");
-
-                    b.HasIndex("RequestGuid");
 
                     b.ToTable("tb_m_notification");
                 });
@@ -414,15 +410,7 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("API.Models.Request", "Request")
-                        .WithMany("Notification")
-                        .HasForeignKey("RequestGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Account");
-
-                    b.Navigation("Request");
                 });
 
             modelBuilder.Entity("API.Models.Request", b =>
@@ -464,8 +452,6 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Request", b =>
                 {
                     b.Navigation("ListFasilities");
-
-                    b.Navigation("Notification");
                 });
 
             modelBuilder.Entity("API.Models.Role", b =>

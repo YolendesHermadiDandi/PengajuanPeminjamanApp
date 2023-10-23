@@ -14,7 +14,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DandiConnection");
+var connectionString = builder.Configuration.GetConnectionString("AfifConnection");
 builder.Services.AddDbContext<RequestFasilityDbContext>(option => option.UseSqlServer(connectionString));
 
 // Add repositories to the container.

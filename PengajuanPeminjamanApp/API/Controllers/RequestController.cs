@@ -1,8 +1,7 @@
 ﻿using API.Contracts;
-using API.DTOs.ListFasilities;
 using API.DTOs.Requests;
+using API.DTOs.Rooms;
 using API.Models;
-using API.Repositories;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -14,10 +13,16 @@ namespace API.Controllers;
 public class RequestController : ControllerBase
 {
 	private readonly IRequestRepository _requestRespository;
+	private readonly IFasilityRepository _fasilityRepository;
+	private readonly IListFasilityRepository _listFasilityRepository;
+	private readonly IRoomRepository _roomRepository;
 
-	public RequestController(IRequestRepository requestRespository)
+	public RequestController(IRequestRepository requestRespository, IFasilityRepository fasilityRepository, IListFasilityRepository listFasilityRepository, IRoomRepository roomRepository)
 	{
 		_requestRespository = requestRespository;
+		_fasilityRepository = fasilityRepository;
+		_listFasilityRepository = listFasilityRepository;
+		_roomRepository = roomRepository;
 	}
 
 	[HttpGet]
@@ -37,6 +42,31 @@ public class RequestController : ControllerBase
 		return Ok(new ResponseOKHandler<IEnumerable<RequestDto>>(data));
 	}
 
+	[HttpGet("GetCountingRequest")]
+	public IActionResult GetRequestDuration(Guid guid)
+	{
+		var result = _requestRespository.GetByGuid(guid);
+		if (result is null)
+		{
+			return NotFound(new ResponseErrorHandler
+			{
+				Code = StatusCodes.Status404NotFound,
+				Status = HttpStatusCode.NotFound.ToString(),
+				Message = "Data Not Found"
+			});
+		}
+
+		var view = new DurationRequestDto
+		{
+			Guid = result.Guid,
+			RoomGuid = result.RoomGuid,
+			EmployeeGuid = result.EmployeeGuid,
+			Status = result.Status,
+			RequestDuration = DurationCalculator(result.StartDate, result.EndDate)
+		};
+
+		return Ok(new ResponseOKHandler<DurationRequestDto>((DurationRequestDto)view));
+	}
 
 	[HttpGet("{guid}")]
 	public IActionResult GetByGuid(Guid guid)
@@ -55,6 +85,94 @@ public class RequestController : ControllerBase
 		return Ok(new ResponseOKHandler<RequestDto>((RequestDto)result));
 	}
 
+	[HttpGet("GetAllDetailRequest")]
+	public IActionResult GetAllDetailRequest()
+	{
+		var request = _requestRespository.GetAll();
+		var listFasility = _listFasilityRepository.GetAll();
+		var fasilities = _fasilityRepository.GetAll();
+		var room = _roomRepository.GetAll();
+		if (request is null)
+		{
+			return NotFound(new ResponseErrorHandler
+			{
+				Code = StatusCodes.Status404NotFound,
+				Status = HttpStatusCode.NotFound.ToString(),
+				Message = "Data Not Found"
+			});
+		}
+
+		var result = from req in request
+					 select new {
+						 Guid = req.Guid,
+						 Room = from roo in room
+								join re in request on roo.Guid equals re.RoomGuid
+								where roo.Guid == req.RoomGuid
+								select new
+								{
+									Name = roo.Name,
+									Floor = roo.Floor
+								},
+						 Fasility = from fas in fasilities
+									join li in listFasility on fas.Guid equals li.FasilityGuid
+									where li.RequestGuid == req.Guid
+									select new
+									{
+										Name = fas.Name,
+										TotalFasility = li.TotalFasility
+									},
+						 Status = req.Status.ToString(),
+						 StartDate = req.StartDate,
+						 EndDate = req.EndDate,
+					 };
+
+		return Ok(new ResponseOKHandler<IEnumerable<object>>(result));
+	}
+	
+	[HttpGet("GetDetailRequestByGuid")]
+	public IActionResult GetDetailRequestGuid(Guid guid)
+	{
+		var request = _requestRespository.GetAll();
+		var listFasility = _listFasilityRepository.GetAll();
+		var fasilities = _fasilityRepository.GetAll();
+		var room = _roomRepository.GetAll();
+		if (request is null)
+		{
+			return NotFound(new ResponseErrorHandler
+			{
+				Code = StatusCodes.Status404NotFound,
+				Status = HttpStatusCode.NotFound.ToString(),
+				Message = "Data Not Found"
+			});
+		}
+
+		var result = from req in request
+					 where req.Guid == guid
+					 select new {
+						 Guid = req.Guid,
+						 Room = from roo in room
+								join re in request on roo.Guid equals re.RoomGuid
+								where roo.Guid == req.RoomGuid
+								select new
+								{
+									Name = roo.Name,
+									Floor = roo.Floor
+								},
+						 Fasility = from fas in fasilities
+									join li in listFasility on fas.Guid equals li.FasilityGuid
+									where li.RequestGuid == req.Guid
+									select new
+									{
+										Name = fas.Name,
+										TotalFasility = li.TotalFasility
+									},
+						 Status = req.Status.ToString(),
+						 StartDate = req.StartDate,
+						 EndDate = req.EndDate,
+					 };
+
+		return Ok(new ResponseOKHandler<IEnumerable<object>>(result));
+	}
 	[HttpPut]
 	public IActionResult Update(RequestDto requestDto)
 	{
@@ -73,6 +191,24 @@ public class RequestController : ControllerBase
 			Request toUpdate = (Request)requestDto;
 			toUpdate.CreateDate = check.CreateDate;
 			var result = _requestRespository.Update(toUpdate);
+
+			if (requestDto.Status == Utilities.Enums.StatusLevel.Deleted || requestDto.Status == Utilities.Enums.StatusLevel.Completed || requestDto.Status == Utilities.Enums.StatusLevel.Canceled || requestDto.Status == Utilities.Enums.StatusLevel.Rejected)
+			{
+				var listFasility = _listFasilityRepository.GetAllListFasilityByReqGuid(requestDto.Guid);
+				if (listFasility is null)
+				{
+					return Ok(new ResponseOKHandler<String>("Updated Data Success"));
+				}
+
+				foreach (var data in listFasility)
+				{
+					var fasility = _fasilityRepository.GetByGuid(data.FasilityGuid);
+					fasility.Stock = fasility.Stock + data.TotalFasility;
+					_fasilityRepository.Update(fasility);
+				}
+
+			}
+
 			return Ok(new ResponseOKHandler<String>("Updated Data Success"));
 		}
 		catch (Exception ex)
@@ -137,4 +273,23 @@ public class RequestController : ControllerBase
 		}
 
 	}
+
+
+	public static int DurationCalculator(DateTime startDate, DateTime endDate)
+	{
+		int totalDays = (endDate - startDate).Days;
+		//int weekendDays = 0;
+
+		/*for (int i = 0; i < totalDays; i++)
+		{
+			DateTime currentDate = startDate.AddDays(i);
+			if (currentDate.DayOfWeek == DayOfWeek.Saturday || currentDate.DayOfWeek == DayOfWeek.Sunday)
+			{
+				weekendDays++;
+			}
+		}*/
+		//int weekDays = totalDays - weekendDays;
+		return totalDays;
+	}
+
 }
