@@ -2,6 +2,44 @@
     ViewData["Title"] = "Admin";
     Layout = "AdminLayout";
 }
+<div class="col-12 col-md-6 col-lg-12 d-flex">
+    <div class="card bg-white m-2 ">
+        <div class="card-header">
+            <h6 class="btn btn-primary pe-none">Request</h6>
+        </div>
+        <div class="card-body">
+            <button class="btn btn-primary m-1 btn-sm">request 1</button>
+            <button class="btn btn-primary m-1 btn-sm">request 2</button>
+            <button class="btn btn-primary m-1 btn-sm">request 3</button>
+            <button class="btn btn-primary m-1 btn-sm">request 4</button>
+        </div>
+    </div>
+
+    <div class="card bg-white m-2">
+        <div class="card-header">
+            <h6 class="btn btn-primary pe-none">Approved</h6>
+        </div>
+        <div class="card-body">
+            <button class="btn btn-primary m-1 btn-sm">request 1</button>
+            <button class="btn btn-primary m-1 btn-sm">request 2</button>
+            <button class="btn btn-primary m-1 btn-sm">request 3</button>
+            <button class="btn btn-primary m-1 btn-sm">request 4</button>
+        </div>
+    </div>
+
+    <div class="card bg-white m-2">
+        <div class="card-header">
+            <h6 class="btn btn-primary pe-none">Done</h6>
+        </div>
+        <div class="card-body">
+            <button class="btn btn-primary m-1 btn-sm">request 1</button>
+            <button class="btn btn-primary m-1 btn-sm">request 2</button>
+            <button class="btn btn-primary m-1 btn-sm">request 3</button>
+            <button class="btn btn-primary m-1 btn-sm">request 4</button>
+        </div>
+    </div>
+
+</div>
 
 
 
@@ -17,19 +55,17 @@
                     <h4>Nama Employee</h4>
                 </div>
             </div>
-            <form class="was-validated" id="emploteeForm">
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
-                            <p>Melakukan Request Terhadap Fasilitas bla bla bla....</p>
-                        </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body" id="modal-message">
+                        @* <p>Melakukan Request Terhadap Fasilitas bla bla bla....</p> *@
                     </div>
                 </div>
-            </form>
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success btn-sm">Approved</button>
-                <button type="button" class="btn btn-danger btn-sm">Rejected</button>
+                <button type="button" id="close-modal" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="approved-modal" class="btn btn-success btn-sm">Approved</button>
+                <button type="button" id="rejected-modal" class="btn btn-danger btn-sm">Rejected</button>
                 <div class="action-button">
                 </div>
             </div>
