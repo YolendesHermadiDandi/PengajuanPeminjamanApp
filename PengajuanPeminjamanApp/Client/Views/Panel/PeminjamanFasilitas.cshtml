@@ -1,0 +1,224 @@
+﻿@{
+    ViewData["Title"] = "Pengajuan Peminjaman";
+    ViewData["Peminjaman"] = "active";
+
+    Layout = "_LayoutEmployeePanel";
+}
+<div class="page-header">
+    <div class="page-title">
+        <h4>Peminjaman Fasilitas / Ruangan</h4>
+        <h6>Halaman untuk menambah dan mengubah fasilitas atau ruangan</h6>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group">
+                    <label>Tanggal Mulai Peminjaman </label>
+                    <div class="input-groupicon">
+                        <input type="text" placeholder="DD-MM-YYYY" class="datetimepicker">
+                        <div class="addonset">
+                            <img src="~/assets/img/icons/calendars.svg" alt="img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group">
+                    <label>Tanggal Akhir Peminjaman </label>
+                    <div class="input-groupicon">
+                        <input type="text" placeholder="DD-MM-YYYY" class="datetimepicker">
+                        <div class="addonset">
+                            <img src="~/assets/img/icons/calendars.svg" alt="img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group">
+                    <label>Pilih Fasilitas</label>
+                    <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
+                        <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+                <div class="form-group">
+                    <label>Pilih Ruangan</label>
+                    <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalRuangan">
+                        <i data-feather="layers" style="margin-right:10px;"> </i>Ruangan
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nama Fasilitas</th>
+                            <th>Jumlah/ Lantai</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Berakhir</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="productimgname">
+                                <a class="product-img">
+                                    <img src="~/assets/img/product/product7.jpg" alt="product">
+                                </a>
+                                <a href="javascript:void(0);">Apple Earpods</a>
+                            </td>
+                            <td>10.00</td>
+                            <td>2000.00</td>
+                            <td>500.00</td>
+                            <td>
+                                <a class="delete-set"><img src="~/assets/img/icons/delete.svg" alt="svg"></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="productimgname">
+                                <a class="product-img">
+                                    <img src="~/assets/img/product/product6.jpg" alt="product">
+                                </a>
+                                <a href="javascript:void(0);">Macbook Pro</a>
+                            </td>
+                            <td>15.00</td>
+                            <td>6000.00</td>
+                            <td>100.00</td>
+                            <td>
+                                <a class="delete-set"><img src="~/assets/img/icons/delete.svg" alt="svg"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="margin-top:20px;">
+            <div class="col-lg-12">
+                <a href="javascript:void(0);" class="btn btn-submit me-2">Ajukan Peminjaman</a>
+                <a href="purchaselist.html" class="btn btn-cancel">Batal</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Ruangan -->
+<div class="modal fade" id="ModalRuangan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModalRuanganLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">List Ruangan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nama Ruangan</th>
+                                <th>Lantai</th>
+                                <th>Status Ruangan</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="productimgname">
+                                    <a class="product-img">
+                                        <img src="~/assets/img/product/product7.jpg" alt="product">
+                                    </a>
+                                    <a href="javascript:void(0);">Apple Earpods</a>
+                                </td>
+                                <td>10.00</td>
+                                <td>2000.00</td>
+                                <td>
+                                    <a class="delete-set"><img src="~/assets/img/icons/delete.svg" alt="svg"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="productimgname">
+                                    <a class="product-img">
+                                        <img src="~/assets/img/product/product6.jpg" alt="product">
+                                    </a>
+                                    <a href="javascript:void(0);">Macbook Pro</a>
+                                </td>
+                                <td>15.00</td>
+                                <td>6000.00</td>
+                                <td>
+                                    <a class="delete-set"><img src="~/assets/img/icons/delete.svg" alt="svg"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Fasilitas -->
+<div class="modal fade" id="ModalFasilitas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModalFasilitasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">List Fasilitas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nama Fasilitas</th>
+                                <th>Jumlah Tersedia</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="productimgname">
+                                    <a class="product-img">
+                                        <img src="~/assets/img/product/product7.jpg" alt="product">
+                                    </a>
+                                    <a href="javascript:void(0);">Apple Earpods</a>
+                                </td>
+                                <td>10.00</td>
+                                <td>
+                                    <a class="delete-set"><img src="~/assets/img/icons/delete.svg" alt="svg"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="productimgname">
+                                    <a class="product-img">
+                                        <img src="~/assets/img/product/product6.jpg" alt="product">
+                                    </a>
+                                    <a href="javascript:void(0);">Macbook Pro</a>
+                                </td>
+                                <td>15.00</td>
+                                <td>
+                                    <a class="delete-set"><img src="~/assets/img/icons/delete.svg" alt="svg"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>

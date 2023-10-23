@@ -1,0 +1,199 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    ViewData["Dashboard"] = "active";
+
+    Layout = "_LayoutEmployeePanel";
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count">
+            <div class="dash-counts">
+                <h4>100</h4>
+                <h5>Pengajuan Peminjaman</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="user"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count das1">
+            <div class="dash-counts">
+                <h4>100</h4>
+                <h5>Peminjaman Aktif</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="user-check"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count das2">
+            <div class="dash-counts">
+                <h4>100</h4>
+                <h5>Peminjaman Selesai</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="file-text"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count das3">
+            <div class="dash-counts">
+                <h4>105</h4>
+                <h5>Total Peminjaman</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="file"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-0">
+    <div class="card-body">
+        <h4 class="card-title">Daftar Terbaru Peminjaman</h4>
+        <div class="table-responsive dataview">
+            <table class="table datatable ">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Status Peminjaman</th>
+                        <th>Tanggal Awal Pinjam</th>
+                        <th>Tanggal Berakhir Pinjam</th>
+                        <th>Nama Ruangan</th>
+                        <th>Detail Fasilitas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Selesai</td>
+                        <td><a href="javascript:void(0);">IT0001</a></td>
+                        <td class="productimgname">
+                            <a class="product-img" href="productlist.html">
+                                <img src="~/assets/img/product/product2.jpg" alt="product">
+                            </a>
+                            <a href="productlist.html">Orange</a>
+                        </td>
+                        <td>N/D</td>
+                        <td>
+                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
+                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Selesai</td>
+                        <td><a href="javascript:void(0);">IT0002</a></td>
+                        <td class="productimgname">
+                            <a class="product-img" href="productlist.html">
+                                <img src="~/assets/img/product/product3.jpg" alt="product">
+                            </a>
+                            <a href="productlist.html">Pineapple</a>
+                        </td>
+                        <td>N/D</td>
+                        <td>
+                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
+                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Selesai</td>
+                        <td><a href="javascript:void(0);">IT0003</a></td>
+                        <td class="productimgname">
+                            <a class="product-img" href="productlist.html">
+                                <img src="~/assets/img/product/product4.jpg" alt="product">
+                            </a>
+                            <a href="productlist.html">Stawberry</a>
+                        </td>
+                        <td>N/D</td>
+                        <td>
+                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
+                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Selesai</td>
+                        <td><a href="javascript:void(0);">IT0004</a></td>
+                        <td class="productimgname">
+                            <a class="product-img" href="productlist.html">
+                                <img src="~/assets/img/product/product5.jpg" alt="product">
+                            </a>
+                            <a href="productlist.html">Avocat</a>
+                        </td>
+                        <td>N/D</td>
+                        <td>
+                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
+                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Fasilitas -->
+<div class="modal fade" id="ModalFasilitas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModalFasilitasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">List Fasilitas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nama Fasilitas</th>
+                                <th>Jumlah Tersedia</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="productimgname">
+                                    <a class="product-img">
+                                        <img src="~/assets/img/product/product7.jpg" alt="product">
+                                    </a>
+                                    <a href="javascript:void(0);">Apple Earpods</a>
+                                </td>
+                                <td>10.00</td>
+                                <td>
+                                    <a class="delete-set"><img src="~/assets/img/icons/delete.svg" alt="svg"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="productimgname">
+                                    <a class="product-img">
+                                        <img src="~/assets/img/product/product6.jpg" alt="product">
+                                    </a>
+                                    <a href="javascript:void(0);">Macbook Pro</a>
+                                </td>
+                                <td>15.00</td>
+                                <td>
+                                    <a class="delete-set"><img src="~/assets/img/icons/delete.svg" alt="svg"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>

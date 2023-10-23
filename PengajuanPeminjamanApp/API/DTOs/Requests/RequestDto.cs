@@ -7,7 +7,7 @@ namespace API.DTOs.Requests;
 public class RequestDto
 {
 	public Guid Guid { get; set; }
-	public Guid? RoomGuid { get; set; }
+	public Nullable<Guid> RoomGuid { get; set; }
 	public Guid EmployeeGuid { get; set; }
 	public StatusLevel Status { get; set; }
 	public DateTime StartDate { get; set; }
@@ -18,7 +18,7 @@ public class RequestDto
 		return new RequestDto
 		{
 			Guid = request.Guid,
-			RoomGuid = request.RoomGuid,
+			RoomGuid = request.RoomGuid.Equals("") ? null : request.RoomGuid,
 			EmployeeGuid = request.EmployeeGuid,
 			Status = request.Status,
 			StartDate = request.StartDate,

@@ -77,6 +77,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddFluentValidationAutoValidation()
     .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+builder.Services.AddControllers();
 
 builder.Services.AddControllers()
        .ConfigureApiBehaviorOptions(options =>
@@ -93,7 +94,6 @@ builder.Services.AddControllers()
        });
 
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

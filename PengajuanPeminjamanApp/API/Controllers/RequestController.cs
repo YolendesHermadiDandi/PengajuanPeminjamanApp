@@ -226,6 +226,10 @@ public class RequestController : ControllerBase
 	[HttpPost]
 	public IActionResult Create(CreateRequestDto requestDto)
 	{
+		if(requestDto.RoomGuid.Equals(""))
+		{
+			requestDto.RoomGuid = null;
+		}
 		try
 		{
 			var result = _requestRespository.Create(requestDto);
