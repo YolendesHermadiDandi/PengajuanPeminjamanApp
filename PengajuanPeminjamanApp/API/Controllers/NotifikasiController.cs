@@ -51,10 +51,10 @@ namespace API.Controllers
             return Ok(new ResponseOKHandler<IEnumerable<NotificationDto>>(data));
         }
 
-        [HttpGet("unreadEmpNotification")]
-        public IActionResult GetUnreadEmpNotif(Guid empGuid)
+        [HttpGet("unreadEmpNotification/{guid}")]
+        public IActionResult GetUnreadEmpNotif(Guid guid)
         {
-            var result = _notificationRepository.GetUnreadNotification(empGuid);
+            var result = _notificationRepository.GetUnreadNotification(guid);
             if (result is null)
             {
                 return NotFound(new ResponseErrorHandler
@@ -68,10 +68,10 @@ namespace API.Controllers
             return Ok(new ResponseOKHandler<IEnumerable<NotificationDto>>(data));
         }
 
-        [HttpGet("allEmpNotification")]
-        public IActionResult GetAllEmpNotif(Guid empGuid)
+        [HttpGet("allEmpNotification/{guid}")]
+        public IActionResult GetAllEmpNotif(Guid guid)
         {
-            var result = _notificationRepository.GetAllNotification(empGuid);
+            var result = _notificationRepository.GetAllNotification(guid);
             if (result is null)
             {
                 return NotFound(new ResponseErrorHandler
@@ -169,11 +169,11 @@ namespace API.Controllers
       * PHARAM :
       * - roleDto : kumpulan parameter/method yang sudah ditentukan dari suatu class/objek
       */
-        public IActionResult Update(NotificationDto notificationDto)
+        public IActionResult Update(Guid guid)
         {
             try
             {
-                var existingNotification = _notificationRepository.GetByGuid(notificationDto.Guid);
+                var existingNotification = _notificationRepository.GetByGuid(guid);
                 if (existingNotification is null)
                 {
                     return NotFound(new ResponseErrorHandler
@@ -184,7 +184,7 @@ namespace API.Controllers
                     });
                 }
                 Notification toUpdate = existingNotification;
-                if (notificationDto.IsSeen == false)
+                if (existingNotification.IsSeen == false)
                 {
                     toUpdate.IsSeen = true ;
                 }
