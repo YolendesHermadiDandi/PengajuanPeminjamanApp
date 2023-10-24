@@ -1,5 +1,46 @@
 ﻿$(document).ready(function () {
-    let dataEmployee = $("#tabelRoom").DataTable({
+    let dataRoom = $("#tabelRoom").DataTable({
+        ajax: {
+            url: "/room/get-all",
+            "dataSrc": function (data) {
+                if (data.data == null) {
+                    return [];
+                } else {
+                    return data.data;
+                };
+            },
+            dataType: "JSON"
+        },
+        columns: [
+            {
+                defaultContent: "",
+                data: "",
+                render: function (data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
+            {
+                "defaultContent": "",
+                data: "name",
+            },
+            {
+                "defaultContent": "",
+                data: "floor",
+            },
+            {
+                "defaultContent": "",
+                data: "guid",
+                render: function (data, type, row) {
+                    return ` <input type="hidden" id="roomId" name="roomyId" value="${row.guid}">
+                            <a class="me-3" data-bs-toggle="modal" onclick="getUpdateRuangan('${row.guid}')" data-bs-target="#adddUpdateRoom">
+                                    <img src="/assets/img/icons/edit.svg" alt="img">
+                             </a>
+                             <a class="me-3 confirm-text" onclick=Delete('${row.guid}')>
+                                    <img src="/assets/img/icons/delete.svg" alt="img">
+                             </a>`;
+                }
+            }
+        ],
         dom: 'Bftp',
         buttons: [
             {
@@ -39,59 +80,27 @@ function getUpdateRuangan(guid) {
     $('div.action-button').html('<button type="submit" id="updateButton" onclick="Update()" class="btn btn-primary" data-bs-dismiss="modal">Update</button>');
     /*   let guid = */
     $.ajax({
-        //url: `https://localhost:7100/api/employee/${data}`,
-        //url: "employee/edit/" + guid,
-        //dataSrc: "data",
-        //dataType: "JSON"
+        url: "/room/edit/" + guid,
+        dataSrc: "data",
+        dataType: "JSON"
     }).done((result) => {
-
-        //$('#uEmpId').val(`${result.guid}`);
-        //$("#firstName").val(`${result.firstName}`);
-        //$("#lastName").val(`${result.lastName}`);
-        //$("#birthDate").val(`${DateFormat(result.birthDate)}`);
-        //$("#genderSelect").val(`${result.gender}`);
-        //$("#hiringDate").val(`${DateFormat(result.hiringDate)}`);
-        //$("#email").val(`${result.email}`);
-        //$("#phoneNumber").val(`${result.phoneNumber}`);
+        $('#uRoomId').val(`${result.guid}`);
+        $("#name").val(`${result.name}`);
+        $("#floor").val(`${result.floor}`);
     }).fail((error) => {
     });
 }
 
 
 function Update() {
-    //let employee = new Object();
-    //employee.guid = $("#uEmpId").val();
-    //employee.nik = "";
-    //employee.firstName = $("#firstName").val();
-    //employee.lastName = $("#lastName").val();
-    //employee.birthDate = $("#birthDate").val();
-    //employee.gender = parseInt($("#genderSelect").find(':selected').val());
-    //employee.hiringDate = $("#hiringDate").val();
-    //employee.email = $("#email").val();
-    //employee.phoneNumber = $("#phoneNumber").val();
-    //if (employee.birthDate == '' || employee.hiringDate == '') {
-    //    return alert('birth date or hiring date cant null');
-    //}
-    //let birthDate = moment(employee.birthDate, "DD/MM/YYYY");
-    //let hiringDate = moment(employee.hiringDate, "DD/MM/YYYY");
-    //employee.birthDate = new Date(birthDate).toISOString();
-    //employee.hiringDate = new Date(hiringDate).toISOString();
-    //console.log(employee);
+    let room = new Object();
+    room.guid = $('#uRoomId').val();
+    room.name = $("#name").val();
+    room.floor = $("#floor").val();
     $.ajax({
-        //type: "post",
-        //url: "Employee/Insert",
-        //data: employee,
-        //type: "put",
-        //headers: {
-        //    'Accept': 'application/json;charset=utf-8',
-        //    'Content-Type': 'application/json;charset=utf-8'
-        //},
-        //url: "https://localhost:7100/api/employee/update",
-        //dataType: "json",
-        ////async: false,
-        //data: JSON.stringify(
-        //    employee
-        //),
+        type: "post",
+        url: "/room/update",
+        data: room,
     }).done((result) => {
         //console.log(result);
         Swal.fire({
@@ -100,7 +109,7 @@ function Update() {
             showConfirmButton: false,
             timer: 1500
         })
-        $('#tabelEmployee').DataTable().ajax.reload();
+        $('#tabelRoom').DataTable().ajax.reload();
     }).fail((error) => {
         Swal.fire({
             icon: 'error',
@@ -108,7 +117,7 @@ function Update() {
             text: 'Failed to update data',
 
         })
-        $('#tabelEmployee').DataTable().ajax.reload();
+        $('#tabelRoom').DataTable().ajax.reload();
     });
 }
 //Delete
@@ -123,41 +132,69 @@ function Delete(guid) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            //$.ajax({
-            //    url: "employee/delete/" + guid,
-            //    dataSrc: "data",
-            //    dataType: "JSON"
-            //}).done((result) => {
-            //    console.log(result);
-            //    if (result.code == 500) {
-            //        Swal.fire({
-            //            icon: 'error',
-            //            title: 'Oops...',
-            //            text: 'Failed to delete data',
+            $.ajax({
+                url: "/room/delete/" + guid,
+                dataSrc: "data",
+                dataType: "JSON"
+            }).done((result) => {
+                if (result.code == 500) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Failed to delete data',
 
-            //        });
-            //    } else {
-            //        Swal.fire(
-            //            'Deleted!',
-            //            'Your file has been deleted.',
-            //            'success'
-            //        )
-            //    }
-            //    $('#tabelEmployee').DataTable().ajax.reload();
-            //}).fail((error) => {
-            //    Swal.fire({
-            //        icon: 'error',
-            //        title: 'Oops...',
-            //        text: 'Failed to delete data',
+                    });
+                } else {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+                $('#tabelRoom').DataTable().ajax.reload();
+            }).fail((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to delete data',
 
-            //    })
-            //});
+                })
+            });
 
         }
     })
 }
 
+function Insert() {
+    let room = new Object();
+    room.name = $("#name").val();
+    room.floor = $("#floor").val();;
+    $.ajax({
+        type: "post",
+        url: "/room/insert",
+        data: room,
+    }).done((result) => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Insert Success',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        $('#tabelRoom').DataTable().ajax.reload();
+    }).fail((error) => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Failed to insert data',
+
+        })
+        $('#tabelRoom').DataTable().ajax.reload();
+    });
+
+
+}
+
 $('#addRoom').on('click', () => {
     $('div.action-button').html('<button type="submit" id="submitButton" onclick="Insert()" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>')
-    document.getElementById("fasilityForm").reset();
+    document.getElementById("roomForm").reset();
 })

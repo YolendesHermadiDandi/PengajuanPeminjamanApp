@@ -76,7 +76,7 @@ namespace Client.Repositories
         {
             ResponseOKHandler<Entity> entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-            using (var response = httpClient.PutAsync(request + id, content).Result)
+            using (var response = httpClient.PutAsync(request, content).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<Entity>>(apiResponse);
