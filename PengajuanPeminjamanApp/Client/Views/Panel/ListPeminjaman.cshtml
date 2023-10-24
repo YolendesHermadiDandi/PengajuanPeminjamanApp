@@ -1,0 +1,202 @@
+﻿@{
+    ViewData["Title"] = "List Peminjaman";
+    ViewData["ListPeminjaman"] = "active";
+
+    Layout = "_LayoutEmployeePanel";
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h4>List Peminjaman Fasilitas atau Ruangan</h4>
+        <h6>Halaman untuk melihat history peminjaman</h6>
+    </div>
+    <div class="page-btn">
+        <a asp-controller="Panel" asp-action="PeminjamanFasilitas" class="btn btn-added"><img src="~/assets/img/icons/plus.svg" alt="img" class="me-1">Ajukan Peminjaman Fasilitas</a>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="table-top">
+            <div class="search-set">
+                <div class="search-input">
+                    <a class="btn btn-searchset"><img src="~/assets/img/icons/search-white.svg" alt="img"></a>
+                </div>
+            </div>
+            <div class="wordset">
+                <ul>
+                    <li>
+                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf"><img src="~/assets/img/icons/pdf.svg" alt="img"></a>
+                    </li>
+                    <li>
+                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel"><img src="~/assets/img/icons/excel.svg" alt="img"></a>
+                    </li>
+                    <li>
+                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="print"><img src="~/assets/img/icons/printer.svg" alt="img"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card mb-0" id="filter_inputs">
+            <div class="card-body pb-0">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-lg col-sm-6 col-12">
+                                <div class="form-group">
+                                    <select class="select">
+                                        <option>Choose Product</option>
+                                        <option>Macbook pro</option>
+                                        <option>Orange</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg col-sm-6 col-12">
+                                <div class="form-group">
+                                    <select class="select">
+                                        <option>Choose Category</option>
+                                        <option>Computers</option>
+                                        <option>Fruits</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg col-sm-6 col-12">
+                                <div class="form-group">
+                                    <select class="select">
+                                        <option>Choose Sub Category</option>
+                                        <option>Computer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg col-sm-6 col-12">
+                                <div class="form-group">
+                                    <select class="select">
+                                        <option>Brand</option>
+                                        <option>N/D</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg col-sm-6 col-12 ">
+                                <div class="form-group">
+                                    <select class="select">
+                                        <option>Price</option>
+                                        <option>150.00</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-1 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <a class="btn btn-filters ms-auto"><img src="~/assets/img/icons/search-whites.svg" alt="img"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table  datanew">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Status Peminjaman</th>
+                        <th>Tanggal Awal Pinjam</th>
+                        <th>Tanggal Berakhir Pinjam</th>
+                        <th>Nama Ruangan</th>
+                        <th>Detail Fasilitas</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Selesai</td>
+                        <td><a href="javascript:void(0);">IT0001</a></td>
+                        <td class="productimgname">
+                            <a class="product-img" href="productlist.html">
+                                <img src="~/assets/img/product/product2.jpg" alt="product">
+                            </a>
+                            <a href="productlist.html">Orange</a>
+                        </td>
+                        <td>N/D</td>
+                        <td>
+                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
+                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
+                            </button>
+                        </td>
+                        <td>
+                            <a class="me-3" href="editproduct.html">
+                                <img src="~/assets/img/icons/edit.svg" alt="img">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Selesai</td>
+                        <td><a href="javascript:void(0);">IT0002</a></td>
+                        <td class="productimgname">
+                            <a class="product-img" href="productlist.html">
+                                <img src="~/assets/img/product/product3.jpg" alt="product">
+                            </a>
+                            <a href="productlist.html">Pineapple</a>
+                        </td>
+                        <td>N/D</td>
+                        <td>
+                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
+                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
+                            </button>
+                        </td>
+                        <td>
+                            <a class="me-3" href="editproduct.html">
+                                <img src="~/assets/img/icons/edit.svg" alt="img">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Selesai</td>
+                        <td><a href="javascript:void(0);">IT0003</a></td>
+                        <td class="productimgname">
+                            <a class="product-img" href="productlist.html">
+                                <img src="~/assets/img/product/product4.jpg" alt="product">
+                            </a>
+                            <a href="productlist.html">Stawberry</a>
+                        </td>
+                        <td>N/D</td>
+                        <td>
+                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
+                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
+                            </button>
+                        </td>
+                        <td>
+                            <a class="me-3" href="editproduct.html">
+                                <img src="~/assets/img/icons/edit.svg" alt="img">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Selesai</td>
+                        <td><a href="javascript:void(0);">IT0004</a></td>
+                        <td class="productimgname">
+                            <a class="product-img" href="productlist.html">
+                                <img src="~/assets/img/product/product5.jpg" alt="product">
+                            </a>
+                            <a href="productlist.html">Avocat</a>
+                        </td>
+                        <td>N/D</td>
+                        <td>
+                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
+                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
+                            </button>
+                        </td>
+                        <td>
+                            <a class="me-3" href="editproduct.html">
+                                <img src="~/assets/img/icons/edit.svg" alt="img">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
