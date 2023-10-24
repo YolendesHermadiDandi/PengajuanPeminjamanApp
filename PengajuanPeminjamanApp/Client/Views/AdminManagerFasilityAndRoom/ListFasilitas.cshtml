@@ -1,0 +1,152 @@
+﻿@{
+    ViewData["Title"] = "List Fasilitas";
+    Layout = "AdminLayout";
+}
+
+
+<div class="content">
+    <div class="page-header">
+        <div class="page-title">
+            <h4>List Fasilitas</h4>
+            <h6>Manage list Fasilitas</h6>
+        </div>
+        <div class="page-btn">
+            <button type="button" class="btn btn-added" id="addFasility" data-bs-toggle="modal" data-bs-target="#adddUpdateFasility">
+                <img src="~/assets/img/icons/plus.svg" alt="img" />
+                Add Fasility
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table" style="width:100%;" id="tabelFasility">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama</th>
+                            <th>Stock</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Kursi</td>
+                            <td>200</td>
+                            <td>
+                                <a class="me-3" data-bs-toggle="modal" onclick="getUpdateFasility('asd')" data-bs-target="#adddUpdateFasility">
+                                    <img src="~/assets/img/icons/edit.svg" alt="img">
+                                </a>
+                                <a class="me-3 confirm-text">
+                                    <img src="~/assets/img/icons/delete.svg" alt="img">
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Meja</td>
+                            <td>40</td>
+                            <td>
+                                <a class="me-3" data-bs-toggle="modal" data-bs-target="#adddUpdateFasility">
+                                    <img src="~/assets/img/icons/edit.svg" alt="img">
+                                </a>               
+                                <a class="me-3 confirm-text">
+                                    <img src="~/assets/img/icons/delete.svg" alt="img">
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Lampu</td>
+                            <td>40</td>
+                            <td>
+                                <a class="me-3" data-bs-toggle="modal" data-bs-target="#adddUpdateFasility">
+                                    <img src="~/assets/img/icons/edit.svg" alt="img">
+                                </a>
+                                <a class="me-3 confirm-text">
+                                    <img src="~/assets/img/icons/delete.svg" alt="img">
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Despenser</td>
+                            <td>40</td>
+                            <td>
+                                <a class="me-3" data-bs-toggle="modal" data-bs-target="#adddUpdateFasility">
+                                    <img src="~/assets/img/icons/edit.svg" alt="img">
+                                </a>
+                                <a class="me-3 confirm-text">
+                                    <img src="~/assets/img/icons/delete.svg" alt="img">
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Galon</td>
+                            <td>40</td>
+                            <td>
+                                <a class="me-3" data-bs-toggle="modal" data-bs-target="#adddUpdateFasility">
+                                    <img src="~/assets/img/icons/edit.svg" alt="img">
+                                </a>
+                                <a class="me-3 confirm-text">
+                                    <img src="~/assets/img/icons/delete.svg" alt="img">
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="adddUpdateFasility" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="page-title">
+                    <h4>Fasility Management</h4>
+                    <h6>Add/Update Fasility</h6>
+                </div>
+            </div>
+            <form class="was-validated" id="fasilityForm">
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="Name">Nama</label>
+                                        <input id="Name" class="form-control"  type="text" required>
+                                        <input id="uEmpId" type="hidden" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="stock">Stock</label>
+                                        <input id="stock" class="form-control" type="number" min="1" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <div class="action-button">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/js/adminDashboard.js" asp-append-version="true"></script>
+    <script src="~/js/adminListFasility.js" asp-append-version="true"></script>
+}

@@ -29,7 +29,7 @@
                                         <div class="media d-flex">
                                             <div class="media-body flex-grow-1">
                                                 <p class="noti-details">
-                                                    <span class="noti-title">${result.employees[i].firstName + " " + result.employees[i].lastName}e</span> Melakukan Request <span class="noti-title"> ${result.notifications[i].message}</span>
+                                                    <span class="noti-title">${result.employees[i].firstName + " " + result.employees[i].lastName}</span> Melakukan Request <span class="noti-title"> ${result.notifications[i].message}</span>
                                                 </p>
                                             </div>
                                         </div>

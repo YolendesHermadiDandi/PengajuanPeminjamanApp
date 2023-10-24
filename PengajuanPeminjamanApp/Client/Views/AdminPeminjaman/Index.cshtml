@@ -1,0 +1,227 @@
+﻿@{
+    ViewData["Title"] = "List Peminjaman";
+    Layout = "AdminLayout";
+}
+<div class="content">
+    <div class="page-header">
+        <div class="page-title">
+            <h4>List Peminjaman</h4>
+            <h6>Manage list peminjaman</h6>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table" style="width:100%;" id="tabelEmployee">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Request Name</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Dandi</td>
+                            <td><span class="badges bg-lightyellow">Requested</span></td>
+                            <td>
+                                <a class="me-3" data-bs-toggle="modal" onclick="ProgressBarPeminjaman('Requested')" data-bs-target="#detailPeminjamanModal">
+                                    <img src="~/assets/img/icons/eye.svg" alt="img">
+                                </a>
+                                @* <a class="me-3">
+                                    <img src="~/assets/img/icons/edit.svg" alt="img">
+                                </a>
+                                <a class="me-3 confirm-text">
+                                    <img src="~/assets/img/icons/delete.svg" alt="img">
+                                </a> *@
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Dandi</td>
+                            <td><span class="badges bg-lightgreen">OnProssesed</span></td>
+                            <td>
+                                <a class="me-3" data-bs-toggle="modal" onclick="ProgressBarPeminjaman('OnProssesed')" data-bs-target="#detailPeminjamanModal">
+                                    <img src="~/assets/img/icons/eye.svg" alt="img">
+                                </a>
+                             @*    <a class="me-3">
+                                    <img src="~/assets/img/icons/edit.svg" alt="img">
+                                </a>
+                                <a class="me-3 confirm-text">
+                                    <img src="~/assets/img/icons/delete.svg" alt="img">
+                                </a> *@
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Dandi</td>
+                            <td><span class="badges bg-lightred">Rejected</span></td>
+                            <td>
+                                <a class="me-3" data-bs-toggle="modal" onclick="ProgressBarPeminjaman('Rejected')" data-bs-target="#detailPeminjamanModal">
+                                    <img src="~/assets/img/icons/eye.svg" alt="img">
+                                </a>
+                             @*    <a class="me-3">
+                                    <img src="~/assets/img/icons/edit.svg" alt="img">
+                                </a>
+                                <a class="me-3 confirm-text">
+                                    <img src="~/assets/img/icons/delete.svg" alt="img">
+                                </a> *@
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Dandi</td>
+                            <td><span class="badges bg-lightgreen">OnGoing</span></td>
+                            <td>
+                                <a class="me-3" data-bs-toggle="modal" onclick="ProgressBarPeminjaman('OnGoing')" data-bs-target="#detailPeminjamanModal">
+                                    <img src="~/assets/img/icons/eye.svg" alt="img">
+                                </a>
+                              @*   <a class="me-3">
+                                    <img src="~/assets/img/icons/edit.svg" alt="img">
+                                </a>
+                                <a class="me-3 confirm-text">
+                                    <img src="~/assets/img/icons/delete.svg" alt="img">
+                                </a> *@
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Dandi</td>
+                            <td><span class="badges bg-lightgreen">Completed</span></td>
+                            <td>
+
+                                <a class="me-3" data-bs-toggle="modal" onclick="ProgressBarPeminjaman('Completed')" data-bs-target="#detailPeminjamanModal">
+                                    <img src="~/assets/img/icons/eye.svg" alt="img">
+                                </a>
+                               @*  <a class="me-3">
+                                    <img src="~/assets/img/icons/edit.svg" alt="img">
+                                </a>
+                                <a class="me-3 confirm-text">
+                                    <img src="~/assets/img/icons/delete.svg" alt="img">
+                                </a> *@
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="detailPeminjamanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="page-title">
+                    <h4>Detail Peminjaman</h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="basic-pills-wizard" class="twitter-bs-wizard">
+                            <ul class="twitter-bs-wizard-nav">
+                                <li class="nav-item ">
+                                    <a id="statusRequested" class="nav-link disabled">
+                                        <div class="step-icon">
+                                            <i class="fa fa-tasks"></i>
+                                        </div>
+                                    </a>
+                                    <span id="requested">Requested</span>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="statusProgress" class="nav-link disabled">
+                                        <div class="step-icon">
+                                            <i class="fe fe-clock"></i>
+                                        </div>
+                                    </a>
+                                    <span id="OnProssesed">OnProssesed</span>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="statusOnGoing" class="nav-link disabled">
+                                        <div class="step-icon">
+                                            <i class="fe fe-clock"></i>
+                                        </div>
+                                    </a>
+                                    <span id="onGoing">OnGoing</span>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="statusCompleted" class="nav-link disabled">
+                                        <div class="step-icon">
+                                            <i class="fe fe-check-circle"></i>
+                                        </div>
+                                    </a>
+                                    <span id="completed">Completed</span>
+                                </li>
+                            </ul>
+                            <div class="my-3">
+                                <div class="productdetails">
+                                    <ul class="product-bar">
+                                        <li>
+                                            <h4>Nama employee</h4>
+                                            <h6>Yolendes Dandi</h6>
+                                        </li>
+                                        <li>
+                                            <h4>Tanggal peminjaman</h4>
+                                            <h6>20/10/2023</h6>
+                                        </li>
+                                        <li>
+                                            <h4>Tanggal berakhir peminjaman</h4>
+                                            <h6>20/11/2023</h6>
+                                        </li>
+                                        <li>
+                                            <h4>Status Peminjaman</h4>
+                                            <h6>Requested</h6>
+                                        </li>
+                                        <li>
+                                            <h4>Nama Ruangan</h4>
+                                            <h6>N/D</h6>
+                                        </li>
+                                        <li>
+                                            <h4>Nama Fasilitas</h4>
+                                            
+                                            <p class="list-group-item list-group-item-info m-1 text-center">
+                                                Kursi
+                                                <span class="badge d-block bg-primary">Qty : 14</span>
+                                            </p>
+                                            <p class="list-group-item list-group-item-info m-1 text-center">
+                                                Meja
+                                                <span class="badge d-block bg-primary">Qty : 28</span>
+                                            </p>
+                                            <p class="list-group-item list-group-item-info m-1 text-center">
+                                                Pensil
+                                                <span class="badge d-block bg-primary">Qty : 28</span>
+                                            </p>
+                                     
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer sticky">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+
+                <div class="action-button">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/adminDashboard.js" asp-append-version="true"></script>
+    <script src="~/js/adminListPeminjaman.js" asp-append-version="true"></script>
+    <script src="~/assets/plugins/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script src="~/assets/plugins/twitter-bootstrap-wizard/prettify.js"></script>
+    <script src="~/assets/plugins/twitter-bootstrap-wizard/form-wizard.js"></script>
+    }

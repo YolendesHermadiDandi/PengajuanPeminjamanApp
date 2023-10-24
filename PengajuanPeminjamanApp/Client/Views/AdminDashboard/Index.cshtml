@@ -2,44 +2,53 @@
     ViewData["Title"] = "Admin";
     Layout = "AdminLayout";
 }
-<div class="col-12 col-md-6 col-lg-12 d-flex">
-    <div class="card bg-white m-2 ">
-        <div class="card-header">
-            <h6 class="btn btn-primary pe-none">Request</h6>
-        </div>
-        <div class="card-body">
-            <button class="btn btn-primary m-1 btn-sm">request 1</button>
-            <button class="btn btn-primary m-1 btn-sm">request 2</button>
-            <button class="btn btn-primary m-1 btn-sm">request 3</button>
-            <button class="btn btn-primary m-1 btn-sm">request 4</button>
-        </div>
-    </div>
-
-    <div class="card bg-white m-2">
-        <div class="card-header">
-            <h6 class="btn btn-primary pe-none">Approved</h6>
-        </div>
-        <div class="card-body">
-            <button class="btn btn-primary m-1 btn-sm">request 1</button>
-            <button class="btn btn-primary m-1 btn-sm">request 2</button>
-            <button class="btn btn-primary m-1 btn-sm">request 3</button>
-            <button class="btn btn-primary m-1 btn-sm">request 4</button>
+<div class="row">
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count">
+            <div class="dash-counts">
+                <h4 class="counter">100</h4>
+                <h5>Pengajuan Peminjaman</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="user"></i>
+            </div>
         </div>
     </div>
-
-    <div class="card bg-white m-2">
-        <div class="card-header">
-            <h6 class="btn btn-primary pe-none">Done</h6>
-        </div>
-        <div class="card-body">
-            <button class="btn btn-primary m-1 btn-sm">request 1</button>
-            <button class="btn btn-primary m-1 btn-sm">request 2</button>
-            <button class="btn btn-primary m-1 btn-sm">request 3</button>
-            <button class="btn btn-primary m-1 btn-sm">request 4</button>
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count das1">
+            <div class="dash-counts">
+                <h4 class="counter">100</h4>
+                <h5>Peminjaman Diterima</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="user-check"></i>
+            </div>
         </div>
     </div>
-
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count das2">
+            <div class="dash-counts">
+                <h4 class="counter">100</h4>
+                <h5>Peminjaman Selesai</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="file-text"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count das3">
+            <div class="dash-counts">
+                <h4 class="counter">105</h4>
+                <h5>Total Peminjaman</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="file"></i>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 
 

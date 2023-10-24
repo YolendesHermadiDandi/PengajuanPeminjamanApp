@@ -17,7 +17,6 @@
                                 <div class="activity-content">
                                     <div class="timeline-content">
                                         <a href="#" class="name">${result.employees[i].firstName + " " + result.employees[i].lastName}</a> Melakukan Request ${result.notifications[i].message} </a>
-                                        <span class="time">4 mins ago</span>
                                     </div>
                                 </div>
                             </li>`
