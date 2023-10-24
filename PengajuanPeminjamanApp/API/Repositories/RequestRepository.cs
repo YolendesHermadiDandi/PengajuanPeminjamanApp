@@ -10,4 +10,9 @@ public class RequestRepository : GeneralRepository<Request>, IRequestRepository
 	{
 
 	}
+
+    public IEnumerable<Request> GetRequestByEmployeeGuid(Guid employeeGuid)
+    {
+            return _context.Set<Request>().Where(rq => rq.EmployeeGuid == employeeGuid).ToList();
+    }
 }

@@ -85,6 +85,44 @@ public class RequestController : ControllerBase
 		return Ok(new ResponseOKHandler<RequestDto>((RequestDto)result));
 	}
 
+	[HttpGet("GetRequestByEmployeeGuid")]
+	public IActionResult GetRequestByEmployeeGuid(Guid guid)
+	{
+		var result = _requestRespository.GetRequestByEmployeeGuid(guid);
+		var room = _roomRepository.GetAll();
+		if (result is null)
+		{
+			return NotFound(new ResponseErrorHandler
+			{
+				Code = StatusCodes.Status404NotFound,
+				Status = HttpStatusCode.NotFound.ToString(),
+				Message = "Data Not Found"
+			});
+		}
+
+		List<ListRequestDto> data = (from req in result
+				   where req.EmployeeGuid == guid
+				   select new ListRequestDto
+				   {
+					   Guid = req.Guid,
+					   EmployeeGuid = req.EmployeeGuid,
+					   rooms = (from roo in room
+							  join re in result on roo.Guid equals re.RoomGuid
+							  where roo.Guid == req.RoomGuid
+							  select new RoomDto
+							  {
+								  Guid = roo.Guid,
+								  Name = roo.Name,
+								  Floor = roo.Floor
+							  }).FirstOrDefault(),
+					   Status = req.Status,
+					   StartDate = req.StartDate,
+					   EndDate = req.EndDate
+				   }).ToList();
+
+        return Ok(new ResponseOKHandler<IEnumerable<ListRequestDto>>(data));
+    }
+
 	[HttpGet("GetAllDetailRequest")]
 	public IActionResult GetAllDetailRequest()
 	{

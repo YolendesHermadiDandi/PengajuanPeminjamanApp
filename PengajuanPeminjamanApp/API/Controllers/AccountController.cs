@@ -176,6 +176,19 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("GetClaims/{token}")]
+        public IActionResult GetClaims(string token)
+        {
+            var claims = _tokenHandler.ExtractClaimsFromJwt(token);
+            return Ok(new ResponseOKHandler<ClaimsDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Claims has been retrieved",
+                Data = claims
+            });
+        }
+
         [HttpPost("Register")]
         [AllowAnonymous]
         public IActionResult Register(RegisterAccountDto registerAccoutDto)
@@ -253,6 +266,7 @@ namespace API.Controllers
 
                 var claims = new List<Claim>();
                 claims.Add(new Claim("Email", existingEmployee.Email));
+                claims.Add(new Claim("UserGuid", existingEmployee.Guid.ToString(), ClaimValueTypes.String));
                 claims.Add(new Claim("FullName", string.Concat(
                     existingEmployee.FirstName, " ", existingEmployee.LastName)));
 

@@ -40,7 +40,7 @@
             <div class="col-lg-3 col-sm-6 col-12">
                 <div class="form-group">
                     <label>Pilih Fasilitas</label>
-                    <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
+                    <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal"id="btnModalFasilitas" data-bs-target="#ModalFasilitas">
                         <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
                     </button>
                 </div>
@@ -77,20 +77,6 @@
                             <td>10.00</td>
                             <td>2000.00</td>
                             <td>500.00</td>
-                            <td>
-                                <a class="delete-set"><img src="~/assets/img/icons/delete.svg" alt="svg"></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="productimgname">
-                                <a class="product-img">
-                                    <img src="~/assets/img/product/product6.jpg" alt="product">
-                                </a>
-                                <a href="javascript:void(0);">Macbook Pro</a>
-                            </td>
-                            <td>15.00</td>
-                            <td>6000.00</td>
-                            <td>100.00</td>
                             <td>
                                 <a class="delete-set"><img src="~/assets/img/icons/delete.svg" alt="svg"></a>
                             </td>
@@ -222,3 +208,8 @@
         </div>
     </div>
 </div>
+
+
+@section Scripts{
+    <script src="~/js/employee/pengajuanPeminjaman.js" asp-append-version="true"></script>
+}

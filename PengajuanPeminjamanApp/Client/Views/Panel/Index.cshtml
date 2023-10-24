@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<API.DTOs.Requests.ListRequestDto>
+
+@{
     ViewData["Title"] = "Home Page";
     ViewData["Dashboard"] = "active";
 
@@ -68,74 +70,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Selesai</td>
-                        <td><a href="javascript:void(0);">IT0001</a></td>
-                        <td class="productimgname">
-                            <a class="product-img" href="productlist.html">
-                                <img src="~/assets/img/product/product2.jpg" alt="product">
-                            </a>
-                            <a href="productlist.html">Orange</a>
-                        </td>
-                        <td>N/D</td>
+                    @{int i = 0;}
+                    @foreach (var item in Model) {
+                        <tr>
+                            @{i++;}
+                            <td> @i                        
+                            </td>
+                            <td>@Html.DisplayFor(model => item.Status)</td>
+                            <td>@Html.DisplayFor(model => item.StartDate)</td>
+                            <td>@Html.DisplayFor(model => item.EndDate)</td>
+                            <td>@Html.DisplayFor(model => item.rooms.Name)</td>
                         <td>
                             <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
                                 <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
                             </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Selesai</td>
-                        <td><a href="javascript:void(0);">IT0002</a></td>
-                        <td class="productimgname">
-                            <a class="product-img" href="productlist.html">
-                                <img src="~/assets/img/product/product3.jpg" alt="product">
-                            </a>
-                            <a href="productlist.html">Pineapple</a>
-                        </td>
-                        <td>N/D</td>
-                        <td>
-                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
-                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Selesai</td>
-                        <td><a href="javascript:void(0);">IT0003</a></td>
-                        <td class="productimgname">
-                            <a class="product-img" href="productlist.html">
-                                <img src="~/assets/img/product/product4.jpg" alt="product">
-                            </a>
-                            <a href="productlist.html">Stawberry</a>
-                        </td>
-                        <td>N/D</td>
-                        <td>
-                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
-                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Selesai</td>
-                        <td><a href="javascript:void(0);">IT0004</a></td>
-                        <td class="productimgname">
-                            <a class="product-img" href="productlist.html">
-                                <img src="~/assets/img/product/product5.jpg" alt="product">
-                            </a>
-                            <a href="productlist.html">Avocat</a>
-                        </td>
-                        <td>N/D</td>
-                        <td>
-                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
-                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
-                            </button>
-                        </td>
-                    </tr>
+                    }
                 </tbody>
             </table>
         </div>

@@ -1,6 +1,7 @@
 ﻿using API.Contracts;
 using API.DTOs.Fasilities;
 using API.DTOs.ListFasilities;
+using API.DTOs.Requests;
 using API.Models;
 using API.Repositories;
 using API.Utilities.Handlers;
@@ -57,6 +58,33 @@ public class ListFasilityController : ControllerBase
 		}
 
 		return Ok(new ResponseOKHandler<ListFasilityDto>((ListFasilityDto)result));
+	}
+	
+	[HttpGet("GetListFasilityByRequestGuid")]
+	public IActionResult GetListFasilityByRequestGuid(Guid requestGuid)
+	{
+        var listFasility = _listFasilityRepository.GetAllListFasilityByReqGuid(requestGuid);
+		var fasility = _fasilityRepository.GetAll();
+        if (listFasility is null)
+		{
+			return NotFound(new ResponseErrorHandler
+			{
+				Code = StatusCodes.Status404NotFound,
+				Status = HttpStatusCode.NotFound.ToString(),
+				Message = "Data Not Found"
+			});
+		}
+
+		var data = from fas in fasility
+				   join li in listFasility on fas.Guid equals li.FasilityGuid
+				   where li.RequestGuid == requestGuid
+				   select new
+				   {
+					   FasilityGuid = fas.Guid,
+					   Name = fas.Name,
+					   TotalFasility = li.TotalFasility
+				   };
+        return Ok(new ResponseOKHandler<IEnumerable<object>>(data));
 	}
 
 	[HttpPut]

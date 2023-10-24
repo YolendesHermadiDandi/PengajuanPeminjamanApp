@@ -57,7 +57,7 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IFasilityRepository, FasilityRepository>();
 builder.Services.AddScoped<IListFasilityRepository, ListFasilityRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
-builder.Services.AddScoped<IRequestRepository, RequestRespository>();
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepositroy>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 

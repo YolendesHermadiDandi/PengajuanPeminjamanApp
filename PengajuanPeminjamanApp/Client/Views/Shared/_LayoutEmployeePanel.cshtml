@@ -162,7 +162,7 @@
                             <hr class="m-0">
                             <a class="dropdown-item" asp-controller="Panel" asp-action="Profil"> <i class="me-2" data-feather="user"></i> My Profile</a>
                             <hr class="m-0">
-                            <a class="dropdown-item logout pb-0" href="signin.html"><img src="~/assets/img/icons/log-out.svg" class="me-2" alt="img">Logout</a>
+                            <a class="dropdown-item logout pb-0" asp-controller="Authentication" asp-action="Logout"><img src="~/assets/img/icons/log-out.svg" class="me-2" alt="img">Logout</a>
                         </div>
                     </div>
                 </li>
@@ -171,7 +171,7 @@
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" asp-controller="Panel" asp-action="Profil">My Profile</a>
-                    <a class="dropdown-item" href="signin.html">Logout</a>
+                    <a class="dropdown-item" asp-controller="Authentication" asp-action="Logout">Logout</a>
                 </div>
             </div>
         </div>
@@ -188,11 +188,11 @@
                         <li class="@ViewData["ListPeminjaman"]">
                             <a asp-controller="Panel" asp-action="ListPeminjaman"><i data-feather="layers"></i><span>List Peminjaman</span> </a>
                         </li>
-                        <li class="submenu @ViewData["ListFasilitas"]">
+                        <li class="submenu">
                             <a href="javascript:void(0);"><img src="~/assets/img/icons/product.svg" alt="img"><span> Product</span> <span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a asp-controller="Panel" asp-action="ListFasilitas">List Fasilitas</a></li>
-                                <li><a asp-controller="Panel" asp-action="ListRuangan">List Ruangan</a></li>
+                                <li><a asp-controller="Panel" asp-action="ListFasilitas" class="@ViewData["ListFasilitas"]">List Fasilitas</a></li>
+                                <li><a asp-controller="Panel" asp-action="ListRuangan" class="@ViewData["ListRuangan"]">List Ruangan</a></li>
                             </ul>
                         </li>
                 </div>
@@ -221,5 +221,7 @@
     <script src="~/assets/plugins/sweetalert/sweetalerts.min.js"></script>
     <script src="~/assets/plugins/select2/js/select2.min.js"></script>
     <script src="~/assets/js/bootstrap-datetimepicker.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
