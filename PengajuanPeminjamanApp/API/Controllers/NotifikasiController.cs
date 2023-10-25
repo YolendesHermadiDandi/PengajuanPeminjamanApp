@@ -119,8 +119,8 @@ namespace API.Controllers
 
                 var result = _notificationRepository.Create(createNotificationDto);
 
-                _emailHandlerRepository.Send("Pengajuan Peminjaman",createNotificationDto.Message, employee.Email, "Admin@no-replay.com");
-                return Ok(new ResponseOKHandler<NotificationDto>("Success send Notification",(NotificationDto)result));
+                _emailHandlerRepository.Send("Pengajuan Peminjaman", createNotificationDto.Message, employee.Email, "Admin@no-replay.com");
+                return Ok(new ResponseOKHandler<NotificationDto>("Success send Notification", (NotificationDto)result));
 
             }
             catch (Exception ex)
@@ -142,7 +142,7 @@ namespace API.Controllers
             {
                 var employee = _employeeRepository.GetByGuid(createNotificationDto.AccountGuid);
 
-                var message = string.Concat("Pengajuan oleh ", employee.FirstName, " ", employee.LastName, " ",createNotificationDto.Message);
+                var message = string.Concat("Pengajuan oleh ", employee.FirstName, " ", employee.LastName, " ", createNotificationDto.Message);
 
                 var result = _notificationRepository.Create(createNotificationDto);
 
@@ -162,7 +162,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{guid}")]
         /*
       * Method dibawah digunakan untuk mengupdate data dengan menggunakan parameter dari method DTO
       * 

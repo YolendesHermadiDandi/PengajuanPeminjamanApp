@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Employees;
+using API.Models;
 using Client.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Core.Types;
@@ -41,15 +42,34 @@ namespace Client.Controllers
             return Json(result);
         }
 
+        [Route("/updateNotification/{guid}")]
         public async Task<JsonResult> UpdateNotification(Guid guid)
         {
             var result = await _notificationRepository.UpdateNotification(guid);
             if (result.Code == 200)
             {
-                TempData["Success"] = $"Data has been Successfully Updated - {result.Message}!";
                 return Json(result);
             }
             return Json(result);
+        }
+
+        [Route("/getNotification/{guid}")]
+        public async Task<JsonResult> GetNotification(Guid guid)
+        {
+            var result = await _notificationRepository.Get(guid);
+            EmployeeDto employee = new EmployeeDto();
+            if (result.Code == 200)
+            {
+                var emp = await _employeeRepository.Get(result.Data.AccountGuid);
+                employee = emp.Data;
+            }
+
+            var data = new
+            {
+                notifications = result.Data,
+                employees = employee,
+            };
+            return Json(data);
         }
 
         //public async Task<JsonResult> GetEmpData(Guid guid)

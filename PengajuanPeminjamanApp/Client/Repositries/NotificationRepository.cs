@@ -37,5 +37,17 @@ namespace Client.Repositries
             }
             return entityVM;
         }
+
+        public async Task<ResponseOKHandler<IEnumerable<NotificationDto>>> GetAllNotification(Guid guid)
+        {
+            ResponseOKHandler<IEnumerable<NotificationDto>> entityVM = null;
+
+            using (var response = await httpClient.GetAsync(request + "allEmpNotification/" + guid))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<IEnumerable<NotificationDto>>>(apiResponse);
+            }
+            return entityVM;
+        }
     }
 }

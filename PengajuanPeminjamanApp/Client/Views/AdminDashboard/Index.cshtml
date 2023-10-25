@@ -2,6 +2,53 @@
     ViewData["Title"] = "Admin";
     Layout = "AdminLayout";
 }
+<div class="row">
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count">
+            <div class="dash-counts">
+                <h4 class="counter">100</h4>
+                <h5>Pengajuan Peminjaman</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="user"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count das1">
+            <div class="dash-counts">
+                <h4 class="counter">100</h4>
+                <h5>Peminjaman Diterima</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="user-check"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count das2">
+            <div class="dash-counts">
+                <h4 class="counter">100</h4>
+                <h5>Peminjaman Selesai</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="file-text"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12 d-flex">
+        <div class="dash-count das3">
+            <div class="dash-counts">
+                <h4 class="counter">105</h4>
+                <h5>Total Peminjaman</h5>
+            </div>
+            <div class="dash-imgs">
+                <i data-feather="file"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 
@@ -17,19 +64,17 @@
                     <h4>Nama Employee</h4>
                 </div>
             </div>
-            <form class="was-validated" id="emploteeForm">
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
-                            <p>Melakukan Request Terhadap Fasilitas bla bla bla....</p>
-                        </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body" id="modal-message">
+                        @* <p>Melakukan Request Terhadap Fasilitas bla bla bla....</p> *@
                     </div>
                 </div>
-            </form>
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success btn-sm">Approved</button>
-                <button type="button" class="btn btn-danger btn-sm">Rejected</button>
+                <button type="button" id="close-modal" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="approved-modal" class="btn btn-success btn-sm">Approved</button>
+                <button type="button" id="rejected-modal" class="btn btn-danger btn-sm">Rejected</button>
                 <div class="action-button">
                 </div>
             </div>
