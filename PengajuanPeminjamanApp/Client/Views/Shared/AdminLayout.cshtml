@@ -122,41 +122,20 @@
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
-                        @{
-                            var nama = (string)ViewData["Title"];
-                            var className = "";
-                        }
-                        @if (nama == "Admin")
-                        {
-                            className = "active";
-                        }
-                        else
-                        {
-                            className = "";
-                        }
-                        <li class=@className>
+                        <li class="@ViewData["AdminDashboard"]">
                             <a href="/admin/dashboard">
                                 <img src="~/assets/img/icons/dashboard.svg" alt="img"><span>
                                     Dashboard
                                 </span>
                             </a>
                         </li>
-                        @if (nama == "Notifications")
-                        {
-                            className = "active";
-                        }
-                        else
-                        {
-                            className = "";
-                        }
-                        <li class=@className>
+                        @* <li class=@className>
                             <a href="/admin/notifications">
                                 <img src="/assets/img/icons/notification-bing.svg" alt="img"><span>
                                     Notifications
                                 </span>
                             </a>
-                        </li>
-
+                        </li> *@
                         <li class="submenu">
                             <a href="javascript:void(0);">
                                 <img src="~/assets/img/icons/product.svg" alt="img"><span>
@@ -164,24 +143,7 @@
                                 </span> <span class="menu-arrow"></span>
                             </a>
                             <ul>
-                                @if (nama == "List Peminjaman")
-                                {
-                                    className = "active";
-                                }
-                                else
-                                {
-                                    className = "";
-                                }
-                                <li><a href="/admin/listPeminjaman" class=@className>List Peminjaman</a></li>
-                                @*  <li><a href="addproduct.html">Add Product</a></li>
-                                <li><a href="categorylist.html">Category List</a></li>
-                                <li><a href="addcategory.html">Add Category</a></li>
-                                <li><a href="subcategorylist.html">Sub Category List</a></li>
-                                <li><a href="subaddcategory.html">Add Sub Category</a></li>
-                                <li><a href="brandlist.html">Brand List</a></li>
-                                <li><a href="addbrand.html">Add Brand</a></li>
-                                <li><a href="importproduct.html">Import Products</a></li>
-                                <li><a href="barcode.html">Print Barcode</a></li> *@
+                                <li><a href="/admin/listPeminjaman" class="@ViewData["AdminListPeminjaman"]">List Peminjaman</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
@@ -191,24 +153,8 @@
                                 </span> <span class="menu-arrow"></span>
                             </a>
                             <ul>
-                                @if (nama == "List Fasilitas")
-                                {
-                                    className = "active";
-                                }
-                                else
-                                {
-                                    className = "";
-                                }
-                                <li><a href="/admin/list-fasilitas" class=@className>List Fasilitas</a></li>
-                                @if (nama == "List Ruangan")
-                                {
-                                    className = "active";
-                                }
-                                else
-                                {
-                                    className = "";
-                                }
-                                <li><a href="/admin/list-ruangan" class=@className>List Ruangan</a></li>
+                                <li><a href="/admin/list-fasilitas" class="@ViewData["AdminListFasility"]">List Fasilitas</a></li>
+                                <li><a href="/admin/list-ruangan" class="@ViewData["AdminListRoom"]">List Ruangan</a></li>
                             </ul>
                         </li>
                     </ul>
