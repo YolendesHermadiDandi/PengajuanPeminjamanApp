@@ -1,9 +1,7 @@
-﻿using API.DTOs.Employees;
-using API.DTOs.Fasilities;
+﻿using API.DTOs.Fasilities;
 using API.DTOs.Rooms;
 using Client.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol.Core.Types;
 
 namespace Client.Controllers
 {
@@ -31,7 +29,7 @@ namespace Client.Controllers
         public async Task<JsonResult> GetAllFasility()
         {
             var result = await _fasilityRepository.Get();
-            
+
             return Json(result);
         }
 
@@ -51,7 +49,7 @@ namespace Client.Controllers
         }
 
         [Route("fasility/edit/{guid}")]
-        public async Task<JsonResult> EditFasility (Guid guid)
+        public async Task<JsonResult> EditFasility(Guid guid)
         {
             var result = await _fasilityRepository.Get(guid);
             var fasility = new FasilityDto();

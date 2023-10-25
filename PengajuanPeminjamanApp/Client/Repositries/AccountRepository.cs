@@ -1,11 +1,9 @@
 ﻿using API.DTOs.Accounts;
-using API.Models;
 using API.Utilities.Handlers;
 using Client.Contracts;
 using Client.Models;
 using Client.Repositories;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System.Text;
 
 namespace Client.Repositries;

@@ -3,9 +3,7 @@ using API.DTOs.Accounts;
 using API.Models;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using System.Security.Claims;
 using System.Transactions;
@@ -26,7 +24,7 @@ namespace API.Controllers
 
         //Constructor
         public AccountController(IAccountRepository accountRepository,
-                                 IEmployeeRepository employeeRepository,                                
+                                 IEmployeeRepository employeeRepository,
                                  IEmailHandlerRepository emailHandlerRepository,
                                  ITokenHandlerRepository tokenHandler,
                                  IAccountRoleRepository accountRoleRepository,
@@ -273,7 +271,7 @@ namespace API.Controllers
                 var getRolesName = from ar in _accountRoleRepository.GetAll()
                                    join r in _roleRepository.GetAll() on ar.RoleGuid equals r.Guid
                                    where ar.AccountGuid == existingEmployee.Guid
-                select r.Name;
+                                   select r.Name;
 
                 foreach (var role in getRolesName)
                 {
@@ -285,7 +283,7 @@ namespace API.Controllers
 
 
 
-                return Ok(new ResponseOKHandler<object>("login success",new {Token = generateToken }));
+                return Ok(new ResponseOKHandler<object>("login success", new { Token = generateToken }));
             }
             catch (Exception ex)
             {

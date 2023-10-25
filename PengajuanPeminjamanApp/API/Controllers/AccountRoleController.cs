@@ -2,7 +2,6 @@
 using API.DTOs.AccountRoles;
 using API.Models;
 using API.Utilities.Handlers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 

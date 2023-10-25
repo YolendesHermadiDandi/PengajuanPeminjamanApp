@@ -7,15 +7,14 @@ public class RequestFasilityDbContext : DbContext
 {
     public RequestFasilityDbContext(DbContextOptions<RequestFasilityDbContext> options) : base(options) { }
 
-	public DbSet<Account> Accounts { get; set; }
-	public DbSet<AccountRole> AccountRoles { get; set; }
-	public DbSet<Employee> Employees { get; set; }
-	public DbSet<Fasility> Fasilities { get; set; }
-	public DbSet<ListFasility> ListFasilities { get; set; }
-	public DbSet<Notification> Notifications { get; set; }
-	public DbSet<Request> Requests { get; set; }
-	public DbSet<Role> Roles { get; set; }
-	public DbSet<Room> Rooms { get; set; }
+    public DbSet<Account> Accounts { get; set; }
+    public DbSet<AccountRole> AccountRoles { get; set; }
+    public DbSet<Employee> Employees { get; set; }
+    public DbSet<Fasility> Fasilities { get; set; }
+    public DbSet<ListFasility> ListFasilities { get; set; }
+    public DbSet<Request> Requests { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<Room> Rooms { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,12 +47,6 @@ public class RequestFasilityDbContext : DbContext
                     .HasForeignKey(ar => ar.AccountGuid)
                     .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Notification>()
-                    .HasOne(a => a.Account)
-                    .WithMany(n => n.Notifications)
-                    .HasForeignKey(n => n.AccountGuid)
-                    .OnDelete(DeleteBehavior.Restrict); 
-
         modelBuilder.Entity<Employee>()
                     .HasOne(a => a.Account)
                     .WithOne(a => a.Employee)
@@ -70,11 +63,6 @@ public class RequestFasilityDbContext : DbContext
                     .WithOne(rq => rq.Request)
                     .HasForeignKey<Request>(rq => rq.RoomGuid);
 
-        modelBuilder.Entity<Notification>()
-                    .HasOne(rq => rq.Request)
-                    .WithMany(n => n.Notification)
-                    .HasForeignKey(n => n.RequestGuid);
-
         modelBuilder.Entity<ListFasility>()
                     .HasOne(r => r.Request)
                     .WithMany(l => l.ListFasilities)
@@ -87,7 +75,7 @@ public class RequestFasilityDbContext : DbContext
                     .HasForeignKey(l => l.FasilityGuid)
                     .OnDelete(DeleteBehavior.Restrict);
 
-        
+
     }
 
 }

@@ -6,7 +6,7 @@ namespace API.Repositories;
 
 public class AccountRoleRepository : GeneralRepository<AccountRole>, IAccountRoleRepository
 {
-    public AccountRoleRepository(RequestFasilityDbContext context) : base(context){}
+    public AccountRoleRepository(RequestFasilityDbContext context) : base(context) { }
 
     public IEnumerable<Guid> GetRolesGuidByAccountGuid(Guid accountGuid)
     {

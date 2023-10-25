@@ -19,7 +19,6 @@ public class Request : GeneralModel
 
     public Room? Room { get; set; }
     public Employee? Employee { get; set; }
-    public ICollection<Notification> Notification {  get; set; }
     public ICollection<ListFasility> ListFasilities { get; set; }
 
 }

@@ -1,7 +1,4 @@
-﻿using API.DTOs.Employees;
-using API.DTOs.Fasilities;
-using API.DTOs.Notifications;
-using API.DTOs.Rooms;
+﻿using API.DTOs.Rooms;
 using API.Utilities.Handlers;
 
 namespace Client.Contracts
