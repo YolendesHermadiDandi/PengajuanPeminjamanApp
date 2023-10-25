@@ -1,4 +1,6 @@
-﻿using API.DTOs.Requests;
+﻿using API.DTOs.Employees;
+using API.DTOs.Fasilities;
+using API.DTOs.Requests;
 using Client.Contracts;
 using Client.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +14,13 @@ public class PanelController : Controller
 {
     private readonly IAccountRepository _accountRepository;
     private readonly IRequestRepository _requestRepository;
+    private readonly IFasilityRepository _fasilityRepository;
 
-    public PanelController(IAccountRepository accountRepository, IRequestRepository requestRepository)
+    public PanelController(IAccountRepository accountRepository, IRequestRepository requestRepository, IFasilityRepository fasilityRepository)
     {
         _accountRepository = accountRepository;
         _requestRepository = requestRepository;
+        _fasilityRepository = fasilityRepository;
     }
 
     public async Task<IActionResult> IndexAsync()
@@ -62,4 +66,11 @@ public class PanelController : Controller
 	{
 		return View();
 	}
+
+    [Route("/GetFasility")]
+    public async Task<JsonResult> GetFasility()
+    {
+        var dataFasility = await _fasilityRepository.Get();
+        return Json(dataFasility.Data);
+    }
 }
