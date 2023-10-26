@@ -7,5 +7,6 @@ public interface IRequestRepository : IRepository<RequestDto, Guid>
 {
     Task<ResponseOKHandler<IEnumerable<ListRequestDto>>> GetByEmployeeGuid(Guid guid);
     Task<ResponseOKHandler<IEnumerable<ListRequestDto>>> GetByDetailRequestGuid(Guid guid);
-
+    Task<ResponseOKHandler<UpdateStatusDto>> UpdateRequestStatus(UpdateStatusDto entity);
+    Task<ResponseOKHandler<SendEmailDto>> SendEmail(SendEmailDto entity);
 }

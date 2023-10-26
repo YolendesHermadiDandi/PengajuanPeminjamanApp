@@ -1,7 +1,7 @@
 ﻿using API.DTOs.Employees;
+using API.DTOs.Requests;
 using Client.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace Client.Controllers
 {
@@ -25,7 +25,7 @@ namespace Client.Controllers
         [HttpGet("request/get-all")]
         public async Task<JsonResult> GetAlletails()
         {
-           
+
             var request = await _requestRepository.Get();
             List<EmployeeDto> employee = new List<EmployeeDto> { };
             List<object> listPeminjaman = new List<object>();
@@ -49,11 +49,39 @@ namespace Client.Controllers
         {
             var request = await _requestRepository.GetByDetailRequestGuid(id);
             var employee = await _employeeRepository.Get(request.Data.FirstOrDefault().EmployeeGuid);
-            var result = new {
-                    nama = employee.Data.FirstName +" "+ employee.Data.LastName,
-                    request = request,
-                    requestStatus = request.Data.FirstOrDefault().Status.ToString(),
-                };
+            var result = new
+            {
+                email = employee.Data.Email,
+                nama = employee.Data.FirstName + " " + employee.Data.LastName,
+                request = request,
+                requestStatus = request.Data.FirstOrDefault().Status.ToString(),
+            };
+            return Json(result);
+        }
+
+
+        [HttpPost("request/statusUpdate")]
+        public async Task<JsonResult> UpdateStatusRequest(UpdateStatusDto updateStatusDto)
+        {
+            var result = await _requestRepository.UpdateRequestStatus(updateStatusDto);
+
+            if (result.Code == 200)
+            {
+                return Json(result);
+            }
+            return Json(result);
+        }
+
+        [HttpPost("request/sendEmail")]
+        public async Task<JsonResult> SendEmail(SendEmailDto sendEmailDto)
+        {
+
+
+            var result = await _requestRepository.SendEmail(sendEmailDto);
+            if (result.Code == 200)
+            {
+                return Json(result);
+            }
             return Json(result);
         }
 
