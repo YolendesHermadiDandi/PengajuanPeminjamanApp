@@ -1,7 +1,6 @@
 ﻿using API.Contracts;
 using API.Data;
 using API.Models;
-using System.Data;
 
 namespace API.Repositories;
 

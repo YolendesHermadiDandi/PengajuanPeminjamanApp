@@ -56,7 +56,6 @@ builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IFasilityRepository, FasilityRepository>();
 builder.Services.AddScoped<IListFasilityRepository, ListFasilityRepository>();
-builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepositroy>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
@@ -103,8 +102,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

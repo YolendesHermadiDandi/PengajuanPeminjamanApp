@@ -21,8 +21,8 @@ public class Employee : GeneralModel
     [Column("birth_date", TypeName = "datetime2")]
     public DateTime BirthDate { get; set; }
     [Column("hiring_date", TypeName = "datetime2")]
-    public DateTime HiringDate {  get; set; }
+    public DateTime HiringDate { get; set; }
 
-	public Account? Account { get; set; }
-	public ICollection<Request> Request { get; set; }
+    public Account? Account { get; set; }
+    public ICollection<Request> Request { get; set; }
 }

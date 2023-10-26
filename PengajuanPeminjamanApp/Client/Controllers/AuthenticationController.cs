@@ -30,7 +30,7 @@ public class AuthenticationController : Controller
         {
 
             HttpContext.Session.SetString("JWToken", result.Data.Token);
-            
+
             return RedirectToAction("Index", "Panel");
         }
         return RedirectToAction("Login", "Auth");

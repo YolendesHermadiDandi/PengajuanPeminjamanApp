@@ -1,6 +1,4 @@
-﻿using API.DTOs.Employees;
-using API.DTOs.Fasilities;
-using API.DTOs.Rooms;
+﻿using API.DTOs.Rooms;
 using API.Utilities.Handlers;
 using Client.Contracts;
 using Client.Repositories;
@@ -12,7 +10,7 @@ namespace Client.Repositries
     public class RoomRepository : GeneralRepository<RoomDto, Guid>, IRoomRepository
     {
 
-        public RoomRepository(string request="room/") : base(request) { }
+        public RoomRepository(string request = "room/") : base(request) { }
 
         public async Task<ResponseOKHandler<RoomDto>> Insert(CreateRoomDto entity)
         {

@@ -14,7 +14,7 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table" style="width:100%;" id="tabelEmployee">
+                <table class="table" style="width:100%;" id="tabelPeminjaman">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -24,87 +24,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Dandi</td>
-                            <td><span class="badges bg-lightyellow">Requested</span></td>
-                            <td>
-                                <a class="me-3" data-bs-toggle="modal" onclick="ProgressBarPeminjaman('Requested')" data-bs-target="#detailPeminjamanModal">
-                                    <img src="~/assets/img/icons/eye.svg" alt="img">
-                                </a>
-                                @* <a class="me-3">
-                                    <img src="~/assets/img/icons/edit.svg" alt="img">
-                                </a>
-                                <a class="me-3 confirm-text">
-                                    <img src="~/assets/img/icons/delete.svg" alt="img">
-                                </a> *@
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Dandi</td>
-                            <td><span class="badges bg-lightgreen">OnProssesed</span></td>
-                            <td>
-                                <a class="me-3" data-bs-toggle="modal" onclick="ProgressBarPeminjaman('OnProssesed')" data-bs-target="#detailPeminjamanModal">
-                                    <img src="~/assets/img/icons/eye.svg" alt="img">
-                                </a>
-                             @*    <a class="me-3">
-                                    <img src="~/assets/img/icons/edit.svg" alt="img">
-                                </a>
-                                <a class="me-3 confirm-text">
-                                    <img src="~/assets/img/icons/delete.svg" alt="img">
-                                </a> *@
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Dandi</td>
-                            <td><span class="badges bg-lightred">Rejected</span></td>
-                            <td>
-                                <a class="me-3" data-bs-toggle="modal" onclick="ProgressBarPeminjaman('Rejected')" data-bs-target="#detailPeminjamanModal">
-                                    <img src="~/assets/img/icons/eye.svg" alt="img">
-                                </a>
-                             @*    <a class="me-3">
-                                    <img src="~/assets/img/icons/edit.svg" alt="img">
-                                </a>
-                                <a class="me-3 confirm-text">
-                                    <img src="~/assets/img/icons/delete.svg" alt="img">
-                                </a> *@
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Dandi</td>
-                            <td><span class="badges bg-lightgreen">OnGoing</span></td>
-                            <td>
-                                <a class="me-3" data-bs-toggle="modal" onclick="ProgressBarPeminjaman('OnGoing')" data-bs-target="#detailPeminjamanModal">
-                                    <img src="~/assets/img/icons/eye.svg" alt="img">
-                                </a>
-                              @*   <a class="me-3">
-                                    <img src="~/assets/img/icons/edit.svg" alt="img">
-                                </a>
-                                <a class="me-3 confirm-text">
-                                    <img src="~/assets/img/icons/delete.svg" alt="img">
-                                </a> *@
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Dandi</td>
-                            <td><span class="badges bg-lightgreen">Completed</span></td>
-                            <td>
-
-                                <a class="me-3" data-bs-toggle="modal" onclick="ProgressBarPeminjaman('Completed')" data-bs-target="#detailPeminjamanModal">
-                                    <img src="~/assets/img/icons/eye.svg" alt="img">
-                                </a>
-                               @*  <a class="me-3">
-                                    <img src="~/assets/img/icons/edit.svg" alt="img">
-                                </a>
-                                <a class="me-3 confirm-text">
-                                    <img src="~/assets/img/icons/delete.svg" alt="img">
-                                </a> *@
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -162,43 +81,30 @@
                             </ul>
                             <div class="my-3">
                                 <div class="productdetails">
-                                    <ul class="product-bar">
-                                        <li>
-                                            <h4>Nama employee</h4>
-                                            <h6>Yolendes Dandi</h6>
-                                        </li>
-                                        <li>
-                                            <h4>Tanggal peminjaman</h4>
-                                            <h6>20/10/2023</h6>
-                                        </li>
-                                        <li>
-                                            <h4>Tanggal berakhir peminjaman</h4>
-                                            <h6>20/11/2023</h6>
-                                        </li>
-                                        <li>
-                                            <h4>Status Peminjaman</h4>
-                                            <h6>Requested</h6>
-                                        </li>
-                                        <li>
-                                            <h4>Nama Ruangan</h4>
-                                            <h6>N/D</h6>
-                                        </li>
-                                        <li>
-                                            <h4>Nama Fasilitas</h4>
+                                    <ul class="product-bar" id="requestDetail">
+                                      
+                                        <li id="namaEmployee">
                                             
-                                            <p class="list-group-item list-group-item-info m-1 text-center">
-                                                Kursi
-                                                <span class="badge d-block bg-primary">Qty : 14</span>
-                                            </p>
-                                            <p class="list-group-item list-group-item-info m-1 text-center">
-                                                Meja
-                                                <span class="badge d-block bg-primary">Qty : 28</span>
-                                            </p>
-                                            <p class="list-group-item list-group-item-info m-1 text-center">
-                                                Pensil
-                                                <span class="badge d-block bg-primary">Qty : 28</span>
-                                            </p>
-                                     
+                                            
+                                        </li>
+                                        <li id="startDate">
+                                            
+                                           
+                                        </li>
+                                        <li id="endDate">
+                                            
+                                          
+                                        </li>
+                                        <li id="statusPeminjaman">
+                                           
+                                           
+                                        </li>
+                                        <li id="namaRuangan">
+                                            
+                                           
+                                        </li>
+                                        <li id="listFasilitas">
+                                            <h4>Nama Fasilitas</h4>
 
                                         </li>
                                     </ul>

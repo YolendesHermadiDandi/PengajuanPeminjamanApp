@@ -1,5 +1,4 @@
-﻿using API.DTOs.Employees;
-using API.DTOs.Fasilities;
+﻿using API.DTOs.Fasilities;
 using API.Utilities.Handlers;
 using Client.Contracts;
 using Client.Repositories;
@@ -10,7 +9,7 @@ namespace Client.Repositries
 {
     public class FasilityRepository : GeneralRepository<FasilityDto, Guid>, IFasilityRepository
     {
-        public FasilityRepository(string request="fasility/") : base(request) { }
+        public FasilityRepository(string request = "fasility/") : base(request) { }
 
         public async Task<ResponseOKHandler<FasilityDto>> Insert(CreateFasilityDto entity)
         {
