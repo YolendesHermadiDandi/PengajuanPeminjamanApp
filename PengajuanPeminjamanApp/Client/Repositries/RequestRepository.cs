@@ -27,4 +27,16 @@ public class RequestRepository : GeneralRepository<RequestDto, Guid>, IRequestRe
         }
         return entityVM;
     }
+
+    public async Task<ResponseOKHandler<IEnumerable<ListRequestDto>>> GetByRequestGuid(Guid guid)
+    {
+        ResponseOKHandler<IEnumerable<ListRequestDto>> entity = null;
+
+        using (var response = await httpClient.GetAsync(request + "GetDetailRequestByGuid?guid=" + guid))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entity = JsonConvert.DeserializeObject<ResponseOKHandler<IEnumerable<ListRequestDto>>>(apiResponse);
+        }
+        return entity;
+    }
 }

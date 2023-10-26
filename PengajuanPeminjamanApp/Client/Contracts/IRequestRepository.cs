@@ -7,4 +7,5 @@ namespace Client.Contracts;
 public interface IRequestRepository : IRepository<RequestDto, Guid>
 {
     Task<ResponseOKHandler<IEnumerable<ListRequestDto>>> GetByEmployeeGuid(Guid guid);
+    Task<ResponseOKHandler<IEnumerable<ListRequestDto>>> GetByRequestGuid(Guid guid);
 }

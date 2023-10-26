@@ -1,4 +1,5 @@
 ﻿using API.Contracts;
+using API.DTOs.ListFasilities;
 using API.DTOs.Requests;
 using API.DTOs.Rooms;
 using API.Models;
@@ -140,31 +141,32 @@ public class RequestController : ControllerBase
 			});
 		}
 
-		var result = from req in request
-					 select new {
-						 Guid = req.Guid,
-						 Room = from roo in room
-								join re in request on roo.Guid equals re.RoomGuid
-								where roo.Guid == req.RoomGuid
-								select new
-								{
-									Name = roo.Name,
-									Floor = roo.Floor
-								},
-						 Fasility = from fas in fasilities
-									join li in listFasility on fas.Guid equals li.FasilityGuid
-									where li.RequestGuid == req.Guid
-									select new
-									{
-										Name = fas.Name,
-										TotalFasility = li.TotalFasility
-									},
-						 Status = req.Status.ToString(),
-						 StartDate = req.StartDate,
-						 EndDate = req.EndDate,
-					 };
+        List<ListDetailRequestDto> result = (from req in request
+                                             select new ListDetailRequestDto
+                                             {
+                                                 Guid = req.Guid,
+                                                 rooms = (from roo in room
+                                                          join re in request on roo.Guid equals re.RoomGuid
+                                                          where roo.Guid == req.RoomGuid
+                                                          select new RoomDto
+                                                          {
+                                                              Name = roo.Name,
+                                                              Floor = roo.Floor
+                                                          }).FirstOrDefault(),
+                                                 fasility = (from fas in fasilities
+                                                             join li in listFasility on fas.Guid equals li.FasilityGuid
+                                                             where li.RequestGuid == req.Guid
+                                                             select new ListDetailFasilityDto
+                                                             {
+                                                                 Name = fas.Name,
+                                                                 TotalFasility = li.TotalFasility
+                                                             }).ToList(),
+                                                 Status = req.Status,
+                                                 StartDate = req.StartDate,
+                                                 EndDate = req.EndDate,
+                                             }).ToList();
 
-		return Ok(new ResponseOKHandler<IEnumerable<object>>(result));
+        return Ok(new ResponseOKHandler<IEnumerable<ListDetailRequestDto>>(result));
 	}
 	
 	[HttpGet("GetDetailRequestByGuid")]
@@ -184,32 +186,35 @@ public class RequestController : ControllerBase
 			});
 		}
 
-		var result = from req in request
-					 where req.Guid == guid
-					 select new {
-						 Guid = req.Guid,
-						 Room = from roo in room
-								join re in request on roo.Guid equals re.RoomGuid
-								where roo.Guid == req.RoomGuid
-								select new
-								{
-									Name = roo.Name,
-									Floor = roo.Floor
-								},
-						 Fasility = from fas in fasilities
-									join li in listFasility on fas.Guid equals li.FasilityGuid
-									where li.RequestGuid == req.Guid
-									select new
-									{
-										Name = fas.Name,
-										TotalFasility = li.TotalFasility
-									},
-						 Status = req.Status.ToString(),
-						 StartDate = req.StartDate,
-						 EndDate = req.EndDate,
-					 };
+		List<ListRequestDto> result = (from req in request
+									   where req.Guid == guid
+                      select new ListRequestDto
+                      {
+                          Guid = req.Guid,
+                          EmployeeGuid = req.EmployeeGuid,
+                          rooms = (from roo in room
+                                   join re in request on roo.Guid equals re.RoomGuid
+                                   where roo.Guid == req.RoomGuid
+                                   select new RoomDto
+                                   {
+                                       Guid = roo.Guid,
+                                       Name = roo.Name,
+                                       Floor = roo.Floor
+                                   }).FirstOrDefault(),
+                          fasilities = from fas in fasilities
+                                       join li in listFasility on fas.Guid equals li.FasilityGuid
+                                       where li.RequestGuid == req.Guid
+                                       select new ListDetailFasilityDto
+                                       {
+                                           Name = fas.Name,
+                                           TotalFasility = li.TotalFasility
+                                       },
+                          Status = req.Status,
+                          StartDate = req.StartDate,
+                          EndDate = req.EndDate,
+                      }).ToList();
 
-		return Ok(new ResponseOKHandler<IEnumerable<object>>(result));
+        return Ok(new ResponseOKHandler<IEnumerable<ListRequestDto>>(result));
 	}
 	[HttpPut]
 	public IActionResult Update(RequestDto requestDto)
