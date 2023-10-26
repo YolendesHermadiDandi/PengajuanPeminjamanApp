@@ -1,4 +1,5 @@
-﻿using Client.Models;
+﻿using Client.Contracts;
+using Client.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,9 +9,11 @@ namespace Client.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IRequestRepository _requestRepository;
+        public HomeController(ILogger<HomeController> logger, IRequestRepository requestRepository)
         {
             _logger = logger;
+            _requestRepository = requestRepository;
         }
 
         public IActionResult Index()
@@ -27,6 +30,17 @@ namespace Client.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Route("qrScan/getRequest/{id}")]
+        public async Task<JsonResult> GetDetailRequestGuid(Guid id)
+        {
+            var result = await _requestRepository.Get(id);
+            if (result.Data.EndDate < DateTime.Now)
+            {
+                result.Code = 410;
+            }
+            return Json(result);
         }
 
 

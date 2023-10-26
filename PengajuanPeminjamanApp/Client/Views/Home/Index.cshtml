@@ -19,7 +19,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">
 
-                    <li class="nav-item"><a class="nav-link btn" data-bs-toggle="modal" data-bs-target="#adddUpdateFasility">QR Scanner</a></li>
+                    <li class="nav-item"><a class="nav-link btn" data-bs-toggle="modal" id ="btnQrScan"" onclick="QRScan()" data-bs-target="#QRModal">QR Scanner</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Authentication" asp-action="Index">Login</a></li>
                 </ul>
             </div>
@@ -43,7 +43,7 @@
 
 
 
-    <div class="modal fade" id="adddUpdateFasility" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="QRModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -54,7 +54,8 @@
                 <div class="modal-body">
                     <div class="card">
                         <div class="card-body">
-                            <div id="reader"></div>
+                            <div id="qr-reader"></div>
+                            <div id="qr-reader-results"></div>
                         </div>
                     </div>
                 </div>
@@ -73,9 +74,12 @@
         <!-- Core theme JS-->
         <script src="~/assets/js/jquery-3.6.0.min.js"></script>
         <script src="~/assets/js/dashboardscripts.js"></script>
-        <script src="~/js/html5-qrcode.min.js"></script>
         <script src="~/js/site.js"></script>
+        <script src="~/js/html5-qrcode.min.js"></script>
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+        <script src="~/assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
+        <script src="~/assets/plugins/sweetalert/sweetalerts.min.js"></script>
 
 </body>
 </html>

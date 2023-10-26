@@ -6,10 +6,14 @@ namespace Client.Controllers
     public class AdminDashboardController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IRoomRepository _roomRepository;
+        private readonly IFasilityRepository _facilityRepository;
 
-        public AdminDashboardController(IEmployeeRepository employeeRepository)
+        public AdminDashboardController(IEmployeeRepository employeeRepository, IRoomRepository roomRepository, IFasilityRepository facilityRepository)
         {
             _employeeRepository = employeeRepository;
+            _roomRepository = roomRepository;
+            _facilityRepository = facilityRepository;
         }
 
         [HttpGet("admin/dashboard")]
@@ -18,11 +22,15 @@ namespace Client.Controllers
             return View();
         }
 
-        //public async Task<JsonResult> GetEmpData(Guid guid)
-        //{
+        [HttpGet("admin/geAllDataFasikit&Room")]
+        public async Task<JsonResult> GetAllFasilityAndRoom()
+        {
+            var vasility = await _facilityRepository.Get();
+            var room = await _roomRepository.Get();
 
-        //    return Json(result);
-        //}
+            return Json(vasility);
+        }
+
 
 
     }
