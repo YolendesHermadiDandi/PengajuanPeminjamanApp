@@ -36,7 +36,10 @@ namespace Client.Controllers
         public async Task<JsonResult> GetDetailRequestGuid(Guid id)
         {
             var result = await _requestRepository.Get(id);
-            if (result.Data.EndDate < DateTime.Now)
+            if (result.Data is null)
+            {
+                result.Code = 404;
+            }else if (result.Data.EndDate < DateTime.Now && result.Code != 404)
             {
                 result.Code = 410;
             }
