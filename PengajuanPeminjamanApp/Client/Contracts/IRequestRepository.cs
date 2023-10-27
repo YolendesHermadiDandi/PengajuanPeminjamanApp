@@ -11,4 +11,6 @@ public interface IRequestRepository : IRepository<RequestDto, Guid>
     Task<ResponseOKHandler<RequestDto>> Insert(CreateRequestDto entity);
     Task<ResponseOKHandler<IEnumerable<CountRequestStatusDto>>> GetCountStatusRequestByEmployeeGuid(Guid guid);
 
+    Task<ResponseOKHandler<UpdateStatusDto>> UpdateRequestStatus(UpdateStatusDto entity);
+    Task<ResponseOKHandler<SendEmailDto>> SendEmail(SendEmailDto entity);
 }

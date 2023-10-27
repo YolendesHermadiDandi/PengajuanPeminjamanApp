@@ -101,13 +101,14 @@ function ProgressBarPeminjaman(guid) {
         dataType: "JSON"
     }).done((result) => {
         $('#uRequestId').val(`${result.request.data[0].guid}`);
+        $('#uEmpEmail').val(`${result.email}`);
         $("ul#requestDetail li#namaEmployee").html(`<h4>Nama employee</h4> <h6>${result.nama}</h6>`)
         $("ul#requestDetail li#startDate").html(`<h4>Tanggal peminjaman</h4> <h6>${result.request.data[0].startDate}</h6>`)
         $("ul#requestDetail li#endDate").html(`<h4>Tanggal berakhir peminjaman</h4> <h6>${result.request.data[0].endDate}</h6>`)
         $("ul#requestDetail li#statusPeminjaman").html(`<h4>Status Peminjaman</h4> <h6>${result.requestStatus}</h6>`)
         $("ul#requestDetail li#namaRuangan").html(`<h4>Nama Ruangan</h4> <h6>${result.request.data[0].rooms.name}</h6>`)
         $("ul#requestDetail li#listFasilitas").html('<h4>Nama Fasilitas</h4>');
-        if (result.request.data[0].fasilities != null){
+        if (result.request.data[0].fasilities != null) {
             result.request.data[0].fasilities.forEach(elemets => {
                 $("ul#requestDetail li#listFasilitas").append(` <p class="list-group-item list-group-item-info m-1 text-center">
                                                             ${elemets.name}
@@ -116,7 +117,7 @@ function ProgressBarPeminjaman(guid) {
 
             });
         }
-       
+
         status = result.requestStatus
         //Status bar update
         $('ul.twitter-bs-wizard-nav li a.active').removeClass('active');
@@ -145,7 +146,7 @@ function ProgressBarPeminjaman(guid) {
             $('ul.twitter-bs-wizard-nav li:nth-child(4) a div i ').attr('class', 'fe fe-check-circle');
 
             //add buttons
-            $('div.action-button').html('<button type="submit" id="completedButton" onclick="Completed()" class="btn btn-primary" data-bs-dismiss="modal">Completed</button>');
+            $('div.action-button').html(`<button type="submit" id="completedButton" onclick="Update('${status}')" class="btn btn-primary" data-bs-dismiss="modal">Completed</button>`);
 
         } else if (status == "OnProssesed") {
             $('ul.twitter-bs-wizard-nav li:nth-child(-n+2) a').addClass('active');
@@ -157,7 +158,7 @@ function ProgressBarPeminjaman(guid) {
             $('ul.twitter-bs-wizard-nav li #OnProssesed').addClass('badge bg-primary fs-6');
 
             //add button
-            $('div.action-button').html('<button type="submit" id="onGoingButton" onclick="OnGoing()" class="btn btn-primary" data-bs-dismiss="modal">OnGoing</button>');
+            $('div.action-button').html(`<button type="submit" id="onGoingButton" onclick="Update('${status}')" class="btn btn-primary" data-bs-dismiss="modal">OnGoing</button>`);
         } else if (status == "Requested") {
             $('ul.twitter-bs-wizard-nav li:nth-child(1) a').addClass('active');
             $('ul.twitter-bs-wizard-nav li:nth-child(1) a div i ').attr('class', 'fa fa-check');
@@ -169,7 +170,7 @@ function ProgressBarPeminjaman(guid) {
             $('ul.twitter-bs-wizard-nav li #requested').addClass('badge bg-primary fs-6');
 
             //add button
-            $('div.action-button').html(`<button type="submit" id="approveButton" onclick="Approve('${result.request.data[0].guid}')" class="btn btn-primary" data-bs-dismiss="modal">Approved</button>
+            $('div.action-button').html(`<button type="submit" id="approveButton" onclick="Update('${status}')" class="btn btn-primary" data-bs-dismiss="modal">Approved</button>
                                      <button type="submit" id="rejectedButton" onclick="Rejected()" class="btn btn-danger" data-bs-dismiss="modal">Rejected</button>`);
 
         }
@@ -177,6 +178,108 @@ function ProgressBarPeminjaman(guid) {
     });
 }
 
-function Approve(guid) {
-    console.log(guid);
+function Rejected() {
+    let request = new Object();
+    request.guid = $('#uRequestId').val();
+    request.status = "Rejected";
+
+    let sendEmail = new Object();
+    sendEmail.fromEmail = 'Admin@no-replay.com';
+    sendEmail.recipientEmail = $('#uEmpEmail').val();
+    sendEmail.message = "Pengajuan Peminjaman Anda " + request.status;
+    sendEmail.requestGuid = request.guid;
+
+    let statusUpdate = new Object();
+    statusUpdate.Guid = request.guid;
+    statusUpdate.Status = request.status;
+    //sendEmail.message = htmlcode;
+    $.ajax({
+        type: "post",
+        url: "/request/statusUpdate",
+        data: statusUpdate
+    }).done((result) => {
+        $.ajax({
+            type: "post",
+            url: "/request/sendEmail",
+            data: sendEmail
+        }).done((result) => { }).fail((error) => { });
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        $('#tabelPeminjaman').DataTable().ajax.reload();
+    }).fail((err) => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Failed to insert data',
+
+        })
+        $('#tabelPeminjaman').DataTable().ajax.reload();
+    })
+
+}
+
+function Update(status) {
+    let request = new Object();
+    request.guid = $('#uRequestId').val();
+    switch (status) {
+        case "Requested":
+            request.status = "OnProssesed";
+            break;
+        case "OnProssesed":
+            request.status = "OnGoing";
+            break;
+        case "OnGoing":
+            request.status = "Completed";
+            break;
+    }
+
+    let sendEmail = new Object();
+    sendEmail.fromEmail = 'Admin@no-replay.com';
+    sendEmail.recipientEmail = $('#uEmpEmail').val();
+    sendEmail.message = "Pengajuan Peminjaman Anda " + request.status;
+    sendEmail.requestGuid = request.guid;
+    console.log(sendEmail);
+
+    let statusUpdate = new Object();
+    statusUpdate.Guid = request.guid;
+    statusUpdate.Status = request.status;
+    //sendEmail.message = htmlcode;
+    $.ajax({
+        type: "post",
+        url: "/request/statusUpdate",
+        data: statusUpdate
+    }).done((result) => {
+        console.log(result);
+        if (request.status == "OnGoing") {
+            $.ajax({
+                type: "post",
+                url: "/request/sendEmail",
+                data: sendEmail
+            }).done((result) => {
+
+            }).fail((error) => {
+
+            });
+        }
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        $('#tabelPeminjaman').DataTable().ajax.reload();
+    }).fail((err) => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Failed to insert data',
+
+        })
+        $('#tabelPeminjaman').DataTable().ajax.reload();
+    })
+
 }

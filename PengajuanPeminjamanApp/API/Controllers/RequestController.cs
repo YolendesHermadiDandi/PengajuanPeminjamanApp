@@ -3,8 +3,10 @@ using API.DTOs.ListFasilities;
 using API.DTOs.Requests;
 using API.DTOs.Rooms;
 using API.Models;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
+using QRCoder;
 using System.Net;
 
 namespace API.Controllers;
@@ -17,13 +19,17 @@ public class RequestController : ControllerBase
     private readonly IFasilityRepository _fasilityRepository;
     private readonly IListFasilityRepository _listFasilityRepository;
     private readonly IRoomRepository _roomRepository;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IEmailHandlerRepository _emailHandlerRepository;
 
-    public RequestController(IRequestRepository requestRespository, IFasilityRepository fasilityRepository, IListFasilityRepository listFasilityRepository, IRoomRepository roomRepository)
+    public RequestController(IRequestRepository requestRespository, IFasilityRepository fasilityRepository, IListFasilityRepository listFasilityRepository, IRoomRepository roomRepository, IEmployeeRepository employeeRepository, IEmailHandlerRepository emailHandlerRepository)
     {
         _requestRespository = requestRespository;
         _fasilityRepository = fasilityRepository;
         _listFasilityRepository = listFasilityRepository;
         _roomRepository = roomRepository;
+        _employeeRepository = employeeRepository;
+        _emailHandlerRepository = emailHandlerRepository;
     }
 
     [HttpGet]
@@ -269,6 +275,39 @@ public class RequestController : ControllerBase
         }
     }
 
+    [HttpPut("updateStatus")]
+    public IActionResult UpdateStatus(UpdateStatusDto updateStatusDto)
+    {
+        try
+        {
+            var check = _requestRespository.GetByGuid(updateStatusDto.Guid);
+            if (check is null)
+            {
+                return NotFound(new ResponseErrorHandler
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data Not Found"
+                });
+            }
+            Request toUpdate = check;
+            toUpdate.Status = (StatusLevel)Enum.Parse(typeof(StatusLevel), updateStatusDto.Status, true);
+            var result = _requestRespository.Update(toUpdate);
+
+            return Ok(new ResponseOKHandler<String>("Updated Data Success"));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseErrorHandler
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Failed to Update data",
+                Error = ex.Message
+            });
+        }
+    }
+
     [HttpPost]
     public IActionResult Create(CreateRequestDto requestDto)
     {
@@ -369,4 +408,43 @@ public class RequestController : ControllerBase
 
         return Ok(new ResponseOKHandler<IEnumerable<CountRequestStatusDto>>(data));
     }
+    [HttpPost("sendEmail")]
+    public IActionResult SendEmail(SendEmailDto sendEmailDto)
+    {
+        try
+        {
+            var message = "";
+            var url = "";
+            var request = _requestRespository.GetByGuid(sendEmailDto.RequestGuid);
+            switch (sendEmailDto.Message)
+            {
+                case "Pengajuan Peminjaman Anda Rejected":
+                    message = "<h1>" + sendEmailDto.Message + "</h1>";     
+                    break;
+                case "Pengajuan Peminjaman Anda OnGoing":
+                    url = "https://chart.googleapis.com/chart?cht=qr&chl=" + sendEmailDto.RequestGuid + "&chs=160x160&chld=L|0";
+                    message = $"<h1>Ruanga/Fasilitas yang anda Pesan Telah Siap</h1><p>QR Dibawah digunakan untuk masuk kedalam ruangan</P><img src='{url}' img-thumbnail img-responsive/>";
+                    break;
+                default:
+                    message = $"<h1>{sendEmailDto.Message}</h1><p>QR Dibawah digunakan untuk masuk kedalam ruangan</P><img src='{url}' img-thumbnail img-responsive/>";
+                    break;
+            }
+
+            _emailHandlerRepository.Send("Peminjaman Ruangan/Fasilitas", message, sendEmailDto.RecipientEmail, sendEmailDto.FromEmail);
+            return Ok(new ResponseOKHandler<SendEmailDto>("Success send Email", sendEmailDto));
+
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+             new ResponseErrorHandler
+             {
+                 Code = StatusCodes.Status500InternalServerError,
+                 Status = HttpStatusCode.NotFound.ToString(),
+                 Message = "FAILED TO CREATE DATA"
+             });
+        }
+    }
+
+
 }

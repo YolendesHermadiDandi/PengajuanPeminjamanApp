@@ -50,39 +50,19 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-<div class="modal fade" id="notifModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="page-title">
-                    <h4>Nama Employee</h4>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <div class="card-body" id="modal-message">
-                        @* <p>Melakukan Request Terhadap Fasilitas bla bla bla....</p> *@
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="close-modal" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="approved-modal" class="btn btn-success btn-sm">Approved</button>
-                <button type="button" id="rejected-modal" class="btn btn-danger btn-sm">Rejected</button>
-                <div class="action-button">
-                </div>
-            </div>
+<div class="col-4">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Total Fasility Chart</div>
+        </div>
+        <div class="card-body">
+            <div id="morrisDonut1" class="chart-set"></div>
         </div>
     </div>
 </div>
 
 @section Scripts{
+    <script src="~/assets/plugins/morris/raphael-min.js"></script>
+    <script src="~/assets/plugins/morris/morris.min.js"></script>
     <script src="~/js/adminDashboard.js" asp-append-version="true"></script>
 }
