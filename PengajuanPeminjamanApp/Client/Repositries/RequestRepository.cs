@@ -1,8 +1,10 @@
-﻿using API.DTOs.Requests;
+﻿using API.DTOs.Fasilities;
+using API.DTOs.Requests;
 using API.Utilities.Handlers;
 using Client.Contracts;
 using Client.Repositories;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Client.Repositries;
 
@@ -35,6 +37,31 @@ public class RequestRepository : GeneralRepository<RequestDto, Guid>, IRequestRe
         }
         return entityVM;
     }
+    public async Task<ResponseOKHandler<IEnumerable<CountRequestStatusDto>>> GetCountStatusRequestByEmployeeGuid(Guid guid)
+    {
+        ResponseOKHandler<IEnumerable<CountRequestStatusDto>> entityVM;
+
+        using (var response = await httpClient.GetAsync(request+ "GetCountStatusRequestByEmployeeGuid/" + guid))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<IEnumerable<CountRequestStatusDto>>>(apiResponse);
+        }
+        return entityVM;
+    }
+
+    public async Task<ResponseOKHandler<RequestDto>> Insert(CreateRequestDto entity)
+    {
+        ResponseOKHandler<RequestDto> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+        using (var response = httpClient.PostAsync(request, content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<RequestDto>>(apiResponse);
+        }
+        return entityVM;
+    }
+
+
 }
 
 

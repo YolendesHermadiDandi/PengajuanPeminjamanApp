@@ -342,4 +342,31 @@ public class RequestController : ControllerBase
         return totalDays;
     }
 
+
+    [HttpGet("GetCountStatusRequestByEmployeeGuid/{guid}")]
+    public IActionResult GetCountStatusRequestByEmployeeGuid(Guid guid)
+    {
+        var result = _requestRespository.GetRequestByEmployeeGuid(guid);
+        var room = _roomRepository.GetAll();
+        if (result is null)
+        {
+            return NotFound(new ResponseErrorHandler
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data Not Found"
+            });
+        }
+
+       IEnumerable<CountRequestStatusDto> data = (from req in result
+                                     where req.EmployeeGuid == guid
+                                      group req by req.Status into grouped
+                                      select new CountRequestStatusDto
+                                      {
+                                          status = grouped.Key,
+                                          count = grouped.Count()
+                                      }).ToList();
+
+        return Ok(new ResponseOKHandler<IEnumerable<CountRequestStatusDto>>(data));
+    }
 }

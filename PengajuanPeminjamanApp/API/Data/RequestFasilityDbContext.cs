@@ -58,10 +58,11 @@ public class RequestFasilityDbContext : DbContext
                     .HasForeignKey(r => r.EmployeeGuid)
                     .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Request>()
-                    .HasOne(r => r.Room)
-                    .WithOne(rq => rq.Request)
-                    .HasForeignKey<Request>(rq => rq.RoomGuid);
+        modelBuilder.Entity<Room>()
+                    .HasMany(rq => rq.Request)
+                    .WithOne(r => r.Room)
+                    .HasForeignKey(rq => rq.RoomGuid)
+                    .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<ListFasility>()
                     .HasOne(r => r.Request)

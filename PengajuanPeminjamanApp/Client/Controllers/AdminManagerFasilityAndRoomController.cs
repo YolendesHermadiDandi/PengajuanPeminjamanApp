@@ -103,6 +103,14 @@ namespace Client.Controllers
 
             return Json(result);
         }
+        
+        [HttpGet("room/get/{guid}")]
+        public async Task<JsonResult> Get(Guid guid)
+        {
+            var result = await _roomRepository.Get(guid);
+
+            return Json(result);
+        }
 
         [HttpPost("room/insert")]
         public async Task<JsonResult> InsertRoom(CreateRoomDto createRoomDto)

@@ -10,5 +10,5 @@ public class Room : GeneralModel
     [Column("floor")]
     public int Floor { get; set; }
 
-    public Request? Request { get; set; }
+    public ICollection<Request>? Request { get; set; }
 }

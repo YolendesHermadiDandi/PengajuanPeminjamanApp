@@ -67,4 +67,13 @@ public class PanelController : Controller
         var dataFasility = await _fasilityRepository.Get();
         return Json(dataFasility.Data);
     }
+
+    [Route("/GetFasility/{guid}")]
+    public async Task<JsonResult> GetFasility(Guid guid)
+    {
+        var dataFasility = await _fasilityRepository.Get(guid);
+        return Json(dataFasility.Data);
+    }
+
+    
 }
