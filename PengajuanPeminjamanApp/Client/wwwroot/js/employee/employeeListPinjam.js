@@ -33,8 +33,64 @@
     $('button#addEmployee').on('click', (e) => {
         $('button#submitButton').removeAttr('hidden');
     })
+
+    //list Fasility modal
+    $.ajax({
+        url: '/GetFasility',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            data.forEach(Elements => {
+                valueDefaultFasiity = Elements.stock;
+                $("#tbodyListFasility").append(
+                    `<tr>
+                        <td>${Elements.name}</td>
+                        <td><input type="number" min="1" value="${Elements.stock}" id="value${Elements.name}" max="${Elements.stock}" /></td>
+                        <td>
+                        <div class="page-btn">
+                            <button type="button" class="btn btn-primary" id="btnTambahFasility${Elements.name}" onclick="tambahFasilityTabel('${Elements.guid}')">Tambah Fasilitas</button>
+                        </div>
+                        </td>
+                    </tr>`);
+
+                isAvalibe = true;
+            })
+
+        },
+        error: function (error) {
+
+        }
+    });
+
+    //list Ruangan modal
+    $.ajax({
+        url: '/room/get-all',
+        method: 'GET',
+        dataType: 'json',
+        dataSrc: 'data',
+        success: function (data) {
+
+            data.data.forEach(Elements => {
+                $("#tbodyListRuangan").append(
+                    `<tr>
+                        <td>${Elements.name}</td>
+                        <td>Lantai ${Elements.floor}</td>
+                        <td>
+                        <div class="page-btn">
+                            <button type="button" class="btn btn-primary" id="btnTambahRuangan${Elements.name}" data-bs-toggle="modal" data-bs-target="#modalUpdateRequest" onclick="tambahRuangan('${Elements.guid}')">Pilih Ruangan</button>
+                        </div>
+                        </td>
+                    </tr>`);
+
+            })
+
+        },
+        error: function (error) {
+
+        }
+    });
 })
-function ProgressBarPeminjaman(status) {
+function ProgressBarPeminjaman(status, guid) {
     console.log(status);
     $('ul.twitter-bs-wizard-nav li a.active').removeClass('active');
     $('ul.twitter-bs-wizard-nav li #completed').html('<span id="completed">Completed</span>');
@@ -86,10 +142,134 @@ function ProgressBarPeminjaman(status) {
         $('ul.twitter-bs-wizard-nav li #requested').addClass('badge bg-primary fs-6');
 
         //add button
-        $('div.action-button').html(`<button type="submit" id="approveButton" onclick="Approve()" class="btn btn-primary" data-bs-dismiss="modal">Edit Request</button>`);
+        $('div.action-button').html(`<button type="submit" id="approveButton" onclick="btnFirstupdateRequest('${guid}')" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modalUpdateRequest">Edit Request</button>`);
 
     }
 
+}
+
+let req;
+function btnFirstupdateRequest(guid) {
+    $('#tableDaftarPeminjaman').html("");
+    $("#endDateTime").attr("disabled", "");
+    $("#startDateTime").attr("disabled", "");
+    req = guid;
+    $.ajax({
+        url: "/request/getRequestbyRequestGuid?guid=" + guid,
+        dataSrc: "data",
+        dataType: "JSON"
+    }).done((result) => {
+        result.forEach(Elements => {
+            $("#endDateTime").val(formatDate(Elements.endDate))
+            $("#startDateTime").val(formatDate(Elements.startDate))
+
+            if (Elements.rooms != null) {
+                const button = document.getElementById(`btnModalRuangan`);
+                button.setAttribute("disabled", "");
+
+                $('#tableDaftarPeminjaman').append(`<tr id="btnHapusRuangan${Elements.rooms.name}Ruangan">
+                        <td>${Elements.rooms.name}</td>
+                        <td>Lantai ${Elements.rooms.floor} </td>
+                        <td>Ruangan</td>
+                        <td id="${Elements.rooms.guid}"><a class="delete-set"><img src="/assets/img/icons/delete.svg" onclick="hapusRuangan('btnHapusRuangan${Elements.rooms.name}')" alt="svg"></a></td>
+                        </tr>`)
+            }
+
+            Elements.fasilities.forEach(fasilities => {
+                const button = document.getElementById(`btnTambahFasility${fasilities.name}`);
+                button.setAttribute("disabled", "");
+                $('#tableDaftarPeminjaman').append(`<tr id="btnTambahFasility${fasilities.name}Fasility">
+                        <td>${fasilities.name}</td>
+                        <td>${fasilities.totalFasility} Unit</td>
+                        <td>Fasilitas</td>
+                        <td id="${fasilities.fasilityGuid}" data="${fasilities.guid}"><a class="delete-set"><img src="/assets/img/icons/delete.svg" onclick="hapusFasilitas('btnTambahFasility${fasilities.name}')" alt="svg"></a></td>
+                        </tr>`)
+            })
+
+            
+        })
+    })
+            
+}
+
+
+function hapusRuangan(idBtn) {
+    document.getElementById(`${idBtn}Ruangan`).outerHTML = "";
+    button = document.getElementById(`btnModalRuangan`);
+    button.removeAttribute("disabled");
+}
+
+function hapusFasilitas(idBtn) {
+    document.getElementById(`${idBtn}Fasility`).outerHTML = "";
+    button = document.getElementById(`${idBtn}`);
+    button.removeAttribute("disabled");
+
+}
+
+function formatDate(inputDate) {
+    const date = new Date(inputDate);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+}
+
+function tambahFasilityTabel(guid) {
+    $.ajax({
+        url: '/GetFasility/' + guid,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+
+            let valuePinjam = document.getElementById(`value${data.name}`).value
+            if ((data.totalFasility - valuePinjam) < 1) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Maaf Jumlah yang Anda Pinjam Melebihi Batas Saat Ini',
+
+                })
+            } else {
+                $('#tableDaftarPeminjaman').append(`<tr>
+            <td>${data.name}</td>
+            <td>${valuePinjam} Unit</td>
+            <td>Fasilitas</td>
+            <td id="${data.guid}"><a class="delete-set"><img src="/assets/img/icons/delete.svg" onclick="hapusFaslity('btnTambahFasility${data.name}')" alt="svg"></a></td>
+            </tr>`)
+
+                const button = document.getElementById(`btnTambahFasility${data.name}`);
+                button.setAttribute("disabled", "");
+
+            }
+        },
+        error: function (error) {
+
+        }
+    });
+}
+
+function tambahRuangan(guid) {
+    $.ajax({
+        url: '/room/get/' + guid,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+            $('#tableDaftarPeminjaman').append(`<tr>
+            <td>${data.data.name}</td>
+            <td>Lantai ${data.data.floor}</td>
+            <td>Ruangan</td>
+            <td id="${data.data.guid}"><a class="delete-set"><img src="/assets/img/icons/delete.svg" onclick="hapusRuangan('btnTambahRuangan${data.data.name}')" alt="svg"></a></td>
+            </tr>`)
+
+            const button = document.getElementById(`btnModalRuangan`);
+            button.setAttribute("disabled", "");
+        },
+        error: function (error) {
+
+        }
+    });
 }
 
 function DetailPeminjaman(guid) {
@@ -101,30 +281,29 @@ function DetailPeminjaman(guid) {
         dataSrc: "data",
         dataType: "JSON"
     }).done((result) => {
-        console.log(result)
         result.forEach(Elements => {
             let status = Elements.status;
             let stringStatus;
             switch (status) {
                 case 0:
-                    ProgressBarPeminjaman("Requested");
+                    ProgressBarPeminjaman("Requested",guid);
                     stringStatus = "Requested";
                     break;
                 case 2:
-                    ProgressBarPeminjaman("OnProssesed");
+                    ProgressBarPeminjaman("OnProssesed", null);
                     stringStatus = "OnProssesed";
                     break;
                 case 6:
-                    ProgressBarPeminjaman("OnGoing");
+                    ProgressBarPeminjaman("OnGoing", null);
                     stringStatus = "OnGoing";
                     break;
                 case 7:
-                    ProgressBarPeminjaman("Completed");
+                    ProgressBarPeminjaman("Completed", null);
                     stringStatus = "Completed";
                     break;
                 default:
-                    ProgressBarPeminjaman("Completed");
-                    stringStatus = "Completed";
+                    ProgressBarPeminjaman("Rejected", null);
+                    stringStatus = "Rejected";
                     break;
             }
 
@@ -137,20 +316,209 @@ function DetailPeminjaman(guid) {
                 $("#nameEmployee").html(resultEmployee.firstName + " " + resultEmployee.lastName);
             }).fail((error) => {
             });
+
+            let roomName = "Tidak Meminjam Ruangan";
+            if (Elements.rooms != null) {
+                roomName = Elements.rooms.name
+            }
             $("#startDateRequest").html(Elements.startDate);
             $("#endDateRequest").html(Elements.endDate);
             $("#statusRequest").html(stringStatus);
-            $("#nameRoomRequest").html(Elements.rooms.name);
+            $("#nameRoomRequest").html(roomName);
             $("#listFasilityDetail").html("");
             $("#listFasilityDetail").append("<h4>Nama Fasilitas</h4>");
+            if (Elements.fasilities.length == 0) {
+                $("#listFasilityDetail").append(` <p class="list-group-item list-group-item-info m-1 text-center">
+                                                Tidak Meminjam Fasilitas
+                                                </p>`);
+            } else {
             Elements.fasilities.forEach(fasility => {
                 $("#listFasilityDetail").append(` <p class="list-group-item list-group-item-info m-1 text-center">
                                                 ${fasility.name}
                                                 <span class="badge d-block bg-primary">Qty : ${fasility.totalFasility}</span>
                                                 </p>`);
             })
+
+            }
         })
         //Setelah get employee
     }).fail((error) => {
     });
 }
+
+function UpdateRequest(){ 
+    let startDates = $('#startDateTime').val();
+    let endDates = $('#endDateTime').val();
+    var tbl = $('#tablePeminjamanFasility tr:has(td)').map(function (i, v) {
+        var $td = $('td', this);
+        var unit = $td.eq(1).text();
+        var unitTotal = unit.trim().split(' ')[0];
+        return {
+            id: ++i,
+            name: $td.eq(0).text(),
+            jumlah: unitTotal,
+            tipe: $td.eq(2).text(),
+            fasilityGuid: $td.eq(3).attr('id'),
+            listFasilityGuid: $td.eq(3).attr('data'),
+        }
+    }).get();
+    let isSuccess;
+
+    let isHaveRoom = false;
+    tbl.forEach(ruangan => {
+        if (ruangan.tipe == "Ruangan") {
+        console.log(tbl)
+            var reqObj = {
+                Guid: req,
+                RoomGuid: ruangan.fasilityGuid,
+                EmployeeGuid: null,
+                Status: 0,
+                StartDate: startDates,
+                EndDate: endDates
+            };
+            isHaveRoom = true;
+            $.ajax({
+                url: '/request/update',
+                method: 'POST',
+                data: reqObj
+            }).done((result) => {
+                isSuccess = true;
+            }).fail((error) => {
+                isSuccess = false;
+            });
+        }
+    })
+
+    //jika tidak ada ruangan yang di pinjam 
+    if (!isHaveRoom) {
+        var reqObj = {
+            Guid: req,
+            RoomGuid: null,
+            EmployeeGuid: null,
+            Status: 0,
+            StartDate: startDates,
+            EndDate: endDates
+        };
+
+        $.ajax({
+            url: '/request/update',
+            method: 'POST',
+            data: reqObj
+        }).done((result) => {
+            isSuccess = true;
+        }).fail((error) => {
+            isSuccess = false;
+        })
+    }
+
+    //ambil semua data request
+    let listFasil = [];
+    $.ajax({
+        url: '/ListFasility/GetListFasilityByRequestGuid/' + req,
+        method: 'GET',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            listFasil = data;
+        }
+    });
+    
+    //looping untuk mengecek fasilitas
+
+    tbl.forEach(fasility => {
+        if (fasility.tipe == "Fasilitas") {
+
+            const matchedFasility = listFasil.find(item => item.fasilityGuid === fasility.fasilityGuid);
+
+            if (matchedFasility) {
+                matchedFasility.isStay = true;
+            } else {
+                fasility.isStay = false;
+            }
+
+            $.ajax({
+                url: '/ListFasility/GetListFasilityByRequestGuidAndFasilityGuid',
+                method: 'POST',
+                data: {
+                    Guid: fasility.listFasilityGuid,
+                    RequestGuid: req,
+                    FasilityGuid: fasility.fasilityGuid
+                }
+            }).done((result) => {
+
+                if (result == null) {
+                    //Jika fasilitas belum pernah di tambahkan
+                    $.ajax({
+                        url: '/listfasility/insert',
+                        method: 'POST',
+                        async: false,
+                        data: {
+                            FasilityGuid: fasility.fasilityGuid,
+                            RequestGuid: req,
+                            TotalFasility: fasility.jumlah
+                        }
+                    }).done((result) => {
+                        isSuccess = true;
+                    }).fail((error) => {
+                        isSuccess = false;
+                    })
+                } else {
+                    //Jika fasilitas sudah pernah di tambahkan
+
+                    $.ajax({
+                        url: '/listfasility/update',
+                        method: 'POST',
+                        async: false,
+                        data: {
+                            guid: fasility.listFasilityGuid,
+                            RequestGuid: req,
+                            FasilityGuid: fasility.fasilityGuid,
+                            TotalFasility: fasility.jumlah
+                        }
+                    }).done((result) => {
+                        isSuccess = true;
+                    }).fail((error) => {
+                        //isSuccess = false;
+                    })
+                }
+
+            })
+        }
+    })
+
+    console.log(listFasil)
+
+    listFasil.forEach(fasility => {
+        if (!fasility.isStay) {
+
+            $.ajax({
+                url: "/ListFasility/Delete?guid="+fasility.guid, // Ganti dengan URL yang sesuai
+                type: "DELETE",
+                async: false,
+                success: function (data) {
+                }
+            });
+            }
+    });
+
+    if (isSuccess) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Update Success',
+            showConfirmButton: false,
+            timer: 1500
+        })
+        $("#mytable").load("/panel #tableDashboard");
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Failed to update data',
+        })
+        $("#mytable").load("/panel #tableDashboard");
+    }
+}
+
+$('#btnCloseUp').on('click', ()=> {
+    
+})

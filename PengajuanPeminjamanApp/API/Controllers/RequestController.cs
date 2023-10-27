@@ -166,6 +166,8 @@ public class RequestController : ControllerBase
                                                         where li.RequestGuid == req.Guid
                                                         select new ListDetailFasilityDto
                                                         {
+                                                            Guid = li.Guid,
+                                                            FasilityGuid  = li.FasilityGuid,
                                                             Name = fas.Name,
                                                             TotalFasility = li.TotalFasility
                                                         },
@@ -178,7 +180,7 @@ public class RequestController : ControllerBase
     }
 
     [HttpGet("GetDetailRequestByGuid/{guid}")]
-    public IActionResult GetDetailRequestGuid(Guid guid)
+    public IActionResult GetDetailRequestByGuid(Guid guid)
     {
         var request = _requestRespository.GetAll();
         var listFasility = _listFasilityRepository.GetAll();
@@ -214,6 +216,8 @@ public class RequestController : ControllerBase
                                                         where li.RequestGuid == req.Guid
                                                         select new ListDetailFasilityDto
                                                         {
+                                                            Guid = li.Guid,
+                                                            FasilityGuid = li.FasilityGuid,
                                                             Name = fas.Name,
                                                             TotalFasility = li.TotalFasility
                                                         },

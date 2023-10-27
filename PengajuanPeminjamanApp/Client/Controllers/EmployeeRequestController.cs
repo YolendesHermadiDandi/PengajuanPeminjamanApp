@@ -34,7 +34,7 @@ namespace Client.Controllers
             }
             return Json(result.Data);
         }
-        
+
         [HttpGet("request/GetCountStatusRequestByEmployeeGuid")]
         public async Task<JsonResult> GetCountStatusRequestByEmployeeGuid()
         {
@@ -43,7 +43,19 @@ namespace Client.Controllers
             var result = await _requestRepository.GetCountStatusRequestByEmployeeGuid(employee);
             return Json(result.Data);
         }
-        
+
+        [HttpPost("request/update")]
+        public async Task<JsonResult> UpdataRequest(RequestDto requestDto)
+        {
+            var jwt = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
+            Guid employee = new Guid(jwt.Data.UserGuid);
+
+            requestDto.EmployeeGuid = employee;
+
+            var result = await _requestRepository.Put(new Guid(), requestDto);
+            return Json(result.Data);
+        }
+
         [Route("employee/getEmployee/{guid}")]
         public async Task<JsonResult> GetEmployeeByGuid(Guid guid)
         {
@@ -74,7 +86,7 @@ namespace Client.Controllers
             }
             return Json(result);
         }
-        
+
         [HttpPost("listfasility/insert")]
         public async Task<JsonResult> InsertFasility(CreateListFasilityDto createListFasility)
         {
@@ -89,7 +101,22 @@ namespace Client.Controllers
             }
             return Json(result);
         }
+        
+        [HttpPost("listfasility/update")]
+        public async Task<JsonResult> UpdateListFasility(ListFasilityDto listFasility)
+        {
+            var result = await _listFasilitasRepository.Put(new Guid(),listFasility);
+            if (result.Code == 200)
+            {
+                return Json(result);
+            }
+            else if (result.Code == 400)
+            {
+                return Json(result);
+            }
+            return Json(result);
+        }
 
-
+        
     }
 }

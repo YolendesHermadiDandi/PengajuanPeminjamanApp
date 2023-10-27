@@ -56,13 +56,12 @@ public class ListFasilityController : ControllerBase
 
         return Ok(new ResponseOKHandler<ListFasilityDto>((ListFasilityDto)result));
     }
-
-    [HttpGet("GetListFasilityByRequestGuid")]
-    public IActionResult GetListFasilityByRequestGuid(Guid requestGuid)
+    
+    [HttpPost("GetListFasilityByReqGuidAndFasilityGuid")]
+    public IActionResult GetListFasilityByReqGuidAndFasilityGuid(FindListFasilityDto findListFasility)
     {
-        var listFasility = _listFasilityRepository.GetAllListFasilityByReqGuid(requestGuid);
-        var fasility = _fasilityRepository.GetAll();
-        if (listFasility is null)
+        var result = _listFasilityRepository.GetListFasilityByReqGuidAndFasilityGuid(findListFasility);
+        if (result is null)
         {
             return NotFound(new ResponseErrorHandler
             {
@@ -72,16 +71,24 @@ public class ListFasilityController : ControllerBase
             });
         }
 
-        var data = from fas in fasility
-                   join li in listFasility on fas.Guid equals li.FasilityGuid
-                   where li.RequestGuid == requestGuid
-                   select new
-                   {
-                       FasilityGuid = fas.Guid,
-                       Name = fas.Name,
-                       TotalFasility = li.TotalFasility
-                   };
-        return Ok(new ResponseOKHandler<IEnumerable<object>>(data));
+        return Ok(new ResponseOKHandler<ListFasilityDto>(result));
+    }
+
+    [HttpGet("GetListFasilityByRequestGuid/{requestGuid}")]
+    public IActionResult GetListFasilityByRequestGuid(Guid requestGuid)
+    {
+        var listFasility = _listFasilityRepository.GetAllListFasilityByReqGuid(requestGuid);
+        if (listFasility is null)
+        {
+            return NotFound(new ResponseErrorHandler
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data Not Found"
+            });
+        }
+        var data = listFasility.Select(x => (ListFasilityDto)x);
+        return Ok(new ResponseOKHandler<IEnumerable<ListFasilityDto>>(data));
     }
 
     [HttpPut]
@@ -223,4 +230,5 @@ public class ListFasilityController : ControllerBase
         }
 
     }
+
 }

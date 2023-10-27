@@ -58,7 +58,7 @@
     <div class="card-body">
         <h4 class="card-title">Daftar Terbaru Peminjaman</h4>
         <div class="table-responsive dataview">
-            <table class="table datatable ">
+            <table class="table datatable" id="tableDashboard">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -84,7 +84,7 @@
                             }
                             <td>@a</td>
                             <td>
-                                <button type="button" onclick="DetailPeminjaman('@item.Guid')" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalFasilitas">
+                                <button type="button" onclick="DetailPeminjaman('@item.Guid')" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalRequestDetail">
                                     <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
                                 </button>
                             </td>
@@ -98,7 +98,7 @@
 
 
 <!-- Modal Fasilitas -->
-<div class="modal fade" id="ModalFasilitas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModalFasilitasLabel" aria-hidden="true">
+<div class="modal fade" id="ModalRequestDetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModalRequestDetailLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -169,17 +169,6 @@
                                         <li id="listFasilityDetail">
                                             <h4>Nama Fasilitas</h4>
 
-                                           @* 
-                                            <p class="list-group-item list-group-item-info m-1 text-center">
-                                                Meja
-                                                <span class="badge d-block bg-primary">Qty : 28</span>
-                                            </p>
-                                            <p class="list-group-item list-group-item-info m-1 text-center">
-                                                Pensil
-                                                <span class="badge d-block bg-primary">Qty : 28</span>
-                                            </p>
- *@
-
                                         </li>
                                     </ul>
                                 </div>
@@ -198,6 +187,144 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal Update Peminjaman -->
+<div class="modal fade" id="modalUpdateRequest" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalUpdateRequestLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Tanggal Mulai Peminjaman </label>
+                            <div class="input-groupicon">
+                                <input type="text" placeholder="DD-MM-YYYY" class="datetimepicker" id="startDateTime">
+                                <div class="addonset">
+                                    <img src="~/assets/img/icons/calendars.svg" alt="img">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Tanggal Akhir Peminjaman </label>
+                            <div class="input-groupicon">
+                                <input type="text" placeholder="DD-MM-YYYY" class="datetimepicker" id="endDateTime">
+                                <div class="addonset">
+                                    <img src="~/assets/img/icons/calendars.svg" alt="img">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Pilih Fasilitas</label>
+                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" id="btnModalFasilitas" data-bs-target="#ModalFasilitas">
+                                <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Pilih Ruangan</label>
+                            <button type="button" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" id="btnModalRuangan" data-bs-target="#ModalRuangan">
+                                <i data-feather="layers" style="margin-right:10px;"> </i>Ruangan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table" id="tablePeminjamanFasility">
+                            <thead>
+                                <tr>
+                                    <th>Nama Fasilitas</th>
+                                    <th>Jumlah/ Lantai</th>
+                                    <th>Tipe Pinjam</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableDaftarPeminjaman">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="UpdateRequest()" data-bs-dismiss="modal">Edit Request</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ruangan -->
+<div class="modal fade" id="ModalRuangan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModalRuanganLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">List Ruangan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nama Ruangan</th>
+                                <th>Lantai</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyListRuangan">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalUpdateRequest">Kembali</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Fasilitas -->
+<div class="modal fade" id="ModalFasilitas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModalFasilitasLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">List Fasilitas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table" id="tableFasilityModal">
+                        <thead>
+                            <tr>
+                                <th>Nama Fasilitas</th>
+                                <th>Jumlah Tersedia</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyListFasility">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloseUp" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalUpdateRequest">Kembali</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section Scripts{
     <script src="~/js/employee/employeeDashboard.js" asp-append-version="true"></script>
