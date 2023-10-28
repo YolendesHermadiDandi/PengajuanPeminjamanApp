@@ -117,6 +117,21 @@ namespace Client.Controllers
             return Json(result);
         }
 
-        
+        [HttpPost("request/IsRoomIdle")]
+        public async Task<JsonResult> IsRoomIdle(StatusRequestRoomDto statusRequest)
+        {
+            var result = await _requestRepository.IsRoomIdle(statusRequest);
+            if (result.Code == 200)
+            {
+                return Json(result);
+            }
+            else if (result.Code == 400)
+            {
+                return Json(result);
+            }
+            return Json(result);
+        }
+
+
     }
 }

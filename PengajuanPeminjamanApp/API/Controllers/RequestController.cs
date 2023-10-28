@@ -91,6 +91,23 @@ public class RequestController : ControllerBase
 
         return Ok(new ResponseOKHandler<RequestDto>((RequestDto)result));
     }
+    
+    [HttpPost("GetStatusRequestRoomByDate/")]
+    public IActionResult GetStatusRequestRoomByDate(StatusRequestRoomDto statusRequest)
+    {
+        var result = _requestRespository.GetStatusRequestRoomByDate(statusRequest);
+        if (result is false)
+        {
+            return NotFound(new ResponseErrorHandler
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Ruangan Sudah Ada Yang Pinjam"
+            });
+        }
+
+        return Ok(new ResponseOKHandler<string>("Rauangan Tersedia Untuk Di Pinjam"));
+    }
 
     [HttpGet("GetRequestByEmployeeGuid")]
     public IActionResult GetRequestByEmployeeGuid(Guid guid)

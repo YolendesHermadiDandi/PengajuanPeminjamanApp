@@ -176,8 +176,6 @@ function ajukanRequest() {
     let startDates = $('#startDateTime').val();
     let endDates = $('#endDateTime').val();
 
-    
-    
     let isReqRoom = false;
     let isReqFasility= false;
     let roomId;
@@ -207,46 +205,67 @@ function ajukanRequest() {
             startDate: startDates,
             endDate: endDates,
         }
+
         $.ajax({
             type: "post",
-            url: "/request/insert",
-            data: objRequest,
+            url: "/request/IsRoomIdle",
+            data: {
+                roomGuid: roomId,
+                startDate: startDates,
+                endDate: endDates
+            },
         }).done((rstRequest) => {
-            tbl.forEach(tabelFasility => {
-                if (tabelFasility.tipe == "Fasilitas") {
-                    let objFasility = {
-                        requestGuid: rstRequest.data.guid,
-                        fasilityGuid: tabelFasility.guid,
-                        totalFasility: tabelFasility.jumlah,
-                    }
+            if (rstRequest.code == 200) {
+                $.ajax({
+                    type: "post",
+                    url: "/request/insert",
+                    data: objRequest,
+                }).done((rstRequest) => {
+                    tbl.forEach(tabelFasility => {
+                        if (tabelFasility.tipe == "Fasilitas") {
+                            let objFasility = {
+                                requestGuid: rstRequest.data.guid,
+                                fasilityGuid: tabelFasility.guid,
+                                totalFasility: tabelFasility.jumlah,
+                            }
 
-                    $.ajax({
-                        type: "post",
-                        url: "/listfasility/insert",
-                        data: objFasility,
-                    }).done((result) => {
-                    }).fail((error) => {
-                    });
+                            $.ajax({
+                                type: "post",
+                                url: "/listfasility/insert",
+                                data: objFasility,
+                            }).done((result) => {
+                            }).fail((error) => {
+                            });
 
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Add Request Success',
+                                showConfirmButton: false,
+                                timer: 1500
+
+                            })
+                            isReqFasility = false;
+                            isReqRoom = false;
+                        }
+                    })
+                }).fail((error) => {
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Add Request Success',
-                        showConfirmButton: false,
-                        timer: 1500
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Failed to Request data',
 
                     })
-                    isReqFasility = false;
-                    isReqRoom = false;
-                }
-            })
-        }).fail((error) => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Failed to Request data',
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Maaf Raungan Yang Anda Pinjam Tidak Tersedia Di Tanggal Yang Anda Minta',
 
-            })
-        });
+                })
+            }
+        })
+
 
     }
 
@@ -260,23 +279,42 @@ function ajukanRequest() {
         }
         $.ajax({
             type: "post",
-            url: "/request/insert",
-            data: objRequest,
+            url: "/request/IsRoomIdle",
+            data: {
+                roomGuid: roomId,
+                startDate: startDates,
+                endDate: endDates
+            },
         }).done((rstRequest) => {
-            Swal.fire({
-                icon: 'success',
-                title: 'Add Request Success',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        }).fail((error) => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Failed to Request data',
+            if (rstRequest.code == 200) {
+                $.ajax({
+                    type: "post",
+                    url: "/request/insert",
+                    data: objRequest,
+                }).done((rstRequest) => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Add Request Success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }).fail((error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Failed to Request data',
 
-            })
-        });
+                    })
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Maaf Raungan Yang Anda Pinjam Tidak Tersedia Di Tanggal Yang Anda Minta',
+
+                })
+            }
+        })
     }
 
     else if (isReqFasility) {

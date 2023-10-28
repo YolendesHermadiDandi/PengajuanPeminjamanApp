@@ -98,6 +98,18 @@ public class RequestRepository : GeneralRepository<RequestDto, Guid>, IRequestRe
         }
         return entityVM;
     }
+
+    public async Task<ResponseOKHandler<RequestDto>> IsRoomIdle(StatusRequestRoomDto entity)
+    {
+        ResponseOKHandler<RequestDto> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+        using (var response = httpClient.PostAsync(request + "GetStatusRequestRoomByDate", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<RequestDto>>(apiResponse);
+        }
+        return entityVM;
+    }
 }
 
 
