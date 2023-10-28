@@ -56,7 +56,7 @@ public class ListFasilityController : ControllerBase
 
         return Ok(new ResponseOKHandler<ListFasilityDto>((ListFasilityDto)result));
     }
-    
+
     [HttpPost("GetListFasilityByReqGuidAndFasilityGuid")]
     public IActionResult GetListFasilityByReqGuidAndFasilityGuid(FindListFasilityDto findListFasility)
     {
@@ -128,7 +128,7 @@ public class ListFasilityController : ControllerBase
                 });
             }
             fasility.Stock = fasility.Stock + check.TotalFasility;
-            if ((fasility.Stock - listFasilityDto.TotalFasility) < 1)
+            if ((fasility.Stock - listFasilityDto.TotalFasility) < 0)
             {
                 return NotFound(new ResponseErrorHandler
                 {
@@ -143,6 +143,57 @@ public class ListFasilityController : ControllerBase
             ListFasility toUpdate = (ListFasility)listFasilityDto;
             toUpdate.CreateDate = check.CreateDate;
             var result = _listFasilityRepository.Update(toUpdate);
+            return Ok(new ResponseOKHandler<String>("Updated Fasility Success"));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseErrorHandler
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Failed to Update data",
+                Error = ex.Message
+            });
+        }
+    }
+    [HttpPut("UpdateStokFasility")]
+    public IActionResult UpdateStokFasility(ListFasilityDto listFasilityDto)
+    {
+        try
+        {
+            var check = _listFasilityRepository.GetByGuid(listFasilityDto.Guid);
+            if (check is null)
+            {
+                return NotFound(new ResponseErrorHandler
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data Not Found"
+                });
+            }
+            var request = _requestRepository.GetByGuid(listFasilityDto.RequestGuid);
+            if (request.Status != 0)
+            {
+                return NotFound(new ResponseErrorHandler
+                {
+                    Code = StatusCodes.Status400BadRequest,
+                    Status = HttpStatusCode.BadRequest.ToString(),
+                    Message = "Sorry You Cant Change Fasility Anymore"
+                });
+            }
+
+            var fasility = _fasilityRepository.GetByGuid(listFasilityDto.FasilityGuid);
+            if (fasility is null)
+            {
+                return NotFound(new ResponseErrorHandler
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Fasility Not Found"
+                });
+            }
+            fasility.Stock = fasility.Stock + check.TotalFasility;
+            _fasilityRepository.Update(fasility);
             return Ok(new ResponseOKHandler<String>("Updated Fasility Success"));
         }
         catch (Exception ex)
@@ -173,7 +224,7 @@ public class ListFasilityController : ControllerBase
                 });
             }
 
-            if ((check.Stock - listFasilityDto.TotalFasility) < 1)
+            if ((check.Stock - listFasilityDto.TotalFasility) < 0)
             {
                 return NotFound(new ResponseErrorHandler
                 {

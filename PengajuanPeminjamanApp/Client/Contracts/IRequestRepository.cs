@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Fasilities;
+using API.DTOs.ListFasilities;
 using API.DTOs.Requests;
 using API.Utilities.Handlers;
 
@@ -13,4 +14,6 @@ public interface IRequestRepository : IRepository<RequestDto, Guid>
 
     Task<ResponseOKHandler<UpdateStatusDto>> UpdateRequestStatus(UpdateStatusDto entity);
     Task<ResponseOKHandler<SendEmailDto>> SendEmail(SendEmailDto entity);
+
+    Task<ResponseOKHandler<ListFasilityDto>> UpdateStokFasility(ListFasilityDto entity);
 }

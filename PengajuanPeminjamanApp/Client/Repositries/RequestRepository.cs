@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Fasilities;
+using API.DTOs.ListFasilities;
 using API.DTOs.Requests;
 using API.Utilities.Handlers;
 using Client.Contracts;
@@ -71,6 +72,18 @@ public class RequestRepository : GeneralRepository<RequestDto, Guid>, IRequestRe
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<UpdateStatusDto>>(apiResponse);
+        }
+        return entityVM;
+    }
+    
+    public async Task<ResponseOKHandler<ListFasilityDto>> UpdateStokFasility(ListFasilityDto entity)
+    {
+        ResponseOKHandler<ListFasilityDto> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+        using (var response = httpClient.PutAsync(request + "UpdateStokFasility", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<ListFasilityDto>>(apiResponse);
         }
         return entityVM;
     }

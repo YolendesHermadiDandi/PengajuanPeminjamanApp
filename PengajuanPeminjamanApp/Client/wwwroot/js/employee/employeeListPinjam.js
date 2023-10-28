@@ -31,7 +31,7 @@
     });
     $('.dt-buttons').removeClass('dt-buttons');
     $('button#addEmployee').on('click', (e) => {
-        $('button#submitButton').removeAttr('hidden');
+    $('button#submitButton').removeAttr('hidden');
     })
 
     //list Fasility modal
@@ -48,7 +48,7 @@
                         <td><input type="number" min="1" value="${Elements.stock}" id="value${Elements.name}" max="${Elements.stock}" /></td>
                         <td>
                         <div class="page-btn">
-                            <button type="button" class="btn btn-primary" id="btnTambahFasility${Elements.name}" onclick="tambahFasilityTabel('${Elements.guid}')">Tambah Fasilitas</button>
+                            <button type="button" class="btn btn-primary" id="btnTambahFasility${Elements.name}" onclick="tambahFasilityTabel('${Elements.guid}')">Tambah Fasilitas</button> 
                         </div>
                         </td>
                     </tr>`);
@@ -89,6 +89,56 @@
 
         }
     });
+
+    
+    // Mendapatkan nilai "data" dari atribut
+    var statusElements = document.querySelectorAll("#statusPeminjaman");
+    var startDatePinjam = document.querySelectorAll("#startDatePinjam");
+    var endDatePinjam = document.querySelectorAll("#endDatePinjam");
+
+    for (var i = 0; i < statusElements.length; i++) {
+        var statusElement = statusElements[i];
+        var status = statusElement.getAttribute("data");
+        var statusBadge;
+
+        switch (status) {
+            case "Requested":
+                statusBadge = '<span class="badges bg-lightyellow">Requested</span>';
+                break;
+            case "OnProssesed":
+                statusBadge = '<span class="badges bg-lightgreen">OnProssesed</span>';
+                break;
+            case "Rejected":
+                statusBadge = '<span class="badges bg-lightred">Rejected</span>';
+                break;
+            case "OnGoing":
+                statusBadge = '<span class="badges bg-lightgreen">OnGoing</span>';
+                break;
+            case "Completed":
+                statusBadge = '<span class="badges bg-lightgreen">Completed</span>';
+                break;
+            default:
+                statusBadge = status;
+                break;
+        }
+
+        statusElement.innerHTML = statusBadge;
+    }
+
+    for (var i = 0; i < startDatePinjam.length; i++) {
+        var dateElement = startDatePinjam[i];
+        var originalDate = dateElement.textContent;
+        var formattedDate = formatDateDashboard(originalDate);
+        dateElement.textContent = formattedDate;
+    }
+
+    for (var i = 0; i < endDatePinjam.length; i++) {
+        var dateElement = endDatePinjam[i];
+        var originalDate = dateElement.textContent;
+        var formattedDate = formatDateDashboard(originalDate);
+        dateElement.textContent = formattedDate;
+    }
+
 })
 function ProgressBarPeminjaman(status, guid) {
     console.log(status);
@@ -182,7 +232,7 @@ function btnFirstupdateRequest(guid) {
                         <td>${fasilities.name}</td>
                         <td>${fasilities.totalFasility} Unit</td>
                         <td>Fasilitas</td>
-                        <td id="${fasilities.fasilityGuid}" data="${fasilities.guid}"><a class="delete-set"><img src="/assets/img/icons/delete.svg" onclick="hapusFasilitas('btnTambahFasility${fasilities.name}')" alt="svg"></a></td>
+                        <td id="${fasilities.fasilityGuid}" data="${fasilities.guid}"><a class="delete-set"><img src="/assets/img/icons/delete.svg" onclick="hapusFaslity('btnTambahFasility${fasilities.name}')" alt="svg"></a></td>
                         </tr>`)
             })
 
@@ -199,7 +249,7 @@ function hapusRuangan(idBtn) {
     button.removeAttribute("disabled");
 }
 
-function hapusFasilitas(idBtn) {
+function hapusFaslity(idBtn) {
     document.getElementById(`${idBtn}Fasility`).outerHTML = "";
     button = document.getElementById(`${idBtn}`);
     button.removeAttribute("disabled");
@@ -306,6 +356,28 @@ function DetailPeminjaman(guid) {
                     stringStatus = "Rejected";
                     break;
             }
+            let bandageStatus;
+            switch (stringStatus) {
+                case "Requested":
+                    bandageStatus= ` <span class="badges bg-lightyellow">Requested</span>`
+                    break;
+                case "OnProssesed":
+                    bandageStatus= ` <span class="badges bg-lightgreen">OnProssesed</span>`
+                    break;
+                case "Rejected":
+                    bandageStatus=` <span class="badges bg-lightred">Rejected</span>`
+                    break;
+                case "OnGoing":
+                    bandageStatus =` <span class="badges bg-lightgreen">OnGoing</span>`
+                    break;
+                case "Completed":
+                    bandageStatus=` <span class="badges bg-lightgreen">Completed</span>`
+                    break;
+                default:
+                    return stringStatus;
+                    break;
+            }
+
 
             console.log(Elements.employeeGuid)
             $.ajax({
@@ -321,9 +393,9 @@ function DetailPeminjaman(guid) {
             if (Elements.rooms != null) {
                 roomName = Elements.rooms.name
             }
-            $("#startDateRequest").html(Elements.startDate);
-            $("#endDateRequest").html(Elements.endDate);
-            $("#statusRequest").html(stringStatus);
+            $("#startDateRequest").html(formatDate(Elements.startDate));
+            $("#endDateRequest").html(formatDate(Elements.endDate));
+            $("#statusRequest").html(bandageStatus);
             $("#nameRoomRequest").html(roomName);
             $("#listFasilityDetail").html("");
             $("#listFasilityDetail").append("<h4>Nama Fasilitas</h4>");
@@ -346,7 +418,7 @@ function DetailPeminjaman(guid) {
     });
 }
 
-function UpdateRequest(){ 
+function UpdateRequest() {
     let startDates = $('#startDateTime').val();
     let endDates = $('#endDateTime').val();
     var tbl = $('#tablePeminjamanFasility tr:has(td)').map(function (i, v) {
@@ -362,12 +434,15 @@ function UpdateRequest(){
             listFasilityGuid: $td.eq(3).attr('data'),
         }
     }).get();
+    if (tbl.length > 0) {
+
+
     let isSuccess;
 
     let isHaveRoom = false;
     tbl.forEach(ruangan => {
         if (ruangan.tipe == "Ruangan") {
-        console.log(tbl)
+            console.log(tbl)
             var reqObj = {
                 Guid: req,
                 RoomGuid: ruangan.fasilityGuid,
@@ -422,16 +497,19 @@ function UpdateRequest(){
             listFasil = data;
         }
     });
-    
+
     //looping untuk mengecek fasilitas
 
     tbl.forEach(fasility => {
         if (fasility.tipe == "Fasilitas") {
 
             const matchedFasility = listFasil.find(item => item.fasilityGuid === fasility.fasilityGuid);
-
             if (matchedFasility) {
-                matchedFasility.isStay = true;
+                if (fasility.jumlah != matchedFasility.totalFasility) {
+                    matchedFasility.isStay = false;
+                } else {
+                    matchedFasility.isStay = true;
+                }
             } else {
                 fasility.isStay = false;
             }
@@ -445,7 +523,6 @@ function UpdateRequest(){
                     FasilityGuid: fasility.fasilityGuid
                 }
             }).done((result) => {
-
                 if (result == null) {
                     //Jika fasilitas belum pernah di tambahkan
                     $.ajax({
@@ -485,40 +562,61 @@ function UpdateRequest(){
             })
         }
     })
-
-    console.log(listFasil)
-
     listFasil.forEach(fasility => {
         if (!fasility.isStay) {
 
             $.ajax({
-                url: "/ListFasility/Delete?guid="+fasility.guid, // Ganti dengan URL yang sesuai
+                url: '/ListFasility/UpdateStokFasility',
+                method: 'POST',
+                async: false,
+                data: {
+                    guid: fasility.guid,
+                    RequestGuid: fasility.requestGuid,
+                    fasilityGuid: fasility.fasilityGuid,
+                    TotalFasility: fasility.TotalFasility
+                }
+            }).done((result) => {
+            })
+
+            $.ajax({
+                url: "/ListFasility/Delete?guid=" + fasility.guid, // Ganti dengan URL yang sesuai
                 type: "DELETE",
                 async: false,
                 success: function (data) {
+
                 }
             });
-            }
+        }
     });
 
-    if (isSuccess) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Update Success',
-            showConfirmButton: false,
-            timer: 1500
-        })
-        $("#mytable").load("/panel #tableDashboard");
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Failed to update data',
-        })
-        $("#mytable").load("/panel #tableDashboard");
-    }
+    Swal.fire({
+        icon: 'success',
+        title: 'Update Success',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        confirmButtonText: 'Save',
+        timer: 1500
+    }).then((result) => {
+        location.reload();
+    })
+
+}else {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Peminjaman Tidak Boleh Kosong',
+
+    })
+}
 }
 
-$('#btnCloseUp').on('click', ()=> {
-    
-})
+function formatDateDashboard(originalDate) {
+    var parts = originalDate.split(" ");
+    var datePart = parts[0];
+    var dateParts = datePart.split("/");
+    var day = dateParts[0];
+    var month = dateParts[1];
+    var year = dateParts[2];
+
+    return day + "/" + month + "/" + year;
+}

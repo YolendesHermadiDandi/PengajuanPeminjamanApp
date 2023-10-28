@@ -72,23 +72,25 @@
                 <tbody>
                     @{int i = 0;}
                     @foreach (var item in Model) {
+                        @if(i <= 5){
                         <tr>
                             @{i++;}
                             <td> @i                        
                             </td>
-                            <td>@Html.DisplayFor(model => item.Status)</td>
-                            <td>@Html.DisplayFor(model => item.StartDate)</td>
-                            <td>@Html.DisplayFor(model => item.EndDate)</td>
+                            <td id="statusPeminjaman" data="@Html.DisplayFor(model => item.Status)">@Html.DisplayFor(model => item.Status)</td>
+                            <td id="startDatePinjam">@Html.DisplayFor(model => item.StartDate)</td>
+                                <td id="endDatePinjam">@Html.DisplayFor(model => item.EndDate)</td>
                             @{
                                 string a = (item.rooms == null) ? "Tidak Meminjam Ruangan" : item.rooms.Name;
                             }
                             <td>@a</td>
                             <td>
                                 <button type="button" onclick="DetailPeminjaman('@item.Guid')" style="text-align:start;" class="btn btn-primary col-lg-12" data-bs-toggle="modal" data-bs-target="#ModalRequestDetail">
-                                    <i data-feather="box" style="margin-right:10px;"> </i>Fasilitas
+                                    <i data-feather="box" style="margin-right:10px;"> </i>Detail Peminjaman
                                 </button>
                             </td>
                     </tr>
+                        }
                     }
                 </tbody>
             </table>

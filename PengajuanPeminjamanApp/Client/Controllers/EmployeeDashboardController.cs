@@ -43,6 +43,18 @@ namespace Client.Controllers
             return Json(result.Data);
         }
 
+        [HttpPost("ListFasility/UpdateStokFasility")]
+        public async Task<JsonResult> UpdateStokFasility(ListFasilityDto listFasility)
+        {
+            var result = await _listFasilitasRepository.Put(new Guid(), listFasility);
+
+            if (result.Code == 200)
+            {
+                return Json(result);
+            }
+            return Json(result);
+        }
+
 
     }
 }

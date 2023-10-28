@@ -125,7 +125,9 @@ public class RequestController : ControllerBase
                                          Status = req.Status,
                                          StartDate = req.StartDate,
                                          EndDate = req.EndDate
-                                     }).ToList();
+                                     })
+                                     .OrderByDescending(req => req.StartDate)
+                                     .ToList();
 
         return Ok(new ResponseOKHandler<IEnumerable<ListRequestDto>>(data));
     }
