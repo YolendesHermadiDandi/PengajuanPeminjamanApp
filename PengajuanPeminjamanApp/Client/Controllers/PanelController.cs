@@ -43,9 +43,22 @@ public class PanelController : Controller
     {
         return View();
     }
-    public IActionResult ListPeminjaman()
+    public async Task<IActionResult> ListPeminjamanAsync()
     {
-        return View();
+        var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
+        if (result == null)
+        {
+            return RedirectToAction("Login", "Auth");
+        }
+        Guid employee = new Guid(result.Data.UserGuid);
+        var listRequest = await _requestRepository.GetByEmployeeGuid(employee);
+        var data = new List<ListRequestDto>();
+        if (result != null)
+        {
+            data = listRequest.Data.ToList();
+            return View(data);
+        }
+        return View(data);
     }
 
     public IActionResult ListRuangan()

@@ -1,7 +1,6 @@
 $(document).ready(function () {
 })
 function ProgressBarPeminjaman(status) {
-    console.log(status);
     $('ul.twitter-bs-wizard-nav li a.active').removeClass('active');
     $('ul.twitter-bs-wizard-nav li #completed').html('<span id="completed">Completed</span>');
     $('ul.twitter-bs-wizard-nav li span').removeClass('badge bg-primary fs-6');

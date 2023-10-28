@@ -1,34 +1,41 @@
 ﻿$(document).ready(function () {
-    let dataEmployee = $("#tabelEmployee").DataTable({
-        dom: 'Bftp',
-        buttons: [
-            {
-                extend: 'excelHtml5',
-                exportOptions: {
-                    columns: ':visible'
-                },
-                className: 'btn btn-outline-success',
-                titleAttr: 'excel',
-                text: '<i class="fa-solid fa-file-excel"></i>',
-            },
-            {
-                extend: 'pdfHtml5',
-                exportOptions: {
-                    columns: ':visible',
-                    columns: [1, 2, 3, 5, 7, 8]
-                },
-                className: 'btn btn-outline-danger',
-                titleAttr: 'pdf',
-                text: '<i class="fa-solid fa-file-pdf"></i>',
-                //orientation: 'landscape',
-                //pageSize: 'LEGAL'
-            },
-            {
-                extend: 'colvis',
-                className: 'btn btn-outline-info text-black',
-            }
-        ],
+
+    $(".tabelListPeminjaman").DataTable({
+        bFilter: true,
+        sDom: "fBtlpi",
+        pagingType: "numbers",
+        ordering: true,
+        language: { search: " ", sLengthMenu: "_MENU_", searchPlaceholder: "Search...", info: "_START_ - _END_ of _TOTAL_ items" },
+        initComplete: (settings, json) => {
+            $(".dataTables_filter").appendTo("#tableSearch");
+            $(".dataTables_filter").appendTo(".search-input");
+
+            // Tombol Export PDF
+            $("#export-pdf").on("click", function () {
+                $(".tabelListPeminjaman").DataTable().buttons(3).trigger();
+            });
+
+            // Tombol Export Excel
+            $("#export-excel").on("click", function () {
+                $(".tabelListPeminjaman").DataTable().buttons(1).trigger();
+            });
+
+            // Tombol Print
+            $("#export-print").on("click", function () {
+                window.print();
+            });
+        },
     });
+
+    $('.buttons-excel')[0].style.visibility = 'hidden';
+    $('.buttons-excel')[0].style.position = 'absolute';
+    $('.buttons-copy')[0].style.visibility = 'hidden';
+    $('.buttons-copy')[0].style.position = 'absolute';
+    $('.buttons-pdf')[0].style.visibility = 'hidden';
+    $('.buttons-pdf')[0].style.position = 'absolute';
+    $('.buttons-csv')[0].style.visibility = 'hidden';
+    $('.buttons-csv')[0].style.position = 'absolute';
+
     $('.dt-buttons').removeClass('dt-buttons');
     $('button#addEmployee').on('click', (e) => {
     $('button#submitButton').removeAttr('hidden');
@@ -141,7 +148,6 @@
 
 })
 function ProgressBarPeminjaman(status, guid) {
-    console.log(status);
     $('ul.twitter-bs-wizard-nav li a.active').removeClass('active');
     $('ul.twitter-bs-wizard-nav li #completed').html('<span id="completed">Completed</span>');
     $('ul.twitter-bs-wizard-nav li span').removeClass('badge bg-primary fs-6');
@@ -305,7 +311,6 @@ function tambahRuangan(guid) {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            console.log(data)
             $('#tableDaftarPeminjaman').append(`<tr>
             <td>${data.data.name}</td>
             <td>Lantai ${data.data.floor}</td>
@@ -379,9 +384,8 @@ function DetailPeminjaman(guid) {
             }
 
 
-            console.log(Elements.employeeGuid)
             $.ajax({
-                url: "employee/getEmployee/" + Elements.employeeGuid,
+                url: "/employee/getEmployee/" + Elements.employeeGuid,
                 dataSrc: "data",
                 dataType: "JSON"
             }).done((resultEmployee) => {
@@ -442,7 +446,6 @@ function UpdateRequest() {
     let isHaveRoom = false;
     tbl.forEach(ruangan => {
         if (ruangan.tipe == "Ruangan") {
-            console.log(tbl)
             var reqObj = {
                 Guid: req,
                 RoomGuid: ruangan.fasilityGuid,
