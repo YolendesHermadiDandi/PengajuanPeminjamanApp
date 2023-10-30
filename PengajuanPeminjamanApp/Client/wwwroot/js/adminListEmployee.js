@@ -1,8 +1,9 @@
 ﻿$(document).ready(function () {
-    let dataRoom = $("#tabelRoom").DataTable({
+
+    let dataFasility = $("#tabelEmployee").DataTable({
         ajax: {
-            url: "/room/get-all",
-            "dataSrc": function (data) {
+            url: "/admin/getAllEmployee",
+            dataSrc: function (data) {
                 if (data.data == null) {
                     return [];
                 } else {
@@ -13,31 +14,45 @@
         },
         columns: [
             {
-                defaultContent: "",
                 data: "",
                 render: function (data, type, row, meta) {
                     return meta.row + 1;
                 }
             },
+            { data: "nik" },
+            { data: "firstName" },
+            { data: "lastName" },
             {
-                "defaultContent": "",
-                data: "name",
+                data: "birthDate",
+                //render: function (data, type, row) {
+                //    return DateFormat(row.birthDate);
+                //}
             },
             {
-                "defaultContent": "",
-                data: "floor",
-            },
-            {
-                "defaultContent": "",
-                data: "guid",
+                data: "gender",
                 render: function (data, type, row) {
-                    return ` <input type="hidden" id="roomId" name="roomyId" value="${row.guid}">
-                            <a class="me-3" data-bs-toggle="modal" onclick="getUpdateRuangan('${row.guid}')" data-bs-target="#adddUpdateRoom">
-                                    <img src="/assets/img/icons/edit.svg" alt="img">
-                             </a>
-                             <a class="me-3 confirm-text" onclick=Delete('${row.guid}')>
-                                    <img src="/assets/img/icons/delete.svg" alt="img">
-                             </a>`;
+                    return row.gender == "0" ? "Perempuan" : "Laki-laki";
+                }
+            },
+            {
+                data: "hiringDate",
+                //render: function (data, type, row) {
+                //    return DateFormat(row.hiringDate);
+                //}
+            },
+            { data: "email" },
+            { data: "phoneNumber" },
+            {
+                data: "guid",
+                //
+                render: function (data, type, row) {
+                    return ` <input type="hidden" id="empId" name="empId" value="${row.guid}">
+                        <a class="me-3" onclick=getUpdateEmployee('${row.guid}') data-bs-target="#adddUpdateEmployee" data-bs-toggle="modal">
+                            <img src="/assets/img/icons/edit.svg" alt="img">
+                        </a>
+                        <a class="me-3 confirm-text"  onclick=Delete('${row.guid}')>
+                            <img src="/assets/img/icons/delete.svg" alt="img">
+                        </a>`;
                 }
             }
         ],
@@ -56,7 +71,7 @@
                 extend: 'pdfHtml5',
                 exportOptions: {
                     columns: ':visible',
-                    columns: [1, 2]
+                    columns: [1, 2, 3, 5, 7, 8]
                 },
                 className: 'btn btn-outline-danger',
                 titleAttr: 'pdf',
@@ -69,38 +84,44 @@
                 className: 'btn btn-outline-info text-black',
             }
         ],
-    });
+    })
     $('.dt-buttons').removeClass('dt-buttons');
-    $('button#addRoom').on('click', (e) => {
+    $('button#addEmployee').on('click', (e) => {
         $('button#submitButton').removeAttr('hidden');
     })
 })
 
-function getUpdateRuangan(guid) {
+function getUpdateEmployee(guid) {
     $('div.action-button').html('<button type="submit" id="updateButton" onclick="Update()" class="btn btn-primary" data-bs-dismiss="modal">Update</button>');
     /*   let guid = */
     $.ajax({
-        url: "/room/edit/" + guid,
+        url: "/admin/employee/edit/" + guid,
         dataSrc: "data",
         dataType: "JSON"
     }).done((result) => {
-        $('#uRoomId').val(`${result.guid}`);
-        $("#name").val(`${result.name}`);
-        $("#floor").val(`${result.floor}`);
+
+        $('#uEmpId').val(`${result.guid}`);
+        $("#firstName").val(`${result.firstName}`);
+        $("#lastName").val(`${result.lastName}`);
+        $("#birthDate").val(`${result.birthDate}`);
+        $("#genderSelect").val(`${result.gender}`);
+        $("#hiringDate").val(`${result.hiringDate}`);
+        $("#email").val(`${result.email}`);
+        $("#phoneNumber").val(`${result.phoneNumber}`);
     }).fail((error) => {
     });
 }
 
 
 function Update() {
-    let room = new Object();
-    room.guid = $('#uRoomId').val();
-    room.name = $("#name").val();
-    room.floor = $("#floor").val();
+    let fasility = new Object();
+    fasility.guid = $('#uFasilityId').val();
+    fasility.name = $("#name").val();
+    fasility.stock = $("#stock").val();
     $.ajax({
         type: "post",
-        url: "/room/update",
-        data: room,
+        url: "/fasility/update",
+        data: fasility,
     }).done((result) => {
         //console.log(result);
         Swal.fire({
@@ -109,7 +130,7 @@ function Update() {
             showConfirmButton: false,
             timer: 1500
         })
-        $('#tabelRoom').DataTable().ajax.reload();
+        $('#tabelFasility').DataTable().ajax.reload();
     }).fail((error) => {
         Swal.fire({
             icon: 'error',
@@ -117,7 +138,7 @@ function Update() {
             text: 'Failed to update data',
 
         })
-        $('#tabelRoom').DataTable().ajax.reload();
+        $('#tabelFasility').DataTable().ajax.reload();
     });
 }
 //Delete
@@ -133,10 +154,11 @@ function Delete(guid) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/room/delete/" + guid,
+                url: "/fasility/delete/" + guid,
                 dataSrc: "data",
                 dataType: "JSON"
             }).done((result) => {
+                console.log(result);
                 if (result.code == 500) {
                     Swal.fire({
                         icon: 'error',
@@ -151,7 +173,7 @@ function Delete(guid) {
                         'success'
                     )
                 }
-                $('#tabelRoom').DataTable().ajax.reload();
+                $('#tabelFasility').DataTable().ajax.reload();
             }).fail((error) => {
                 Swal.fire({
                     icon: 'error',
@@ -165,36 +187,47 @@ function Delete(guid) {
     })
 }
 
+$('#addEmployee').on('click', () => {
+    $('div.action-button').html('<button type="submit" id="submitButton" onclick="Insert()" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>')
+    document.getElementById("emploteeForm").reset();
+})
+
 function Insert() {
-    let room = new Object();
-    room.name = $("#name").val();
-    room.floor = $("#floor").val();;
+    let employee = new Object();
+    employee.firstName = $("#firstName").val();
+    employee.lastName = $("#lastName").val();
+    employee.birthDate = $("#birthDate").val();
+    employee.gender = parseInt($("#genderSelect").find(':selected').val());
+    employee.hiringDate = $("#hiringDate").val();
+    employee.email = $("#email").val();
+    employee.phoneNumber = $("#phoneNumber").val();
+    if (employee.birthDate == '' || employee.hiringDate == '') {
+        return alert('birth date or hiring date cant null');
+    }
     $.ajax({
         type: "post",
-        url: "/room/insert",
-        data: room,
+        url: "/admin/insertEmployee",
+        data: employee,
     }).done((result) => {
+        console.log(result);
         Swal.fire({
             icon: 'success',
             title: 'Insert Success',
             showConfirmButton: false,
             timer: 1500
         });
-        $('#tabelRoom').DataTable().ajax.reload();
+        $('#tabelEmployee').DataTable().ajax.reload();
     }).fail((error) => {
+        console.log(error);
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: 'Failed to insert data',
 
         })
-        $('#tabelRoom').DataTable().ajax.reload();
+        $('#tabelEmployee').DataTable().ajax.reload();
     });
 
 
-}
 
-$('#addRoom').on('click', () => {
-    $('div.action-button').html('<button type="submit" id="submitButton" onclick="Insert()" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>')
-    document.getElementById("roomForm").reset();
-})
+}

@@ -19,29 +19,40 @@
                 lastResult = decodedText;
                 // Handle on success condition with the decoded message.
                 console.log(`Scan result ${decodedText}`, decodedResult);
-                $.ajax({
-                    url: "/qrScan/getRequest/" + decodedText,
-                    dataSrc: "data",
-                    dataType: "JSON"
-                }).done((result) => {
-                    if (result.code == 200) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                        //$("#QRModal").modal('hide');
-                    } else {
+                try {
+                    $.ajax({
+                        url: "/qrScan/getRequest/" + decodedText,
+                        dataSrc: "data",
+                        dataType: "JSON"
+                    }).done((result) => {
+                        if (result.code == 200) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                            //$("#QRModal").modal('hide');
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'You Not Invited',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                            //$("#QRModal").modal('hide');
+                        }
+                    }).fail((err) => {
                         Swal.fire({
                             icon: 'error',
                             title: 'You Not Invited',
                             showConfirmButton: false,
                             timer: 1500
                         })
-                        //$("#QRModal").modal('hide');
-                    }
-                }).fail((err) => { });
+                    });
+                } catch (e) {
+                    alert(e);
+                }
                 setTimeout(function () {
                     window.location.reload(1);
                 }, 2000);
