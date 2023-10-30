@@ -12,6 +12,17 @@ namespace Client.Repositries
 
         public RoomRepository(string request = "room/") : base(request) { }
 
+        public async Task<ResponseOKHandler<IEnumerable<RoomDateRequestDto>>> GetRoomDate()
+        {
+            ResponseOKHandler<IEnumerable<RoomDateRequestDto>> entityVM = null;
+            using (var response = await httpClient.GetAsync(request+ "GetRoomDate"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<IEnumerable<RoomDateRequestDto>>>(apiResponse);
+            }
+            return entityVM;
+        }
+
         public async Task<ResponseOKHandler<RoomDto>> Insert(CreateRoomDto entity)
         {
             ResponseOKHandler<RoomDto> entityVM = null;
@@ -23,5 +34,7 @@ namespace Client.Repositries
             }
             return entityVM;
         }
+
+
     }
 }

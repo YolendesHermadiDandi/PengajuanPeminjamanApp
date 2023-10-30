@@ -49,6 +49,35 @@ public class RoomController : ControllerBase
 
         return Ok(new ResponseOKHandler<IEnumerable<RoomStatusDto>>(result));
     }
+    
+    [HttpGet("GetRoomDate")]
+    public IActionResult GetRoomDate()
+    {
+        var room = _roomRepository.GetAll();
+        var requests = _requestRepository.GetAll();
+
+        if (!(requests.Any() && room.Any()))
+        {
+            return NotFound(new ResponseErrorHandler
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "No Room Is Empty"
+            });
+        }
+
+        IEnumerable<RoomDateRequestDto> result = (from roo in room
+                                     join req in requests on roo.Guid equals req.RoomGuid into roomRequests
+                                     from req in roomRequests
+                                     select new RoomDateRequestDto
+                                     {
+                                         title = "Ruangan "+roo.Name,
+                                         start = req.StartDate,
+                                         end= req.EndDate
+                                     }).ToList();
+
+        return Ok(new ResponseOKHandler<IEnumerable<RoomDateRequestDto>>(result));
+    }
 
     [HttpGet]
     public IActionResult GetAll()

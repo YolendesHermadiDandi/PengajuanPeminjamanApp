@@ -39,6 +39,11 @@ public class PanelController : Controller
     {
         return View();
     }
+
+    public IActionResult KalenderPeminjaman()
+    {
+        return View();
+    }
     public IActionResult ListFasilitas()
     {
         return View();

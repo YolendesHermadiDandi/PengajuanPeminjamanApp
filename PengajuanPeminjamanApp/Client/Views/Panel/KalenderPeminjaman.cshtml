@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "KalenderPeminjaman";
+    Layout = "~/Views/Shared/_LayoutEmployeePanel.cshtml";
+}
+
+
+<div id='calendar'></div>
+
+@section Scripts{
+    <script src='~/assets/dist/index.global.js'></script>
+    <script src="~/js/employee/employeeKalender.js" asp-append-version="true"></script>
+}
+    
+@section CSS{
+    <style>
+
+        body {
+            margin: 40px 10px;
+            padding: 0;
+            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        #calendar {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+    </style>
+}
