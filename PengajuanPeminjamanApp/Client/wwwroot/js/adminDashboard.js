@@ -1,35 +1,56 @@
-﻿$(document).ready(function (e) {
+﻿function GetData() {
+$(document).ready(function (e) {
 
     $.ajax({
         url: "/admin/geAllDataFasikit&Room",
         "dataSrc": "data",
         dataType: "JSON"
     }).done((resilt) => {
-        var morrisData = [];
+        try {
+            var morrisData = [];
+            $.each(resilt.data, function (key, val) {
+                morrisData.push({ label: "" + val.name + "", value: val.stock })
+            });
 
-        //new Morris.Donut({
-        //    element: 'morrisDonut1',
-        //    data: [
-        //        { label: "Men", value: 12 },
-        //        { label: "Women", value: 30 },
-        //        { label: "Kids", value: 20 }
-        //    ],
-        //    colors: ['#3D449C', '#268FB2', '#74DE00'],
-        //    resize: true
-        //});
+            var arrColors = ['#FF788F', '#FEB019', '#3D449C', '#268FB2', '#74DE00'];
+            new Morris.Donut({
+                element: 'morrisDonut1',
+                data: morrisData,
+                colors: arrColors,
+                resize: true
+            });
+        } catch (e) {
 
-        $.each(resilt.data, function (key, val) {
-            morrisData.push({ label: "" + val.name + "", value: val.stock })
+        }
+    }).fail((err) => { });
+
+    $.ajax({
+        url: "/admin/getUserData",
+        "dataSrc": "data",
+        dataType: "JSON"
+    }).done((result) => {
+        $.ajax({
+            url: "/admin/profileData",
+            dataSrc: "data",
+            dataType: "JSON"
+        }).done((result) => {
+
+            if (result.img == "") {
+                $("#navUserImage").attr("src", "/assets/img/profiles/default-profile.jpg");
+                $("#navImgageProfile").attr("src", "/assets/img/profiles/default-profile.jpg");
+            } else {
+                $("#navUserImage").attr("src", `/assets/img/profiles/${result.img}`);
+                $("#navImgageProfile").attr("src", `/assets/img/profiles/${result.img}`);
+            }
         });
+        $("#uUserId").val(result.data.userGuid);
+        $("div.profilesets").html(`<h6>${result.data.name}</h6>
+                                   <h5>Admin</h5>`)
 
-        var arrColors = ['#FF788F','#FEB019','#3D449C', '#268FB2', '#74DE00'];
-        new Morris.Donut({
-            element: 'morrisDonut1',
-            data: morrisData,
-            colors: arrColors, 
-            resize: true
-        });
     }).fail((err) => { });
 
 
 });
+}
+GetData();
+

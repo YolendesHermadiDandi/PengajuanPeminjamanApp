@@ -396,6 +396,43 @@ namespace API.Controllers
             }
         }
 
+        [HttpPut("updateProfile")]
+        public IActionResult UpdateProfile(ChangeProfileDto changeProfileDto)
+        {
+            try
+            {
+                var existingAccount = _accountRepository.GetByGuid(changeProfileDto.Guid);
+                if (existingAccount is null)
+                {
+                    return NotFound(new ResponseErrorHandler
+                    {
+                        Code = StatusCodes.Status404NotFound,
+                        Status = HttpStatusCode.NotFound.ToString(),
+                        Message = "ID NOT FOUND"
+                    });
+                }
+
+                
+                Account toUpdate = existingAccount;
+                toUpdate.ImgProfile = changeProfileDto.ImgProfile;
+
+                var result = _accountRepository.Update(toUpdate);
+
+                return Ok(new ResponseOKHandler<string>("DATA UPDATED"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseErrorHandler
+                {
+                    Code = StatusCodes.Status400BadRequest,
+                    Status = HttpStatusCode.BadRequest.ToString(),
+                    Message = "Failed to update data"
+
+
+                });
+            }
+        }
+
         [HttpDelete("{guid}")]
         /*
         * Method dibawah digunakan untuk menghapus data dengan menggunakan guid

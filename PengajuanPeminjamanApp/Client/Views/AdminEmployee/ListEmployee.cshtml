@@ -1,0 +1,160 @@
+﻿@{
+    ViewData["Title"] = "List Employee";
+    ViewData["AdminListEmployee"] = "active";
+    Layout = "AdminLayout";
+}
+
+
+<div class="content">
+    <div class="page-header">
+        <div class="page-title">
+            <h4>List Employee</h4>
+            <h6>Manage Employee</h6>
+        </div>
+        <div class="page-btn">
+            <button type="button" class="btn btn-added" id="addEmployee" data-bs-toggle="modal" data-bs-target="#adddUpdateEmployee">
+                <img src="~/assets/img/icons/plus.svg" alt="img" />
+                Add Employee
+            </button>
+        </div>
+    </div>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table" style="width:100%;" id="tabelEmployee">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>NIK</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Birth Date</th>
+                            <th>Gender</th>
+                            <th>Hiring Date</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="adddUpdateEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="page-title">
+                    <h4>Employee Management</h4>
+                    <h6>Add/Update Employee</h6>
+                </div>
+            </div>
+            <form class="was-validated" id="emploteeForm">
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="firstName">First Name</label>
+                                        <input id="firstName" type="text" required>
+                                        <input id="uEmpId" type="hidden" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name</label>
+                                        <input id="lastName" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="birthDate">Birth Date </label>
+                                        <div class="input-groupicon">
+                                            <input type="text" id="birthDate" required placeholder="DD-MM-YYYY" class="datetimepicker">
+                                            <div class="addonset">
+                                                <img src="~/assets/img/icons/calendars.svg" alt="img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="genderSelect">Gender</label>
+                                        <select class="form-select" id="genderSelect" required aria-label="select example">
+                                            <option selected disabled value="">Choose Gender</option>
+                                            <option value="0">Perempuan</option>
+                                            <option value="1">Laki-Laki</option>
+                                        </select>
+                                        <div class="invalid-feedback">Example invalid select feedback</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="hiringDate">Hiring Date </label>
+                                        <div class="input-groupicon">
+                                            <input type="text" id="hiringDate" required placeholder="DD-MM-YYYY" class="datetimepicker">
+                                            <div class="addonset">
+                                                <img src="~/assets/img/icons/calendars.svg" alt="img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="text" id="email" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="phoneNumber">Phone Number</label>
+                                        <input type="text" id="phoneNumber" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12"></div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <div class="pass-group">
+                                            <input id="password" type="password" class=" pass-input">
+                                            <span class="fas toggle-password fa-eye-slash"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label>Confirm Password</label>
+                                        <div class="pass-group">
+                                            <input id="passwords" type="password" class=" pass-inputs">
+                                            <span class="fas toggle-passworda fa-eye-slash"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <div class="action-button">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/js/adminDashboard.js" asp-append-version="true"></script>
+    <script src="~/js/adminListEmployee.js" asp-append-version="true"></script>
+}

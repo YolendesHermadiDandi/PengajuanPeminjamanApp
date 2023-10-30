@@ -1,6 +1,8 @@
 ﻿using API.DTOs.Accounts;
+using API.DTOs.Requests;
 using API.Utilities.Handlers;
 using Client.Contracts;
+using Client.DTOs.Accounts;
 using Client.Models;
 using Client.Repositories;
 using Newtonsoft.Json;
@@ -38,5 +40,17 @@ public class AccountRepository : GeneralRepository<AccountDto, Guid>, IAccountRe
             var entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<ClaimsDto>>(apiResponse);
             return entityVM;
         }
+    }
+
+    public async Task<ResponseOKHandler<ChangeProfileDto>> UpdateProfile(ChangeProfileDto entity)
+    {
+        ResponseOKHandler<ChangeProfileDto> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+        using (var response = httpClient.PutAsync(request + "updateProfile", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<ChangeProfileDto>>(apiResponse);
+        }
+        return entityVM;
     }
 }

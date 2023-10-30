@@ -53,9 +53,9 @@
                 } catch (e) {
                     alert(e);
                 }
-                //setTimeout(function () {
-                //    window.location.reload(1);
-                //}, 2000);
+                setTimeout(function () {
+                    window.location.reload(1);
+                }, 2000);
             }
         }
 

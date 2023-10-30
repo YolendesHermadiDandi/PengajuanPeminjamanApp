@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Requests;
+using API.Models;
 using Client.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,11 +25,26 @@ public class PanelController : Controller
         {
             return RedirectToAction("Login", "Auth");
         }
+
+        var roles = result.Data.Role;
+        var getRole = "";
+        foreach(var role in roles)
+        {
+            if (role == "Admin")
+            {
+                getRole = role;
+            }
+        }
         Guid employee = new Guid(result.Data.UserGuid);
         var listRequest = await _requestRepository.GetByEmployeeGuid(employee);
         var data = new List<ListRequestDto>();
         if (result != null)
         {
+            if(getRole == "Admin")
+            {
+                return RedirectToAction("index", "AdminDashboard");
+            }
+
             data = listRequest.Data.ToList();
             return View(data);
         }

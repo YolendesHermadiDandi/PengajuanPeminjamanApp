@@ -15,6 +15,9 @@ public class Account : GeneralModel
     public bool IsUsed { get; set; }
     [Column("expired_time", TypeName = "datetime2")]
     public DateTime ExpiredTime { get; set; }
+
+    [Column("img_profile", TypeName = "nvarchar(max)")]
+    public string ImgProfile { get; set; }
     public Employee? Employee { get; set; }
     public ICollection<AccountRole>? AccountRoles { get; set; }
 }
