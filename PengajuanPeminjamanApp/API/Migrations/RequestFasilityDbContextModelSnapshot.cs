@@ -37,7 +37,6 @@ namespace API.Migrations
                         .HasColumnName("expired_time");
 
                     b.Property<string>("ImgProfile")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("img_profile");
 

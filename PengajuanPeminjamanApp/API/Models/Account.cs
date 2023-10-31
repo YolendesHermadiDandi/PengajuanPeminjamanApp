@@ -17,7 +17,7 @@ public class Account : GeneralModel
     public DateTime ExpiredTime { get; set; }
 
     [Column("img_profile", TypeName = "nvarchar(max)")]
-    public string ImgProfile { get; set; }
+    public string? ImgProfile { get; set; }
     public Employee? Employee { get; set; }
     public ICollection<AccountRole>? AccountRoles { get; set; }
 }

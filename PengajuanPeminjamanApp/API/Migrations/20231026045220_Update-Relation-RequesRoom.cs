@@ -13,9 +13,6 @@ namespace API.Migrations
                 name: "FK_tr_m_request_tb_m_rooms_room_guid",
                 table: "tr_m_request");
 
-            migrationBuilder.DropTable(
-                name: "tb_m_notification");
-
             migrationBuilder.DropIndex(
                 name: "IX_tr_m_request_room_guid",
                 table: "tr_m_request");

@@ -49,9 +49,6 @@
                     return ` <input type="hidden" id="empId" name="empId" value="${row.guid}">
                         <a class="me-3" onclick=getUpdateEmployee('${row.guid}') data-bs-target="#adddUpdateEmployee" data-bs-toggle="modal">
                             <img src="/assets/img/icons/edit.svg" alt="img">
-                        </a>
-                        <a class="me-3 confirm-text"  onclick=Delete('${row.guid}')>
-                            <img src="/assets/img/icons/delete.svg" alt="img">
                         </a>`;
                 }
             }
@@ -93,6 +90,8 @@
 
 function getUpdateEmployee(guid) {
     $('div.action-button').html('<button type="submit" id="updateButton" onclick="Update()" class="btn btn-primary" data-bs-dismiss="modal">Update</button>');
+    $('div#listUpdatePassword').remove();
+    $('div#listUpdateConfirmPassword').remove();
     /*   let guid = */
     $.ajax({
         url: "/admin/employee/edit/" + guid,
@@ -101,6 +100,7 @@ function getUpdateEmployee(guid) {
     }).done((result) => {
 
         $('#uEmpId').val(`${result.guid}`);
+        $('#uNik').val(`${result.nik}`);
         $("#firstName").val(`${result.firstName}`);
         $("#lastName").val(`${result.lastName}`);
         $("#birthDate").val(`${result.birthDate}`);
@@ -114,23 +114,42 @@ function getUpdateEmployee(guid) {
 
 
 function Update() {
-    let fasility = new Object();
-    fasility.guid = $('#uFasilityId').val();
-    fasility.name = $("#name").val();
-    fasility.stock = $("#stock").val();
+    let employee = new Object();
+    employee.guid = $("#uEmpId").val();
+    employee.nik = $("#uNik").val();
+    employee.firstName = $("#firstName").val();
+    employee.lastName = $("#lastName").val();
+    employee.birthDate = $("#birthDate").val();
+    employee.gender = parseInt($("#genderSelect").find(':selected').val());
+    employee.hiringDate = $("#hiringDate").val();
+    employee.email = $("#email").val();
+    employee.phoneNumber = $("#phoneNumber").val();
+    if (employee.birthDate == '' || employee.hiringDate == '') {
+        return alert('birth date or hiring date cant null');
+    }
     $.ajax({
         type: "post",
-        url: "/fasility/update",
-        data: fasility,
+        url: "/admin/employee/update",
+        data: employee,
     }).done((result) => {
         //console.log(result);
-        Swal.fire({
-            icon: 'success',
-            title: 'Update Success',
-            showConfirmButton: false,
-            timer: 1500
-        })
-        $('#tabelFasility').DataTable().ajax.reload();
+        if (result.code == 200) {
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Update Success',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to update data',
+
+            });
+        }
+        $('#tabelEmployee').DataTable().ajax.reload();
     }).fail((error) => {
         Swal.fire({
             icon: 'error',
@@ -138,53 +157,10 @@ function Update() {
             text: 'Failed to update data',
 
         })
-        $('#tabelFasility').DataTable().ajax.reload();
+        $('#tabelEmployee').DataTable().ajax.reload();
     });
-}
-//Delete
-function Delete(guid) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: "/fasility/delete/" + guid,
-                dataSrc: "data",
-                dataType: "JSON"
-            }).done((result) => {
-                console.log(result);
-                if (result.code == 500) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Failed to delete data',
 
-                    });
-                } else {
-                    Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
-                }
-                $('#tabelFasility').DataTable().ajax.reload();
-            }).fail((error) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Failed to delete data',
 
-                })
-            });
-
-        }
-    })
 }
 
 $('#addEmployee').on('click', () => {
@@ -201,6 +177,8 @@ function Insert() {
     employee.hiringDate = $("#hiringDate").val();
     employee.email = $("#email").val();
     employee.phoneNumber = $("#phoneNumber").val();
+    employee.password = $("#password").val();
+    employee.confirmPassword = $("#passwords").val();
     if (employee.birthDate == '' || employee.hiringDate == '') {
         return alert('birth date or hiring date cant null');
     }

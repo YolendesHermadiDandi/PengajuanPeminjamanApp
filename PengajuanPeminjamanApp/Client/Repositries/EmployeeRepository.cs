@@ -24,5 +24,17 @@ namespace Client.Repositries
             return entityVM;
         }
 
+        public async Task<ResponseOKHandler<EmployeeDto>> UpdateEmployee(EmployeeDto entity)
+        {
+            ResponseOKHandler<EmployeeDto> entityVM = null;
+            StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+            using (var response = httpClient.PutAsync(request + "update", content).Result)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<EmployeeDto>>(apiResponse);
+            }
+            return entityVM;
+        }
+
     }
 }

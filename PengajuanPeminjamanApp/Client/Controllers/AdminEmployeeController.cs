@@ -1,4 +1,5 @@
-﻿using API.DTOs.Employees;
+﻿using API.DTOs.Accounts;
+using API.DTOs.Employees;
 using Client.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Core.Types;
@@ -8,10 +9,12 @@ namespace Client.Controllers
     public class AdminEmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public AdminEmployeeController(IEmployeeRepository employeeRepository)
+        public AdminEmployeeController(IEmployeeRepository employeeRepository, IAccountRepository accountRepository)
         {
             _employeeRepository = employeeRepository;
+            _accountRepository = accountRepository;
         }
 
         [HttpGet("admin/listEmployee")]
@@ -28,9 +31,9 @@ namespace Client.Controllers
         }
 
         [HttpPost("admin/insertEmployee")]
-        public async Task<JsonResult> InsertEmployee(CreateEmployeeDto createEmployeeDto) 
+        public async Task<JsonResult> InsertEmployee(RegisterAccountDto registerAccountDto) 
         {
-            var result = await _employeeRepository.InsertEmployee(createEmployeeDto);
+            var result = await _accountRepository.RegisterEmployee(registerAccountDto);
             if (result.Code == 200)
             {
                 return Json(result);
@@ -54,5 +57,19 @@ namespace Client.Controllers
             }
             return Json(employee);
         }
+
+        [HttpPost("admin/employee/update")]
+        public async Task<JsonResult> Update(EmployeeDto emp)
+        {
+            var result = await _employeeRepository.UpdateEmployee(emp);
+
+            if (result.Code == 200)
+            {
+                return Json(result);
+            }
+            return Json(result);
+        }
+
+
     }
 }
