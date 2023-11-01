@@ -3,6 +3,7 @@ using API.DTOs.ListFasilities;
 using API.DTOs.Requests;
 using API.DTOs.Rooms;
 using API.Models;
+using API.Repositories;
 using API.Utilities.Enums;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
@@ -422,6 +423,89 @@ public class RequestController : ControllerBase
 
        IEnumerable<CountRequestStatusDto> data = (from req in result
                                      where req.EmployeeGuid == guid
+                                      group req by req.Status into grouped
+                                      select new CountRequestStatusDto
+                                      {
+                                          status = grouped.Key,
+                                          count = grouped.Count()
+                                      }).ToList();
+
+        return Ok(new ResponseOKHandler<IEnumerable<CountRequestStatusDto>>(data));
+    }
+    
+    [HttpGet("GetCountRequestMonth/")]
+    public IActionResult GetCountRequestMonth()
+    {
+        var result = _requestRespository.GetAll();
+        var room = _roomRepository.GetAll();
+        if (result is null)
+        {
+            return NotFound(new ResponseErrorHandler
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data Not Found"
+            });
+        }
+
+        var startDate = DateTime.Now.AddMonths(-12);
+        var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
+
+        // Generate a list of dates for each month within the date range
+        var allMonths = new List<DateTime>();
+        var currentDate = startDate;
+        while (currentDate <= endDate)
+        {
+            allMonths.Add(currentDate);
+            currentDate = currentDate.AddMonths(1);
+        }
+
+        var data = (
+            from r in result
+            where r.StartDate >= startDate && r.StartDate <= endDate
+            group r by new { Year = r.StartDate.Year, Month = r.StartDate.Month } into grouped
+            select new RequestCountMonthDto
+            {
+                Category = $"{grouped.Key.Year}-{grouped.Key.Month}",
+                Data = grouped.Count()
+            }
+        ).ToList();
+
+        foreach (var month in allMonths)
+        {
+            if (result.All(d => $"{d.StartDate.Year}-{d.StartDate.Month}" != $"{month.Year}-{month.Month}"))
+            {
+                data.Add(new RequestCountMonthDto
+                {
+                    Category = $"{month.Year}-{month.Month}",
+                    Data = 0
+                });
+            }
+        }
+        data = data.OrderByDescending(d => int.Parse(d.Category.Split('-')[0]))
+            .ThenByDescending(d => int.Parse(d.Category.Split('-')[1]))
+            .ToList();
+
+        return Ok(new ResponseOKHandler<IEnumerable<RequestCountMonthDto>>(data));
+
+    }
+
+    [HttpGet("GetCountStatusRequestAll/")]
+    public IActionResult GetCountStatusRequestAll()
+    {
+        var result = _requestRespository.GetAll();
+        var room = _roomRepository.GetAll();
+        if (result is null)
+        {
+            return NotFound(new ResponseErrorHandler
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data Not Found"
+            });
+        }
+
+       IEnumerable<CountRequestStatusDto> data = (from req in result
                                       group req by req.Status into grouped
                                       select new CountRequestStatusDto
                                       {
