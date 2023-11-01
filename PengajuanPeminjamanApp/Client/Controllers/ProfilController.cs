@@ -17,9 +17,15 @@ namespace Client.Controllers
         }
 
         [HttpGet("/Profile")]
-        public IActionResult Profil()
+        public async Task<IActionResult> ProfilAsync()
         {
-            return View();
+            var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
+            if (result == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            return View(result.Data);
         }
 
         [HttpGet("/profileData")]

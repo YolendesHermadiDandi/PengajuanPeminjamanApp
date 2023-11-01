@@ -1,6 +1,15 @@
-﻿@{
+﻿@model API.DTOs.Accounts.ClaimsDto
+
+@{
     ViewData["Title"] = "Profile";
-    Layout = "AdminLayout";
+    if (Model.Role[0] == "Employee")
+    {
+        Layout = "_LayoutEmployeePanel";
+    }
+    else
+    {
+        Layout = "AdminLayout";
+    }
 }
 <div class="page-header">
     <div class="page-title">
@@ -144,7 +153,6 @@
 
 @section Scripts{
     <script src="~/js/Profile.js" asp-append-version="true"></script>
-    <script src="~/js/adminDashboard.js" asp-append-version="true"></script>
+   <script src="~/js/adminDashboard.js" asp-append-version="true"></script>
     <script src="~/assets/js/croppie.js"></script>
-
     }
