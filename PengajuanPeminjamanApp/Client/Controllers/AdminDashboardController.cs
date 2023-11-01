@@ -33,11 +33,13 @@ namespace Client.Controllers
         {
             var vasility = await _facilityRepository.Get();
             var statusCount = await _requestRepository.GetCountStatusRequest();
+            var dataMonth = await _requestRepository.GetDataReportMonth();
 
             var result = new
             {
                 vasility = vasility.Data,
                 statusCount = statusCount.Data,
+                monthReport = dataMonth.Data
             };
 
             //var room = await _roomRepository.Get();

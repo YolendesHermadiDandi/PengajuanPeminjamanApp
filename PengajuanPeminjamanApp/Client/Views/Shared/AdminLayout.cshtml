@@ -85,17 +85,17 @@
                                 </span>
                                 <div class="profilesets">
                                     <@* h6>John Doe</h6>
-                                    <h5>Admin</h5> *@
+                                        <h5>Admin</h5> *@
                                 </div>
                             </div>
                             <hr class="m-0">
-                            <a class="dropdown-item" href="/admin/profile">
+                            <a class="dropdown-item" asp-controller="Profil" asp-action="Profil">
                                 <i class="me-2" data-feather="user"></i> My
                                 Profile
                             </a>
-                          @*   <a class="dropdown-item" href="generalsettings.html">
-                                <i class="me-2"
-                                   data-feather="settings"></i>Settings
+                            @*   <a class="dropdown-item" href="generalsettings.html">
+                            <i class="me-2"
+                            data-feather="settings"></i>Settings
                             </a> *@
                             <hr class="m-0">
                             <a class="dropdown-item logout pb-0" asp-controller="Home" asp-action="Index">
@@ -107,14 +107,14 @@
             </ul>
 
 
-         @*    <div class="dropdown mobile-user-menu">
-                <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
-                   aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="profile.html">My Profile</a>
-                    <a class="dropdown-item" href="generalsettings.html">Settings</a>
-                    <a class="dropdown-item" asp-controller="Authentication" asp-action="Logout">Logout</a>
-                </div>
+            @*    <div class="dropdown mobile-user-menu">
+            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+            <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="profile.html">My Profile</a>
+            <a class="dropdown-item" href="generalsettings.html">Settings</a>
+            <a class="dropdown-item" asp-controller="Authentication" asp-action="Logout">Logout</a>
+            </div>
             </div> *@
 
         </div>
@@ -132,11 +132,11 @@
                             </a>
                         </li>
                         @* <li class=@className>
-                            <a href="/admin/notifications">
-                                <img src="/assets/img/icons/notification-bing.svg" alt="img"><span>
-                                    Notifications
-                                </span>
-                            </a>
+                        <a href="/admin/notifications">
+                        <img src="/assets/img/icons/notification-bing.svg" alt="img"><span>
+                        Notifications
+                        </span>
+                        </a>
                         </li> *@
                         <li class="submenu">
                             <a href="javascript:void(0);">
@@ -188,7 +188,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <script src="~/assets/js/jquery-3.6.0.min.js"></script>

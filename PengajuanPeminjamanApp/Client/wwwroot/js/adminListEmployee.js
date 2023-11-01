@@ -24,9 +24,9 @@
             { data: "lastName" },
             {
                 data: "birthDate",
-                //render: function (data, type, row) {
-                //    return DateFormat(row.birthDate);
-                //}
+                render: function (data, type, row) {
+                    return DateFormat(row.birthDate);
+                }
             },
             {
                 data: "gender",
@@ -36,9 +36,9 @@
             },
             {
                 data: "hiringDate",
-                //render: function (data, type, row) {
-                //    return DateFormat(row.hiringDate);
-                //}
+                render: function (data, type, row) {
+                    return DateFormat(row.hiringDate);
+                }
             },
             { data: "email" },
             { data: "phoneNumber" },
@@ -103,9 +103,9 @@ function getUpdateEmployee(guid) {
         $('#uNik').val(`${result.nik}`);
         $("#firstName").val(`${result.firstName}`);
         $("#lastName").val(`${result.lastName}`);
-        $("#birthDate").val(`${result.birthDate}`);
+        $("#birthDate").val(`${DateFormat(result.birthDate)}`);
         $("#genderSelect").val(`${result.gender}`);
-        $("#hiringDate").val(`${result.hiringDate}`);
+        $("#hiringDate").val(`${DateFormat(result.hiringDate)}`);
         $("#email").val(`${result.email}`);
         $("#phoneNumber").val(`${result.phoneNumber}`);
     }).fail((error) => {
@@ -208,4 +208,16 @@ function Insert() {
 
 
 
+}
+
+function DateFormat(date) {
+    const today = new Date(date);
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0!
+    let dd = today.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+    return formattedToday = dd + '-' + mm + '-' + yyyy
 }
