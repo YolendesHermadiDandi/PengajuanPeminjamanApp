@@ -56,7 +56,7 @@
                 extend: 'pdfHtml5',
                 exportOptions: {
                     columns: ':visible',
-                    columns: [1, 2, 3, 5, 7, 8]
+                    columns: [1, 2]
                 },
                 className: 'btn btn-outline-danger',
                 titleAttr: 'pdf',

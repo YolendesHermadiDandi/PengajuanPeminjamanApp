@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(RequestFasilityDbContext))]
-    [Migration("20231022062842_update-notifikasi-db")]
-    partial class updatenotifikasidb
+    [Migration("20231030071103_update-account-table")]
+    partial class updateaccounttable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,6 +37,10 @@ namespace API.Migrations
                     b.Property<DateTime>("ExpiredTime")
                         .HasColumnType("datetime2")
                         .HasColumnName("expired_time");
+
+                    b.Property<string>("ImgProfile")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("img_profile");
 
                     b.Property<bool>("IsUsed")
                         .HasColumnType("bit")
@@ -222,37 +226,6 @@ namespace API.Migrations
                     b.ToTable("tb_m_list_fasility");
                 });
 
-            modelBuilder.Entity("API.Models.Notification", b =>
-                {
-                    b.Property<Guid>("Guid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("guid");
-
-                    b.Property<Guid>("AccountGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("account_guid");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("created_date");
-
-                    b.Property<bool>("IsSeen")
-                        .HasColumnType("bit")
-                        .HasColumnName("is_seen");
-
-                    b.Property<string>("Massage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("massage");
-
-                    b.HasKey("Guid");
-
-                    b.HasIndex("AccountGuid");
-
-                    b.ToTable("tb_m_notification");
-                });
-
             modelBuilder.Entity("API.Models.Request", b =>
                 {
                     b.Property<Guid>("Guid")
@@ -276,7 +249,7 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
 
-                    b.Property<Guid>("RoomGuid")
+                    b.Property<Guid?>("RoomGuid")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("room_guid");
 
@@ -292,8 +265,7 @@ namespace API.Migrations
 
                     b.HasIndex("EmployeeGuid");
 
-                    b.HasIndex("RoomGuid")
-                        .IsUnique();
+                    b.HasIndex("RoomGuid");
 
                     b.ToTable("tr_m_request");
                 });
@@ -401,17 +373,6 @@ namespace API.Migrations
                     b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("API.Models.Notification", b =>
-                {
-                    b.HasOne("API.Models.Account", "Account")
-                        .WithMany("Notifications")
-                        .HasForeignKey("AccountGuid")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
             modelBuilder.Entity("API.Models.Request", b =>
                 {
                     b.HasOne("API.Models.Employee", "Employee")
@@ -421,10 +382,9 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.HasOne("API.Models.Room", "Room")
-                        .WithOne("Request")
-                        .HasForeignKey("API.Models.Request", "RoomGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Request")
+                        .HasForeignKey("RoomGuid")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Employee");
 
@@ -434,8 +394,6 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Account", b =>
                 {
                     b.Navigation("AccountRoles");
-
-                    b.Navigation("Notifications");
                 });
 
             modelBuilder.Entity("API.Models.Employee", b =>

@@ -8,12 +8,14 @@ namespace Client.Controllers
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IRoomRepository _roomRepository;
         private readonly IFasilityRepository _facilityRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public AdminDashboardController(IEmployeeRepository employeeRepository, IRoomRepository roomRepository, IFasilityRepository facilityRepository)
+        public AdminDashboardController(IEmployeeRepository employeeRepository, IRoomRepository roomRepository, IFasilityRepository facilityRepository, IAccountRepository accountRepository)
         {
             _employeeRepository = employeeRepository;
             _roomRepository = roomRepository;
             _facilityRepository = facilityRepository;
+            _accountRepository = accountRepository;
         }
 
         [HttpGet("admin/dashboard")]
@@ -22,6 +24,8 @@ namespace Client.Controllers
             return View();
         }
 
+
+
         [HttpGet("admin/geAllDataFasikit&Room")]
         public async Task<JsonResult> GetAllFasilityAndRoom()
         {
@@ -29,6 +33,13 @@ namespace Client.Controllers
             var room = await _roomRepository.Get();
 
             return Json(vasility);
+        }
+        
+        [HttpGet("admin/getUserData")]
+        public async Task<JsonResult> GetUserData()
+        {
+            var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
+            return Json(result);
         }
 
 

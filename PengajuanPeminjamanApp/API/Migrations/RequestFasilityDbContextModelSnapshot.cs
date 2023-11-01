@@ -36,6 +36,10 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("expired_time");
 
+                    b.Property<string>("ImgProfile")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("img_profile");
+
                     b.Property<bool>("IsUsed")
                         .HasColumnType("bit")
                         .HasColumnName("is_used");
