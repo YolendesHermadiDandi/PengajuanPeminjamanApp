@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
 {
-    public class AdminProfileController : Controller
+    public class ProfileController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IAccountRepository _accountRepository;
 
-        public AdminProfileController(IEmployeeRepository employeeRepository, IAccountRepository accountRepository)
+        public ProfileController(IEmployeeRepository employeeRepository, IAccountRepository accountRepository)
         {
             _employeeRepository = employeeRepository;
             _accountRepository = accountRepository;

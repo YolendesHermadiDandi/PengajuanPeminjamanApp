@@ -10,6 +10,15 @@
             let aktif = 0;
             let selesai = 0;
             let total = 0;
+            let data = [];
+            let category = [];
+            console.log(result);
+
+            result.monthReport.forEach(Elements => {
+                data.push(Elements.data);
+                category.push(Elements.category);
+            })
+
 
             result.statusCount.forEach(Elements => {
                 if (Elements.status == 0 || Elements.status == 1) {
@@ -38,9 +47,44 @@
                     colors: arrColors,
                     resize: true
                 });
+
+
+                if ($("#s-line").length > 0) {
+                    var sline = {
+                        chart: {
+                            height: 350,
+                            type: "line",
+                            zoom: { enabled: false },
+                            toolbar: { show: false },
+                        },
+                        dataLabels: { enabled: false },
+                        stroke: { curve: "smooth" },
+                        series: [
+                            { name: "Total Request", data: data },
+                        ],
+                        title: { text: "Total request perbulan", align: "left" },
+                        grid: { row: { colors: ["#f1f2f3", "transparent"], opacity: 0.5 } },
+                        xaxis: {
+                            categories: category,
+                        },
+                    };
+                    var chart = new ApexCharts(document.querySelector("#s-line"), sline);
+                    chart.render();
+                }
+
+
+
+
+
+
             } catch (e) {
 
             }
+
+
+
+
+
         }).fail((err) => { });
 
         $.ajax({

@@ -1,7 +1,7 @@
 ﻿function getProfile() {
     $(document).ready((e) => {
         $.ajax({
-            url: "/admin/profileData",
+            url: "/profileData",
             dataSrc: "data",
             dataType: "JSON"
         }).done((result) => {
@@ -19,9 +19,9 @@
             $('#lastName').val(`${result.employee.lastName}`);
             $('#email').val(`${result.employee.email}`);
             $('#phoneNumber').val(`${result.employee.phoneNumber}`);
-            $('#birthDate').val(`${result.employee.birthDate}`);
+            $('#birthDate').val(`${DateFormat(result.employee.birthDate)}`);
             $('#gender').val(`${result.employee.gender == 0 ? "Perempuan" : "Laki-laki"}`);
-            $('#hiringDate').val(`${result.employee.hiringDate}`);
+            $('#hiringDate').val(`${DateFormat(result.employee.hiringDate)}`);
             $('#Password').val(`${result.employee.password}`);
             $('div.profile-contentname').html(`<h2>${result.employee.firstName + " " + result.employee.lastName}</h2>
                                             <h4>Ini adalah halaman profil utama anda.</h4>`)
@@ -78,7 +78,7 @@ function Save() {
             form_data.append('file', file_data);
             $.ajax({
                 type: "post",
-                url: "/admin/imgUpload",
+                url: "/imgUpload",
                 data: form_data,
                 processData: false,
                 contentType: false,
@@ -156,7 +156,7 @@ function Update() {
         data.confirmPassword = $("#passwords").val();
         $.ajax({
             type: "post",
-            url: "/admin/profileUpdate",
+            url: "/profileUpdate",
             data: data,
         }).done((result) => {
             if (result == -1) {
@@ -194,4 +194,15 @@ function Update() {
     } catch (e) {
 
     }
+}
+function DateFormat(date) {
+    const today = new Date(date);
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0!
+    let dd = today.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+    return formattedToday = dd + '-' + mm + '-' + yyyy
 }

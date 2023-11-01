@@ -103,8 +103,8 @@ function ProgressBarPeminjaman(guid) {
         $('#uRequestId').val(`${result.request.data[0].guid}`);
         $('#uEmpEmail').val(`${result.email}`);
         $("ul#requestDetail li#namaEmployee").html(`<h4>Nama employee</h4> <h6>${result.nama}</h6>`)
-        $("ul#requestDetail li#startDate").html(`<h4>Tanggal peminjaman</h4> <h6>${result.request.data[0].startDate}</h6>`)
-        $("ul#requestDetail li#endDate").html(`<h4>Tanggal berakhir peminjaman</h4> <h6>${result.request.data[0].endDate}</h6>`)
+        $("ul#requestDetail li#startDate").html(`<h4>Tanggal peminjaman</h4> <h6>${DateFormat(result.request.data[0].startDate)}</h6 >`)
+        $("ul#requestDetail li#endDate").html(`<h4>Tanggal berakhir peminjaman</h4> <h6>${DateFormat(result.request.data[0].endDate)}</h6>`)
         $("ul#requestDetail li#statusPeminjaman").html(`<h4>Status Peminjaman</h4> <h6>${result.requestStatus}</h6>`)
         $("ul#requestDetail li#namaRuangan").html(`<h4>Nama Ruangan</h4> <h6>${result.request.data[0].rooms.name}</h6>`)
         $("ul#requestDetail li#listFasilitas").html('<h4>Nama Fasilitas</h4>');
@@ -282,4 +282,15 @@ function Update(status) {
         $('#tabelPeminjaman').DataTable().ajax.reload();
     })
 
+}
+function DateFormat(date) {
+    const today = new Date(date);
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0!
+    let dd = today.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+    return formattedToday = dd + '-' + mm + '-' + yyyy
 }

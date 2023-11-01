@@ -120,6 +120,18 @@ public class RequestRepository : GeneralRepository<RequestDto, Guid>, IRequestRe
         }
         return entityVM;
     }
+
+    public async Task<ResponseOKHandler<IEnumerable<RequestCountMonthDto>>> GetDataReportMonth()
+    {
+
+        ResponseOKHandler<IEnumerable<RequestCountMonthDto>> entityVM = null;
+        using (var response = await httpClient.GetAsync(request + "GetCountRequestMonth"))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<IEnumerable<RequestCountMonthDto>>>(apiResponse);
+        }
+        return entityVM;
+    }
 }
 
 

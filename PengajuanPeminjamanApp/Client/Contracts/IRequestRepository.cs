@@ -17,4 +17,5 @@ public interface IRequestRepository : IRepository<RequestDto, Guid>
 
     Task<ResponseOKHandler<ListFasilityDto>> UpdateStokFasility(ListFasilityDto entity);
     Task<ResponseOKHandler<IEnumerable<CountRequestStatusDto>>>GetCountStatusRequest();
+    Task<ResponseOKHandler<IEnumerable<RequestCountMonthDto>>>GetDataReportMonth();
 }
