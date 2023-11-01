@@ -55,8 +55,6 @@ function base64ImageToBlob(str) {
 
 
     var imageContent = atob(b64);
-
-)
     var buffer = new ArrayBuffer(imageContent.length);
     var view = new Uint8Array(buffer);
 

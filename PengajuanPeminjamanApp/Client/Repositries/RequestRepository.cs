@@ -109,6 +109,17 @@ public class RequestRepository : GeneralRepository<RequestDto, Guid>, IRequestRe
         }
         return entityVM;
     }
+
+    public async Task<ResponseOKHandler<IEnumerable<CountRequestStatusDto>>> GetCountStatusRequest()
+    {
+        ResponseOKHandler<IEnumerable<CountRequestStatusDto>> entityVM = null;
+        using (var response = await httpClient.GetAsync(request + "GetCountStatusRequestAll"))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<IEnumerable<CountRequestStatusDto>>>(apiResponse);
+        }
+        return entityVM;
+    }
 }
 
 
