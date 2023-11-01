@@ -1,10 +1,25 @@
 ﻿@{
     ViewData["Title"] = "KalenderPeminjaman";
+    ViewData["Kalender"] = "active";
     Layout = "~/Views/Shared/_LayoutEmployeePanel.cshtml";
 }
 
 
-<div id='calendar'></div>
+<div class="page-header">
+    <div class="page-title">
+        <h4>Kalender Peminjaman</h4>
+        <h6>Daftar Peminjamana Ruanngan yang di ajukan</h6>
+    </div>
+    <div class="page-btn">
+        <a asp-controller="Panel" asp-action="PeminjamanFasilitas" class="btn btn-added"><img src="~/assets/img/icons/plus.svg" alt="img" class="me-1">Ajukan Peminjaman Fasilitas</a>
+    </div>
+</div>
+
+<div class="card mb-0">
+    <div class="card-body">
+        <div id='calendar'></div>
+    </div>
+</div>
 
 @section Scripts{
     <script src='~/assets/dist/index.global.js'></script>
