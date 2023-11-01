@@ -50,7 +50,7 @@ namespace Client.Controllers
             Guid userGuid = new Guid(result.Data.UserGuid);
             var accountdata = await _accountRepository.Get(userGuid);
 
-            if (accountdata.Data.ImgProfile != "")
+            if (accountdata.Data.ImgProfile != null)
             {
                 System.IO.File.Delete("wwwroot/assets/img/profiles/" + accountdata.Data.ImgProfile);
             }
