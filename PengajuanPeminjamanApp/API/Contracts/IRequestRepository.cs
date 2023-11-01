@@ -7,6 +7,6 @@ namespace API.Contracts
     {
         IEnumerable<Request> GetRequestByEmployeeGuid(Guid employeeGuid);
 
-        bool GetStatusRequestRoomByDate (StatusRequestRoomDto entity);
+        bool GetStatusRequestRoomByDate(StatusRequestRoomDto entity);
     }
 }

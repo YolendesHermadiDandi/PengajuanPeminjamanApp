@@ -1,5 +1,4 @@
-﻿using API.DTOs.Fasilities;
-using API.DTOs.ListFasilities;
+﻿using API.DTOs.ListFasilities;
 using API.DTOs.Requests;
 using API.Utilities.Handlers;
 using Client.Contracts;
@@ -42,7 +41,7 @@ public class RequestRepository : GeneralRepository<RequestDto, Guid>, IRequestRe
     {
         ResponseOKHandler<IEnumerable<CountRequestStatusDto>> entityVM;
 
-        using (var response = await httpClient.GetAsync(request+ "GetCountStatusRequestByEmployeeGuid/" + guid))
+        using (var response = await httpClient.GetAsync(request + "GetCountStatusRequestByEmployeeGuid/" + guid))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<IEnumerable<CountRequestStatusDto>>>(apiResponse);
@@ -75,7 +74,7 @@ public class RequestRepository : GeneralRepository<RequestDto, Guid>, IRequestRe
         }
         return entityVM;
     }
-    
+
     public async Task<ResponseOKHandler<ListFasilityDto>> UpdateStokFasility(ListFasilityDto entity)
     {
         ResponseOKHandler<ListFasilityDto> entityVM = null;

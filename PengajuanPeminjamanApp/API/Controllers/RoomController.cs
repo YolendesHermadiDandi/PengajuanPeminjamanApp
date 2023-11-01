@@ -49,7 +49,7 @@ public class RoomController : ControllerBase
 
         return Ok(new ResponseOKHandler<IEnumerable<RoomStatusDto>>(result));
     }
-    
+
     [HttpGet("GetRoomDate")]
     public IActionResult GetRoomDate()
     {
@@ -67,14 +67,14 @@ public class RoomController : ControllerBase
         }
 
         IEnumerable<RoomDateRequestDto> result = (from roo in room
-                                     join req in requests on roo.Guid equals req.RoomGuid into roomRequests
-                                     from req in roomRequests
-                                     select new RoomDateRequestDto
-                                     {
-                                         title = "Ruangan "+roo.Name,
-                                         start = req.StartDate,
-                                         end= req.EndDate
-                                     }).ToList();
+                                                  join req in requests on roo.Guid equals req.RoomGuid into roomRequests
+                                                  from req in roomRequests
+                                                  select new RoomDateRequestDto
+                                                  {
+                                                      title = "Ruangan " + roo.Name,
+                                                      start = req.StartDate,
+                                                      end = req.EndDate
+                                                  }).ToList();
 
         return Ok(new ResponseOKHandler<IEnumerable<RoomDateRequestDto>>(result));
     }

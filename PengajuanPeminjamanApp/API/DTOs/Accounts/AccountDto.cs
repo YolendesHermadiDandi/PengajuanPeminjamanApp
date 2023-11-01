@@ -8,7 +8,7 @@ namespace API.DTOs.Accounts
         public Guid Guid { get; set; }
         public string Password { get; set; }
         public int Otp { get; set; }
-        public string ImgProfile {  get; set; }
+        public string ImgProfile { get; set; }
         public bool IsUsed { get; set; }
         public DateTime ExpiredTime { get; set; }
 
@@ -29,7 +29,7 @@ namespace API.DTOs.Accounts
                 Otp = accounts.Otp,
                 IsUsed = accounts.IsUsed,
                 ExpiredTime = accounts.ExpiredTime,
-                
+
 
             };
         }

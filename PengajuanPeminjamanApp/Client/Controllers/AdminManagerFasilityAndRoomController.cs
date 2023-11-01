@@ -103,7 +103,7 @@ namespace Client.Controllers
 
             return Json(result);
         }
-        
+
         [HttpGet("room/get/{guid}")]
         public async Task<JsonResult> Get(Guid guid)
         {

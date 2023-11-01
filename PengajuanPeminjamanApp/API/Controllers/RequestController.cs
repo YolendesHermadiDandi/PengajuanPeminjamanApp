@@ -6,7 +6,6 @@ using API.Models;
 using API.Utilities.Enums;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
-using QRCoder;
 using System.Net;
 
 namespace API.Controllers;
@@ -91,7 +90,7 @@ public class RequestController : ControllerBase
 
         return Ok(new ResponseOKHandler<RequestDto>((RequestDto)result));
     }
-    
+
     [HttpPost("GetStatusRequestRoomByDate/")]
     public IActionResult GetStatusRequestRoomByDate(StatusRequestRoomDto statusRequest)
     {
@@ -186,7 +185,7 @@ public class RequestController : ControllerBase
                                                         select new ListDetailFasilityDto
                                                         {
                                                             Guid = li.Guid,
-                                                            FasilityGuid  = li.FasilityGuid,
+                                                            FasilityGuid = li.FasilityGuid,
                                                             Name = fas.Name,
                                                             TotalFasility = li.TotalFasility
                                                         },
@@ -420,17 +419,44 @@ public class RequestController : ControllerBase
             });
         }
 
-       IEnumerable<CountRequestStatusDto> data = (from req in result
-                                     where req.EmployeeGuid == guid
-                                      group req by req.Status into grouped
-                                      select new CountRequestStatusDto
-                                      {
-                                          status = grouped.Key,
-                                          count = grouped.Count()
-                                      }).ToList();
+        IEnumerable<CountRequestStatusDto> data = (from req in result
+                                                   where req.EmployeeGuid == guid
+                                                   group req by req.Status into grouped
+                                                   select new CountRequestStatusDto
+                                                   {
+                                                       status = grouped.Key,
+                                                       count = grouped.Count()
+                                                   }).ToList();
 
         return Ok(new ResponseOKHandler<IEnumerable<CountRequestStatusDto>>(data));
     }
+
+    [HttpGet("GetCountStatusRequestAll/")]
+    public IActionResult GetCountStatusRequestAll()
+    {
+        var result = _requestRespository.GetAll();
+        var room = _roomRepository.GetAll();
+        if (result is null)
+        {
+            return NotFound(new ResponseErrorHandler
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data Not Found"
+            });
+        }
+
+        IEnumerable<CountRequestStatusDto> data = (from req in result
+                                                   group req by req.Status into grouped
+                                                   select new CountRequestStatusDto
+                                                   {
+                                                       status = grouped.Key,
+                                                       count = grouped.Count()
+                                                   }).ToList();
+
+        return Ok(new ResponseOKHandler<IEnumerable<CountRequestStatusDto>>(data));
+    }
+
     [HttpPost("sendEmail")]
     public IActionResult SendEmail(SendEmailDto sendEmailDto)
     {
@@ -442,7 +468,7 @@ public class RequestController : ControllerBase
             switch (sendEmailDto.Message)
             {
                 case "Pengajuan Peminjaman Anda Rejected":
-                    message = "<h1>" + sendEmailDto.Message + "</h1>";     
+                    message = "<h1>" + sendEmailDto.Message + "</h1>";
                     break;
                 case "Pengajuan Peminjaman Anda OnGoing":
                     url = "https://chart.googleapis.com/chart?cht=qr&chl=" + sendEmailDto.RequestGuid + "&chs=160x160&chld=L|0";

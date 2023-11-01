@@ -1,10 +1,7 @@
 ﻿using API.Contracts;
 using API.Data;
 using API.DTOs.ListFasilities;
-using API.DTOs.Requests;
 using API.Models;
-using API.Utilities.Handlers;
-using System.Net.Http;
 
 namespace API.Repositories;
 

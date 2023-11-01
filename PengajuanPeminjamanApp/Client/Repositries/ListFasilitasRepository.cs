@@ -1,6 +1,4 @@
-﻿using API.DTOs.Fasilities;
-using API.DTOs.ListFasilities;
-using API.DTOs.Requests;
+﻿using API.DTOs.ListFasilities;
 using API.Utilities.Handlers;
 using Client.Contracts;
 using Client.Repositories;
@@ -17,7 +15,7 @@ namespace Client.Repositries
         {
             ResponseOKHandler<ListFasilityDto> entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-            using (var response = httpClient.PostAsync(request+ "GetListFasilityByReqGuidAndFasilityGuid", content).Result)
+            using (var response = httpClient.PostAsync(request + "GetListFasilityByReqGuidAndFasilityGuid", content).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<ListFasilityDto>>(apiResponse);

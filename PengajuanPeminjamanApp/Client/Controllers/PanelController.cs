@@ -1,5 +1,4 @@
 ﻿using API.DTOs.Requests;
-using API.Models;
 using Client.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +27,7 @@ public class PanelController : Controller
 
         var roles = result.Data.Role;
         var getRole = "";
-        foreach(var role in roles)
+        foreach (var role in roles)
         {
             if (role == "Admin")
             {
@@ -40,7 +39,7 @@ public class PanelController : Controller
         var data = new List<ListRequestDto>();
         if (result != null)
         {
-            if(getRole == "Admin")
+            if (getRole == "Admin")
             {
                 return RedirectToAction("index", "AdminDashboard");
             }
@@ -109,5 +108,5 @@ public class PanelController : Controller
         return Json(dataFasility.Data);
     }
 
-    
+
 }

@@ -2,7 +2,6 @@
 using API.DTOs.Employees;
 using Client.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol.Core.Types;
 
 namespace Client.Controllers
 {
@@ -31,7 +30,7 @@ namespace Client.Controllers
         }
 
         [HttpPost("admin/insertEmployee")]
-        public async Task<JsonResult> InsertEmployee(RegisterAccountDto registerAccountDto) 
+        public async Task<JsonResult> InsertEmployee(RegisterAccountDto registerAccountDto)
         {
             var result = await _accountRepository.RegisterEmployee(registerAccountDto);
             if (result.Code == 200)
