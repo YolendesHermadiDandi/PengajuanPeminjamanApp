@@ -34,7 +34,7 @@ namespace Client.Controllers
 
             return Json(vasility);
         }
-        
+
         [HttpGet("admin/getUserData")]
         public async Task<JsonResult> GetUserData()
         {

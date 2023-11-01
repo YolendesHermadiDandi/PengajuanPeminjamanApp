@@ -1,8 +1,4 @@
-﻿
-using API.DTOs.Fasilities;
-using API.DTOs.ListFasilities;
-using API.DTOs.Requests;
-using Client.Contracts;
+﻿using Client.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers

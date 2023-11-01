@@ -39,7 +39,8 @@ namespace Client.Controllers
             if (result.Data is null)
             {
                 result.Code = 404;
-            }else if (result.Data.EndDate < DateTime.Now && result.Code != 404)
+            }
+            else if (result.Data.EndDate < DateTime.Now && result.Code != 404)
             {
                 result.Code = 410;
             }

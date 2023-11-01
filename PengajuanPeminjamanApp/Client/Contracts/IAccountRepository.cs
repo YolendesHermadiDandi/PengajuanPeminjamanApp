@@ -1,7 +1,5 @@
 ﻿using API.DTOs.Accounts;
-using API.DTOs.Employees;
 using API.Utilities.Handlers;
-using Client.DTOs.Accounts;
 using Client.Models;
 
 namespace Client.Contracts;

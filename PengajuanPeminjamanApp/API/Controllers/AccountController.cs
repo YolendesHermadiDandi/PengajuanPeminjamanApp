@@ -412,7 +412,7 @@ namespace API.Controllers
                     });
                 }
 
-                
+
                 Account toUpdate = existingAccount;
                 toUpdate.ImgProfile = changeProfileDto.ImgProfile;
 

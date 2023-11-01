@@ -1,5 +1,4 @@
-﻿using API.DTOs.Fasilities;
-using API.DTOs.ListFasilities;
+﻿using API.DTOs.ListFasilities;
 using API.Utilities.Handlers;
 
 namespace Client.Contracts

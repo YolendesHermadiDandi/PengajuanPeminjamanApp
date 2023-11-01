@@ -1,6 +1,4 @@
-﻿
-using API.DTOs.Fasilities;
-using API.DTOs.ListFasilities;
+﻿using API.DTOs.ListFasilities;
 using API.DTOs.Requests;
 using Client.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -101,11 +99,11 @@ namespace Client.Controllers
             }
             return Json(result);
         }
-        
+
         [HttpPost("listfasility/update")]
         public async Task<JsonResult> UpdateListFasility(ListFasilityDto listFasility)
         {
-            var result = await _listFasilitasRepository.Put(new Guid(),listFasility);
+            var result = await _listFasilitasRepository.Put(new Guid(), listFasility);
             if (result.Code == 200)
             {
                 return Json(result);
