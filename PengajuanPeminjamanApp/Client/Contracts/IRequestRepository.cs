@@ -16,4 +16,5 @@ public interface IRequestRepository : IRepository<RequestDto, Guid>
     Task<ResponseOKHandler<SendEmailDto>> SendEmail(SendEmailDto entity);
 
     Task<ResponseOKHandler<ListFasilityDto>> UpdateStokFasility(ListFasilityDto entity);
+    Task<ResponseOKHandler<IEnumerable<CountRequestStatusDto>>>GetCountStatusRequest();
 }
