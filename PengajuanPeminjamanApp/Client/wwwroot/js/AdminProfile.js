@@ -5,7 +5,7 @@
             dataSrc: "data",
             dataType: "JSON"
         }).done((result) => {
-            if (result.img == "") {
+            if (result.img == "" || result.img == null) {
                 $("#result-img").attr("src", "/assets/img/profiles/default-profile.jpg");
                 $("#original-img").attr("src", "/assets/img/profiles/default-profile.jpg");
             } else {
