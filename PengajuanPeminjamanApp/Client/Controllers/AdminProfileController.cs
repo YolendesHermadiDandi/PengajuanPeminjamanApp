@@ -1,6 +1,4 @@
 ﻿using API.DTOs.Accounts;
-using API.DTOs.Requests;
-using API.Utilities.Handlers;
 using Client.Contracts;
 using Client.DTOs.Accounts;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +52,7 @@ namespace Client.Controllers
 
             if (accountdata.Data.ImgProfile != "")
             {
-                System.IO.File.Delete("wwwroot/assets/img/profiles/"+accountdata.Data.ImgProfile);
+                System.IO.File.Delete("wwwroot/assets/img/profiles/" + accountdata.Data.ImgProfile);
             }
 
             var path = "wwwroot/assets/img/profiles/";
@@ -80,13 +78,13 @@ namespace Client.Controllers
         [HttpPost("admin/profileUpdate")]
         public async Task<JsonResult> UpdateProfile(UpdateDataUserDto data)
         {
-            if(data.Password == null || data.ConfirmPassword == null)
+            if (data.Password == null || data.ConfirmPassword == null)
             {
                 var message = -2;
                 return Json(message);
             }
 
-            if(data.Password != data.ConfirmPassword)
+            if (data.Password != data.ConfirmPassword)
             {
                 var message = -1;
                 return Json(message);

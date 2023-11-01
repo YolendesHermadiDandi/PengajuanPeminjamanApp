@@ -1,5 +1,4 @@
-﻿using API.DTOs.Fasilities;
-using API.DTOs.ListFasilities;
+﻿using API.DTOs.ListFasilities;
 using API.DTOs.Requests;
 using API.Utilities.Handlers;
 

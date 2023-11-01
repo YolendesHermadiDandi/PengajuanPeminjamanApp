@@ -28,14 +28,14 @@ namespace Client.Controllers
             var result = await _listFasilitasRepository.GetListFasilityByRequestGuidAndFasilityGuid(findListFasility);
             return Json(result.Data);
         }
-        
+
         [HttpGet("ListFasility/GetListFasilityByRequestGuid/{guid}")]
         public async Task<JsonResult> GetListFasilityByRequestGuid(Guid guid)
         {
             var result = await _listFasilitasRepository.GetListFasilityByRequestGuid(guid);
             return Json(result.Data);
         }
-        
+
         [HttpDelete("ListFasility/Delete")]
         public async Task<JsonResult> DeleteListFasilitas(Guid guid)
         {

@@ -1,9 +1,6 @@
 ﻿using API.DTOs.Accounts;
-using API.DTOs.Employees;
-using API.DTOs.Requests;
 using API.Utilities.Handlers;
 using Client.Contracts;
-using Client.DTOs.Accounts;
 using Client.Models;
 using Client.Repositories;
 using Newtonsoft.Json;

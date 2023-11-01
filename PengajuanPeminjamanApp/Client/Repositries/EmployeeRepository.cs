@@ -16,7 +16,7 @@ namespace Client.Repositries
         {
             ResponseOKHandler<CreateEmployeeDto> entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-            using (var response = httpClient.PostAsync(request+"insert", content).Result)
+            using (var response = httpClient.PostAsync(request + "insert", content).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<CreateEmployeeDto>>(apiResponse);
