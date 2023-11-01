@@ -60,9 +60,22 @@
     //        }
     //    }
 
+<<<<<<< Updated upstream
     //    var html5QrcodeScanner = new Html5QrcodeScanner(
     //        "qr-reader", { fps: 10, qrbox: 250 });
     //    html5QrcodeScanner.render(onScanSuccess);
     //});
 
 };
+=======
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+    });
+}
+
+var button = document.getElementById('html5-qrcode-button-camera-start');
+
+button.setAttribute('data-name', 'nilaiAtribut');
+
+>>>>>>> Stashed changes

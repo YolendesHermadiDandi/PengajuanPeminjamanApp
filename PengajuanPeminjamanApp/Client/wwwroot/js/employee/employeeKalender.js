@@ -9,25 +9,21 @@ $(document).ready(function () {
         async : false,
         success: function (data) {
             objRoom = data
-
+            console.log(data)
         },
         error: function (error) {
 
         }
     });
-    console.log(objRoom)
 
-    for (var i = 0; i < objRoom.length; i++) {
-        var startDate = new Date(objRoom[i].start);
-        var endDate = new Date(objRoom[i].end);
+    const formattedData = objRoom.map(item => ({
+        ...item,
+        start: formatDate(item.start),
+        end: formatDate(item.end)
+    }));
 
-        var formattedStartDate = startDate.toISOString().split('T')[0];
-        var formattedEndDate = endDate.toISOString().split('T')[0];
-
-        objRoom[i].start = formattedStartDate;
-        objRoom[i].end = formattedEndDate;
-    }
-
+    console.log(formattedData);
+    
     var calendarEl = document.getElementById('calendar');
     var today = new Date();
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -46,9 +42,18 @@ $(document).ready(function () {
         // fixedWeekCount: false,
         // businessHours: true,
         // weekends: false,
-        events: objRoom
+        events: formattedData
     });
 
     calendar.render();
 
 })
+
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}

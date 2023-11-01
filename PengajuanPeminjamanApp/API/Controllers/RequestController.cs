@@ -341,7 +341,27 @@ public class RequestController : ControllerBase
         try
         {
             var result = _requestRespository.Create(requestDto);
-            return Ok(new ResponseOKHandler<RequestDto>((RequestDto)result));
+
+            try
+            {
+                var employee = _employeeRepository.GetByGuid(result.EmployeeGuid);
+                var message = $"<div><h6> User : {employee.FirstName} {employee.LastName} </h6> <p>Ingin Mengajukan Peminjaman Fasilitas atau ruangan. silahkan cek detail pada sistem website.</p> <h6>Tanggal Mulai : {result.StartDate}</h6><h6>Tanggal Selesai : {result.EndDate} </h6> </div>";
+
+                _emailHandlerRepository.Send("Peminjaman Ruangan/Fasilitas", message, "Admin@no-replay.com", employee.Email);
+                return Ok(new ResponseOKHandler<RequestDto>((RequestDto)result));
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 new ResponseErrorHandler
+                 {
+                     Code = StatusCodes.Status500InternalServerError,
+                     Status = HttpStatusCode.NotFound.ToString(),
+                     Message = "FAILED TO CREATE DATA"
+                 });
+            }
+            
         }
         catch (Exception ex)
         {

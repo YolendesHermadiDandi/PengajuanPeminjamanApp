@@ -73,7 +73,7 @@ public class RoomController : ControllerBase
                                                   {
                                                       title = "Ruangan " + roo.Name,
                                                       start = req.StartDate,
-                                                      end = req.EndDate
+                                                      end = req.EndDate.AddDays(1)
                                                   }).ToList();
 
         return Ok(new ResponseOKHandler<IEnumerable<RoomDateRequestDto>>(result));
