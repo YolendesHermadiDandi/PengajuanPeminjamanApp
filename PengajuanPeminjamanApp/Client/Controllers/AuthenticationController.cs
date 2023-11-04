@@ -18,6 +18,7 @@ public class AuthenticationController : Controller
     [HttpGet("Auth/Login")]
     public IActionResult Index()
     {
+        ViewBag.Alert = "alert";
         return View();
     }
 
@@ -25,14 +26,19 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> Login(LoginAccountDto login)
     {
         var result = await _accountRepository.Login(login);
-
-        if (result.Status == "OK")
+        if(result.Data == null)
+        {
+            TempData["Alerts"] = "Email atau Password Anda Salah";
+            return RedirectToAction("Login", "Auth");
+        }
+        if (result.Data != null)
         {
 
             HttpContext.Session.SetString("JWToken", result.Data.Token);
 
             return RedirectToAction("Index", "Panel");
         }
+        TempData["Alerts"] = "Akun Tidak Ditemukan";
         return RedirectToAction("Login", "Auth");
     }
 

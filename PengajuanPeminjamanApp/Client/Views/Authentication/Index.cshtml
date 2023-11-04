@@ -27,8 +27,14 @@
                         <div class="login-userheading">
                             <h3>Masuk</h3>
                             <h4>Silahkan Masuk Menggunakan Akun Anda</h4>
+                            @if (TempData.ContainsKey("Alerts"))
+                            {
+                                <div class="alert alert-danger" role="alert">
+                                    @TempData["Alerts"]
+                                </div>
+                            }
                         </div>
-                        <form asp-action="Login">
+                        <form asp-action="Login" onsubmit="return validateForm(event)">
                             <div class="form-login">
                                 <label asp-for="Email">Email</label>
                                 <div class="form-addons">
@@ -52,9 +58,6 @@
                                 <input type="submit" value="Masuk" class="btn btn-login" />
                             </div>
                         </form>
-                        <div class="signinform text-center">
-                            <h4>Tidak Punya Akun? <a asp-controller="Authentication" asp-action="Signup" class="hover-a">Daftar Sekarang</a></h4>
-                        </div>
                     </div>
                 </div>
                 <div class="login-img">
@@ -63,6 +66,8 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/Auth.js"></script>
     <script src="~/assets/js/jquery-3.6.0.min.js"></script>
     <script src="~/assets/js/feather.min.js"></script>
     <script src="~/assets/js/bootstrap.bundle.min.js"></script>

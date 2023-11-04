@@ -24,6 +24,7 @@ public class PanelController : Controller
         {
             return RedirectToAction("Login", "Auth");
         }
+        ViewBag.NameEmployee = result.Data.Name;
 
         var roles = result.Data.Role;
         var getRole = "";
@@ -43,33 +44,53 @@ public class PanelController : Controller
             {
                 return RedirectToAction("index", "AdminDashboard");
             }
-
-            data = listRequest.Data.ToList();
+            data = listRequest.Data?.ToList();
+            ViewBag.NameEmployee = result.Data.Name;
             return View(data);
         }
         return View(data);
     }
 
-    public IActionResult PeminjamanFasilitas()
-    {
-        return View();
-    }
-
-    public IActionResult KalenderPeminjaman()
-    {
-        return View();
-    }
-    public IActionResult ListFasilitas()
-    {
-        return View();
-    }
-    public async Task<IActionResult> ListPeminjamanAsync()
+    public async Task<IActionResult> PeminjamanFasilitasAsync()
     {
         var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
         if (result == null)
         {
             return RedirectToAction("Login", "Auth");
         }
+        ViewBag.NameEmployee = result.Data.Name;
+        return View();
+    }
+
+    public async Task<IActionResult> KalenderPeminjamanAsync()
+    {
+        var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
+        if (result == null)
+        {
+            return RedirectToAction("Login", "Auth");
+        }
+        ViewBag.NameEmployee = result.Data.Name;
+        return View();
+    }
+    public async Task<IActionResult> ListFasilitasAsync()
+    {
+        var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
+        if (result == null)
+        {
+            return RedirectToAction("Login", "Auth");
+        }
+        ViewBag.NameEmployee = result.Data.Name;
+        return View();
+    }
+    public async Task<IActionResult> ListPeminjamanAsync()
+    {
+
+        var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
+        if (result == null)
+        {
+            return RedirectToAction("Login", "Auth");
+        }
+        ViewBag.NameEmployee = result.Data.Name;
         Guid employee = new Guid(result.Data.UserGuid);
         var listRequest = await _requestRepository.GetByEmployeeGuid(employee);
         var data = new List<ListRequestDto>();
@@ -81,19 +102,26 @@ public class PanelController : Controller
         return View(data);
     }
 
-    public IActionResult ListRuangan()
+    public async Task<IActionResult> ListRuanganAsync()
     {
+        var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
+        if (result == null)
+        {
+            return RedirectToAction("Login", "Auth");
+        }
+        ViewBag.NameEmployee = result.Data.Name;
         return View();
     }
-    public IActionResult Profil()
+    public async Task<IActionResult> ProfilAsync()
     {
+        var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
+        if (result == null)
+        {
+            return RedirectToAction("Login", "Auth");
+        }
+        ViewBag.NameEmployee = result.Data.Name;
         return View();
     }
-    public IActionResult Notification()
-    {
-        return View();
-    }
-
     [Route("/GetFasility")]
     public async Task<JsonResult> GetFasility()
     {

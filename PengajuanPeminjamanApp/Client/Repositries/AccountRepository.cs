@@ -18,26 +18,29 @@ public class AccountRepository : GeneralRepository<AccountDto, Guid>, IAccountRe
     {
         string jsonEntity = JsonConvert.SerializeObject(login);
         StringContent content = new StringContent(jsonEntity, Encoding.UTF8, "application/json");
-
+        ResponseOKHandler<TokenDto> entityVM = null;
         using (var response = await httpClient.PostAsync($"{request}Login", content))
         {
-            response.EnsureSuccessStatusCode();
             string apiResponse = await response.Content.ReadAsStringAsync();
-            var entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<TokenDto>>(apiResponse);
-            return entityVM;
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<TokenDto>>(apiResponse);
         }
+            return entityVM;
     }
     public async Task<ResponseOKHandler<ClaimsDto>> GetClaims(string token)
     {
+        ResponseOKHandler<ClaimsDto> entityVM = null;
+        if(token == null)
+        {
+            return entityVM;
+        }
         StringContent content = new StringContent(token, Encoding.UTF8, "application/json");
-
         using (var response = await httpClient.GetAsync($"{request}GetClaims/{token}"))
         {
             response.EnsureSuccessStatusCode();
             string apiResponse = await response.Content.ReadAsStringAsync();
-            var entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<ClaimsDto>>(apiResponse);
-            return entityVM;
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<ClaimsDto>>(apiResponse);
         }
+            return entityVM;
     }
 
     public async Task<ResponseOKHandler<ChangeProfileDto>> UpdateProfile(ChangeProfileDto entity)

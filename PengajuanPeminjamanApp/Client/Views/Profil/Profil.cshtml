@@ -2,13 +2,13 @@
 
 @{
     ViewData["Title"] = "Profile";
-    if (Model.Role[0] == "Employee")
+    if (Model.Role.Contains("Admin"))
     {
-        Layout = "_LayoutEmployeePanel";
+        Layout = "AdminLayout";
     }
     else
     {
-        Layout = "AdminLayout";
+        Layout = "_LayoutEmployeePanel";
     }
 }
 <div class="page-header">
