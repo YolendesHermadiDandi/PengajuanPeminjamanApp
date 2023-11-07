@@ -7,12 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\assets\Template\images\image-1.png" />
+    <Content Remove="wwwroot\assets\Template\images\image-2.png" />
+    <Content Remove="wwwroot\assets\Template\images\image-3.png" />
+    <Content Remove="wwwroot\assets\Template\images\image-4.png" />
+    <Content Remove="wwwroot\assets\Template\images\image-5.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\img\background\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\Template\images\image-1.png" />
+    <None Include="wwwroot\assets\Template\images\image-2.png" />
+    <None Include="wwwroot\assets\Template\images\image-3.png" />
+    <None Include="wwwroot\assets\Template\images\image-4.png" />
+    <None Include="wwwroot\assets\Template\images\image-5.png" />
   </ItemGroup>
 
   <ItemGroup>

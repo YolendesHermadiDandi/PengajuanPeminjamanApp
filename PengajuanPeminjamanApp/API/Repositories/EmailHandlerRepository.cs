@@ -18,14 +18,19 @@ namespace API.Repositories
 
         public void Send(string subject, string body, string toEmail, string fromEmail)
         {
+            string FilePath = Path.Combine(Environment.CurrentDirectory, @"Utilities\Template\", "sendEmail.html");
+            StreamReader str = new StreamReader(FilePath);
+            string MailText = str.ReadToEnd();
+            str.Close();
+            MailText = MailText.Replace("[titleMassage]", subject);
             var message = new MailMessage()
             {
                 From = new MailAddress(fromEmail),
                 Subject = subject,
-                Body = body,
-                IsBodyHtml = true
+                Body = MailText,
+                IsBodyHtml = true,
             };
-
+           
             message.To.Add(new MailAddress(toEmail));
 
             using var smtpClient = new SmtpClient(_server, _port);
