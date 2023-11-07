@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Accounts;
 using Client.Contracts;
 using Client.DTOs.Accounts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
@@ -17,6 +18,8 @@ namespace Client.Controllers
         }
 
         [HttpGet("admin/Profile")]
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Profil()
         {
             return View();

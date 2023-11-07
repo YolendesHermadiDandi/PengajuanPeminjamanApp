@@ -12,7 +12,6 @@
             let total = 0;
             let data = [];
             let category = [];
-            console.log(result);
 
             result.monthReport.forEach(Elements => {
                 data.push(Elements.data);

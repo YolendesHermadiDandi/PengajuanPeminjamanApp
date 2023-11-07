@@ -10,7 +10,6 @@ $(document).ready(function () {
             let selesai = 0;
             let total = 0;
 
-            console.log(data)
             data.forEach(Elements => {
                 if (Elements.status == 0 || Elements.status == 1) {
                     pengajuan += Elements.count;
@@ -21,7 +20,6 @@ $(document).ready(function () {
                 }    
             })
             total = total + pengajuan + aktif + selesai;
-            console.log(total)
             $('#pengajuanCount').html(`<h4>${pengajuan}</h4>`);
             $('#selesaiCount').html(`<h4>${selesai}</h4>`);
             $('#aktifCount').html(`<h4>${aktif}</h4>`);

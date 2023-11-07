@@ -132,6 +132,18 @@ public class RequestRepository : GeneralRepository<RequestDto, Guid>, IRequestRe
         }
         return entityVM;
     }
+
+    public async Task<ResponseOKHandler<RequestDto>> UpdateRequestComplete(Guid guid)
+    {
+        ResponseOKHandler<RequestDto> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(guid), Encoding.UTF8, "application/json");
+        using (var response = httpClient.PostAsync(request + "UpdateComplateRequest", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<RequestDto>>(apiResponse);
+        }
+        return entityVM;
+    }
 }
 
 

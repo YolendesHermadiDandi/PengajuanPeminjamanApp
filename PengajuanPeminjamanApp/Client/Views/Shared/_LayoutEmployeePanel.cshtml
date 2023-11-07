@@ -71,7 +71,7 @@
                 <li class="nav-item dropdown has-arrow main-drop">
                     <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
                         <span class="user-img">
-                            <img src="~/assets/img/profiles/avator1.jpg" alt="">
+                            <img src="" id="navImgEmployee" alt="">
                             <span class="status online"></span>
                         </span>
                     </a>
@@ -79,12 +79,12 @@
                         <div class="profilename">
                             <div class="profileset">
                                 <span class="user-img">
-                                    <img src="~/assets/img/profiles/avator1.jpg" alt="">
+                                    <img src="" id="dropDownImgEmployee" nav alt="">
                                     <span class="status online"></span>
                                 </span>
                                 <div class="profilesets">
-                                    <h6>@ViewData["nameEmployee"]</h6>
-                                    <h5>@ViewData["roleEmployee"]</h5>
+                                    <h6 id="NameEmployee">{nama}</h6>
+                                    <h5>Employee</h5>
                                 </div>
                             </div>
                             <hr class="m-0">
@@ -155,6 +155,7 @@
     <script src="~/assets/plugins/select2/js/select2.min.js"></script>
     <script src="~/assets/js/bootstrap-datetimepicker.min.js"></script>
 
+    <script src="~/js/employee/employeeProfilImg.js"></script>
 
     <script src="https://kit.fontawesome.com/33a42c8835.js" crossorigin="anonymous"></script>
 
@@ -166,6 +167,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+
+
 
 
     @await RenderSectionAsync("Scripts", required: false)

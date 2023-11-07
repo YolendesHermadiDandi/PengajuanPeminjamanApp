@@ -78,4 +78,3 @@ var button = document.getElementById('html5-qrcode-button-camera-start');
 
 button.setAttribute('data-name', 'nilaiAtribut');
 
->>>>>>> Stashed changes

@@ -104,7 +104,6 @@ function Update() {
         url: "/fasility/update",
         data: fasility,
     }).done((result) => {
-        //console.log(result);
         Swal.fire({
             icon: 'success',
             title: 'Update Success',
@@ -139,7 +138,6 @@ function Delete(guid) {
                 dataSrc: "data",
                 dataType: "JSON"
             }).done((result) => {
-                console.log(result);
                 if (result.code == 500) {
                     Swal.fire({
                         icon: 'error',
@@ -177,7 +175,6 @@ function Insert() {
     let fasility = new Object();
     fasility.name = $("#name").val();
     fasility.stock = $("#stock").val();
-    console.log(fasility);
     $.ajax({
         type: "post",
         url: "/fasility/insert",

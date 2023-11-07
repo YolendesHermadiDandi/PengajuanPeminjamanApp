@@ -102,7 +102,6 @@ function Update() {
         url: "/room/update",
         data: room,
     }).done((result) => {
-        //console.log(result);
         Swal.fire({
             icon: 'success',
             title: 'Update Success',

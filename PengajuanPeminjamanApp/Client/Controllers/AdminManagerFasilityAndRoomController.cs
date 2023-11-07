@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Fasilities;
 using API.DTOs.Rooms;
 using Client.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
@@ -20,6 +21,8 @@ namespace Client.Controllers
 
         //Start fasility
         [HttpGet("admin/list-fasilitas")]
+
+        [Authorize(Roles = "Admin")]
         public IActionResult ListFasilitas()
         {
             return View();
@@ -91,6 +94,8 @@ namespace Client.Controllers
         //Start Room
 
         [HttpGet("admin/list-ruangan")]
+
+        [Authorize(Roles = "Admin")]
         public IActionResult ListRuangan()
         {
             return View();

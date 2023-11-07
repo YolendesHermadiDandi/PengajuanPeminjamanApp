@@ -9,7 +9,6 @@ $(document).ready(function () {
         async : false,
         success: function (data) {
             objRoom = data
-            console.log(data)
         },
         error: function (error) {
 
@@ -22,8 +21,6 @@ $(document).ready(function () {
         end: formatDate(item.end)
     }));
 
-    console.log(formattedData);
-    
     var calendarEl = document.getElementById('calendar');
     var today = new Date();
     var calendar = new FullCalendar.Calendar(calendarEl, {

@@ -53,6 +53,17 @@ namespace Client.Controllers
             var result = await _requestRepository.Put(new Guid(), requestDto);
             return Json(result.Data);
         }
+        
+        [HttpGet("request/completeRequest/{guid}")]
+        public async Task<JsonResult> CompleteRequest(Guid guid)
+        {
+            var getRequest = await _requestRepository.Get(guid);
+            var Request = getRequest.Data;
+            Request.EndDate = DateTime.Now;
+            Request.Status = API.Utilities.Enums.StatusLevel.Completed;
+            var result = await _requestRepository.Put(new Guid(), Request);
+            return Json(result);
+        }
 
         [Route("employee/getEmployee/{guid}")]
         public async Task<JsonResult> GetEmployeeByGuid(Guid guid)

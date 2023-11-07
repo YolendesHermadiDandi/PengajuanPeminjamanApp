@@ -34,8 +34,7 @@ function kalenderPeminjaman() {
 
             }
         });
-        console.log(objRoom)
-
+        
         for (var i = 0; i < objRoom.length; i++) {
             var startDate = new Date(objRoom[i].start);
             var endDate = new Date(objRoom[i].end);
@@ -82,7 +81,6 @@ document.getElementById('btnModalFasilitas').addEventListener('click', () => {
             method: 'GET',
             dataType: 'json',
             success: function (data) {
-                console.log(data)
                 data.forEach(Elements => {
                     valueDefaultFasiity = Elements.stock;
                     $("#tbodyListFasility").append(
@@ -187,7 +185,6 @@ function tambahRuangan(guid) {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            console.log(data)
             $('#tableDaftarPeminjaman').append(`<tr>
             <td>${data.data.name}</td>
             <td>Lantai ${data.data.floor}</td>

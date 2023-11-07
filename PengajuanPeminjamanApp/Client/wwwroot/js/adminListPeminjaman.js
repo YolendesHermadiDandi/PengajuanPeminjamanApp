@@ -242,8 +242,7 @@ function Update(status) {
     sendEmail.recipientEmail = $('#uEmpEmail').val();
     sendEmail.message = "Pengajuan Peminjaman Anda " + request.status;
     sendEmail.requestGuid = request.guid;
-    console.log(sendEmail);
-
+ 
     let statusUpdate = new Object();
     statusUpdate.Guid = request.guid;
     statusUpdate.Status = request.status;
@@ -253,7 +252,6 @@ function Update(status) {
         url: "/request/statusUpdate",
         data: statusUpdate
     }).done((result) => {
-        console.log(result);
         if (request.status == "OnGoing") {
             $.ajax({
                 type: "post",

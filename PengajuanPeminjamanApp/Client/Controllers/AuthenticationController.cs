@@ -53,4 +53,21 @@ public class AuthenticationController : Controller
         HttpContext.Session.Clear();
         return RedirectToAction("Login", "Auth");
     }
+
+
+    [HttpGet("unauthorized/")]
+    public IActionResult unauthorized()
+    {
+        return View();
+    }
+    [HttpGet("Notfound/")]
+    public IActionResult Notfound()
+    {
+        return View();
+    }
+    [HttpGet("Forbidden/")]
+    public IActionResult Forbidden()
+    {
+        return View();
+    }
 }

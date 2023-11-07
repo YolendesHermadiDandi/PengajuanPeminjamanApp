@@ -135,7 +135,7 @@ function ProgressBarPeminjaman(status, guid) {
         $('ul.twitter-bs-wizard-nav li:nth-child(4) a div i ').attr('class', 'fe fe-check-circle');
 
         //add buttons
-        $('div.action-button').html('<button type="submit" id="completedButton" onclick="Completed()" class="btn btn-primary" data-bs-dismiss="modal">Completed</button>');
+        $('div.action-button').html(`<button type="submit" id="completedButton" onclick="btnEndRequest('${guid}')" class="btn btn-primary" data-bs-dismiss="modal">Completed</button>`);
 
     } else if (status == "OnProssesed") {
         $('ul.twitter-bs-wizard-nav li:nth-child(-n+2) a').addClass('active');
@@ -209,6 +209,41 @@ function btnFirstupdateRequest(guid) {
             
 }
 
+function btnEndRequest(guid) {
+    $.ajax({
+        url: '/request/completeRequest/' + guid,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            if (data) {
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Complete Status Success',
+                    showConfirmButton: false,
+                    timer: 2500
+                }).then((result) => {
+                    location.reload();
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to Complete Status',
+
+                });
+            }
+        },
+        error: function (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to update data',
+
+            });
+        }
+    });
+}
 
 function hapusRuangan(idBtn) {
     document.getElementById(`${idBtn}Ruangan`).outerHTML = "";
@@ -310,7 +345,7 @@ function DetailPeminjaman(guid) {
                     stringStatus = "OnProssesed";
                     break;
                 case 6:
-                    ProgressBarPeminjaman("OnGoing", null);
+                    ProgressBarPeminjaman("OnGoing", guid);
                     stringStatus = "OnGoing";
                     break;
                 case 7:

@@ -1,6 +1,8 @@
 ﻿using API.DTOs.Requests;
 using Client.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Client.Controllers;
 
@@ -8,15 +10,18 @@ public class PanelController : Controller
 {
     private readonly IAccountRepository _accountRepository;
     private readonly IRequestRepository _requestRepository;
+    private readonly IEmployeeRepository _employeeRepository;
     private readonly IFasilityRepository _fasilityRepository;
 
-    public PanelController(IAccountRepository accountRepository, IRequestRepository requestRepository, IFasilityRepository fasilityRepository)
+    public PanelController(IAccountRepository accountRepository, IRequestRepository requestRepository, IFasilityRepository fasilityRepository, IEmployeeRepository employeeRepository)
     {
         _accountRepository = accountRepository;
         _requestRepository = requestRepository;
         _fasilityRepository = fasilityRepository;
+        _employeeRepository = employeeRepository;
     }
 
+    [Authorize(Roles = "Admin, Employee")]
     public async Task<IActionResult> IndexAsync()
     {
         var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
@@ -24,9 +29,8 @@ public class PanelController : Controller
         {
             return RedirectToAction("Login", "Auth");
         }
-        ViewBag.NameEmployee = result.Data.Name;
-
         var roles = result.Data.Role;
+
         var getRole = "";
         foreach (var role in roles)
         {
@@ -37,6 +41,8 @@ public class PanelController : Controller
         }
         Guid employee = new Guid(result.Data.UserGuid);
         var listRequest = await _requestRepository.GetByEmployeeGuid(employee);
+        var dataEmployee = await _employeeRepository.Get(employee);
+        ViewBag.NameEmployee = string.Concat(dataEmployee.Data.FirstName, " ", dataEmployee.Data.LastName);
         var data = new List<ListRequestDto>();
         if (result != null)
         {
@@ -45,12 +51,13 @@ public class PanelController : Controller
                 return RedirectToAction("index", "AdminDashboard");
             }
             data = listRequest.Data?.ToList();
-            ViewBag.NameEmployee = result.Data.Name;
             return View(data);
         }
+
         return View(data);
     }
 
+    [Authorize(Roles = "Admin, Employee")]
     public async Task<IActionResult> PeminjamanFasilitasAsync()
     {
         var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
@@ -62,6 +69,7 @@ public class PanelController : Controller
         return View();
     }
 
+    [Authorize(Roles = "Admin, Employee")]
     public async Task<IActionResult> KalenderPeminjamanAsync()
     {
         var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
@@ -72,6 +80,7 @@ public class PanelController : Controller
         ViewBag.NameEmployee = result.Data.Name;
         return View();
     }
+    [Authorize(Roles = "Admin, Employee")]
     public async Task<IActionResult> ListFasilitasAsync()
     {
         var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
@@ -82,6 +91,7 @@ public class PanelController : Controller
         ViewBag.NameEmployee = result.Data.Name;
         return View();
     }
+    [Authorize(Roles = "Admin, Employee")]
     public async Task<IActionResult> ListPeminjamanAsync()
     {
 
@@ -102,6 +112,7 @@ public class PanelController : Controller
         return View(data);
     }
 
+    [Authorize(Roles = "Admin, Employee")]
     public async Task<IActionResult> ListRuanganAsync()
     {
         var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
@@ -112,6 +123,7 @@ public class PanelController : Controller
         ViewBag.NameEmployee = result.Data.Name;
         return View();
     }
+    [Authorize(Roles = "Admin, Employee")]
     public async Task<IActionResult> ProfilAsync()
     {
         var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
@@ -134,6 +146,33 @@ public class PanelController : Controller
     {
         var dataFasility = await _fasilityRepository.Get(guid);
         return Json(dataFasility.Data);
+    }
+    
+    [Route("/Employee/GetProfileImage")]
+    public async Task<JsonResult> GetProfileImgEmployee()
+    {
+        var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
+        if (result == null)
+        {
+            return Json(null);
+        }
+        var getAccount = _accountRepository.Get(new Guid(result.Data.UserGuid));
+        if (getAccount == null)
+        {
+            return Json(null);
+        }
+        return Json(getAccount.Result.Data.ImgProfile);
+    }
+
+    [Route("/Employee/GetProfileName")]
+    public async Task<JsonResult> GetProfileGetProfileName()
+    {
+        var result = await _accountRepository.GetClaims(HttpContext.Session.GetString("JWToken"));
+        if (result == null)
+        {
+            return Json(null);
+        }
+        return Json(result.Data.Name);
     }
 
 

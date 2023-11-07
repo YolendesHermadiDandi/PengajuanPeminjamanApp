@@ -132,7 +132,6 @@ function Update() {
         url: "/admin/employee/update",
         data: employee,
     }).done((result) => {
-        //console.log(result);
         if (result.code == 200) {
 
             Swal.fire({
@@ -187,7 +186,6 @@ function Insert() {
         url: "/admin/insertEmployee",
         data: employee,
     }).done((result) => {
-        console.log(result);
         Swal.fire({
             icon: 'success',
             title: 'Insert Success',
@@ -196,7 +194,6 @@ function Insert() {
         });
         $('#tabelEmployee').DataTable().ajax.reload();
     }).fail((error) => {
-        console.log(error);
         Swal.fire({
             icon: 'error',
             title: 'Oops...',

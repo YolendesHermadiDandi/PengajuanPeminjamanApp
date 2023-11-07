@@ -330,6 +330,40 @@ public class RequestController : ControllerBase
             });
         }
     }
+    
+    [HttpPut("UpdateComplateRequest")]
+    public IActionResult UpdateComplateRequest(Guid guid)
+    {
+        try
+        {
+            var check = _requestRespository.GetByGuid(guid);
+            if (check is null)
+            {
+                return NotFound(new ResponseErrorHandler
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data Not Found"
+                });
+            }
+            Request toUpdate = check;
+            toUpdate.Status = StatusLevel.Completed;
+            toUpdate.EndDate = DateTime.Now;
+            var result = _requestRespository.Update(toUpdate);
+
+            return Ok(new ResponseOKHandler<String>("Updated Data Success"));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseErrorHandler
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Failed to Update data",
+                Error = ex.Message
+            });
+        }
+    }
 
     [HttpPost]
     public IActionResult Create(CreateRequestDto requestDto)

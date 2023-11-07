@@ -2351,7 +2351,9 @@ var FullCalendar = (function (exports) {
         shouldComponentUpdate(nextProps, nextState) {
             if (this.debug) {
                 // eslint-disable-next-line no-console
-                console.log(getUnequalProps(nextProps, this.props), getUnequalProps(nextState, this.state));
+                
+                
+                (getUnequalProps(nextProps, this.props), getUnequalProps(nextState, this.state));
             }
             return !compareObjs(this.props, nextProps, this.propEquality) ||
                 !compareObjs(this.state, nextState, this.stateEquality);

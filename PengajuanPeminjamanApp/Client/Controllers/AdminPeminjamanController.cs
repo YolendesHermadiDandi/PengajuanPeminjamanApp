@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Employees;
 using API.DTOs.Requests;
 using Client.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
@@ -17,6 +18,8 @@ namespace Client.Controllers
         }
 
         [HttpGet("admin/listPeminjaman")]
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();

@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Accounts;
 using API.DTOs.Employees;
 using Client.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
@@ -17,6 +18,8 @@ namespace Client.Controllers
         }
 
         [HttpGet("admin/listEmployee")]
+
+        [Authorize(Roles = "Admin")]
         public IActionResult ListEmployee()
         {
             return View();

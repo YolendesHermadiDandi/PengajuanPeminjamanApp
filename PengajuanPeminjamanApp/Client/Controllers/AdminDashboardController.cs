@@ -1,4 +1,5 @@
 ﻿using Client.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
@@ -21,6 +22,7 @@ namespace Client.Controllers
         }
 
         [HttpGet("admin/dashboard")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
