@@ -252,7 +252,7 @@ function Update(status) {
         url: "/request/statusUpdate",
         data: statusUpdate
     }).done((result) => {
-        if (request.status == "OnGoing") {
+        if (request.status) {
             $.ajax({
                 type: "post",
                 url: "/request/sendEmail",

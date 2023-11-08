@@ -4,6 +4,7 @@ using Client.Contracts;
 using Client.Models;
 using Client.Repositories;
 using Newtonsoft.Json;
+using NuGet.Common;
 using System.Text;
 
 namespace Client.Repositries;
@@ -63,6 +64,27 @@ public class AccountRepository : GeneralRepository<AccountDto, Guid>, IAccountRe
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<RegisterAccountDto>>(apiResponse);
+        }
+        return entityVM;
+    }
+
+    public async Task<ResponseOKHandler<IEnumerable<ForgotPasswordAccountDto>>> ResetPassword(string email)
+    {
+        ResponseOKHandler<IEnumerable<ForgotPasswordAccountDto>> entityVM = null;
+        if (email == null)
+        {
+            return entityVM;
+        }
+        var data = new
+        {
+            emai = email
+        };
+        StringContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+        using (var response = httpClient.PutAsync($"{request}ForgotPassword?email="+email, content).Result)
+        {
+            response.EnsureSuccessStatusCode();
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<IEnumerable<ForgotPasswordAccountDto>>>(apiResponse);
         }
         return entityVM;
     }

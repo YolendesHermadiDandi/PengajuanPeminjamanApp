@@ -604,6 +604,9 @@ public class RequestController : ControllerBase
                     message = "<h1>" + sendEmailDto.Message + "</h1>";
                     detailEmail.TipeEmail = "Employee";
                     break;
+                case "Pengajuan Peminjaman Anda OnProssesed":
+                    detailEmail.TipeEmail = "Employee";
+                    break;
                 case "Pengajuan Peminjaman Anda OnGoing":
                     url = "https://chart.googleapis.com/chart?cht=qr&chl=" + sendEmailDto.RequestGuid + "&chs=160x160&chld=L|0";
                     detailEmail.QrMassage = $"<br><div align=\"center\">\r\n      <p>Silahkan Lakukan Scan QR yang tersedia untuk melakukan pengambilan atau pemakaian peminjaman yang kamu pinjam :</p>\r\n      <br>\r\n      <img src='{url}' img-thumbnail img-responsive/>\r\n      <br>\r\n    </div>";

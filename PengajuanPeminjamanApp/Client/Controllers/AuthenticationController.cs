@@ -41,9 +41,35 @@ public class AuthenticationController : Controller
         TempData["Alerts"] = "Akun Tidak Ditemukan";
         return RedirectToAction("Login", "Auth");
     }
+    
+    [HttpPost]
+    public async Task<IActionResult> ResetPasswordUser(string email)
+    {
+        var result = await _accountRepository.ResetPassword(email);
+        if(result.Data == null)
+        {
+            TempData["Alerts"] = "Email Tidak Di Temukan";
+            return RedirectToAction("ForgetPassword", "Auth");
+        }
+        
+        TempData["Alerts"] = "Silahkan Periksa Email Anda";
+        return RedirectToAction("ForgetPassword", "Auth");
+    }
 
     [HttpGet("Auth/Signup")]
     public IActionResult Signup()
+    {
+        return View();
+    }
+    
+    [HttpGet("Auth/ForgetPassword")]
+    public IActionResult ForgetPassword()
+    {
+        return View();
+    }
+
+    [HttpGet("Auth/ResetPassword")]
+    public IActionResult ResetPassword()
     {
         return View();
     }
