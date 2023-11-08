@@ -1,7 +1,9 @@
-﻿namespace API.Contracts
+﻿using API.DTOs.Requests;
+
+namespace API.Contracts
 {
     public interface IEmailHandlerRepository
     {
-        void Send(string subject, string body, string toEmail, string fromEmail);
+        void Send(string subject, DetailEmailDto detailEmail, string toEmail, string fromEmail);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using API.Contracts;
 using API.DTOs.Accounts;
+using API.DTOs.Requests;
 using API.Models;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Authorization;
@@ -98,7 +99,11 @@ namespace API.Controllers
                                          Otp = acc.Otp,
                                          Message = "OTP hanya berlaku 5 menit"
                                      };
-                _emailHandlerRepository.Send("Forgot Password", $"Yout OTP is {toUpdate.Otp}", email, "Admin@no-replay.com");
+                var detailEmail = new DetailEmailDto();
+                detailEmail.Name = string.Concat(existingEmployee.FirstName, " ", existingEmployee.LastName);
+                detailEmail.OTP = toUpdate.Otp.ToString();
+                detailEmail.TipeEmail = "OTP";
+                _emailHandlerRepository.Send("Forgot Password", detailEmail, email, "Admin@no-replay.com");
                 return Ok(new ResponseOKHandler<IEnumerable<ForgotPasswordAccountDto>>("Success send OTP", forgotPassword));
             }
             catch (Exception ex)

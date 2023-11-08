@@ -266,6 +266,20 @@ public class RequestController : ControllerBase
             Request toUpdate = (Request)requestDto;
             toUpdate.CreateDate = check.CreateDate;
             var result = _requestRespository.Update(toUpdate);
+            if(toUpdate.Status == StatusLevel.Completed)
+            {
+                var employee = _employeeRepository.GetByGuid(toUpdate.EmployeeGuid);
+                var detailEmail = new DetailEmailDto();
+                detailEmail.Name = string.Concat(employee.FirstName, " ", employee.LastName);
+                detailEmail.TanggalMulai = toUpdate.StartDate.ToString("dd-MM-yyyy");
+                detailEmail.TanggalAkhir = toUpdate.EndDate.ToString("dd-MM-yyyy");
+                detailEmail.QrMassage = "";
+                detailEmail.TipeEmail = "CompleteAdmin";
+                _emailHandlerRepository.Send("Peminjaman Ruangan/Fasilitas Telah Selesai", detailEmail, "Admin@no-replay.com", employee.Email);
+                detailEmail.TipeEmail = "CompleteEmployee";
+                _emailHandlerRepository.Send("Peminjaman Ruangan/Fasilitas Telah Selesai", detailEmail, employee.Email, "Admin@no-replay.com");
+
+            }
 
             if (requestDto.Status == Utilities.Enums.StatusLevel.Deleted || requestDto.Status == Utilities.Enums.StatusLevel.Completed || requestDto.Status == Utilities.Enums.StatusLevel.Canceled || requestDto.Status == Utilities.Enums.StatusLevel.Rejected)
             {
@@ -379,10 +393,13 @@ public class RequestController : ControllerBase
             try
             {
                 var employee = _employeeRepository.GetByGuid(result.EmployeeGuid);
-                var message = 
-                    $"<div><h3> User : {employee.FirstName} {employee.LastName} </h3> <p>Ingin Mengajukan Peminjaman Fasilitas atau ruangan. silahkan cek detail pada sistem website.</p> <h3>Tanggal Mulai : {result.StartDate}</h3><h3>Tanggal Selesai : {result.EndDate} </h6> </div>";
-
-                _emailHandlerRepository.Send("Peminjaman Ruangan/Fasilitas", message, "Admin@no-replay.com", employee.Email);
+                var detailEmail = new DetailEmailDto();
+                detailEmail.Name = string.Concat(employee.FirstName," ", employee.LastName);
+                detailEmail.TanggalMulai = result.StartDate.ToString("dd-MM-yyyy");
+                detailEmail.TanggalAkhir = result.EndDate.ToString("dd-MM-yyyy");
+                detailEmail.QrMassage = "";
+                detailEmail.TipeEmail = "Admin";
+                _emailHandlerRepository.Send("Peminjaman Ruangan/Fasilitas", detailEmail, "Admin@no-replay.com", employee.Email);
                 return Ok(new ResponseOKHandler<RequestDto>((RequestDto)result));
 
             }
@@ -575,24 +592,34 @@ public class RequestController : ControllerBase
     {
         try
         {
+            var detailEmail = new DetailEmailDto();
             var message = "";
             var url = "";
+            detailEmail.QrMassage = "";
+            detailEmail.TipeEmail = "Admin";
             var request = _requestRespository.GetByGuid(sendEmailDto.RequestGuid);
             switch (sendEmailDto.Message)
             {
                 case "Pengajuan Peminjaman Anda Rejected":
                     message = "<h1>" + sendEmailDto.Message + "</h1>";
+                    detailEmail.TipeEmail = "Employee";
                     break;
                 case "Pengajuan Peminjaman Anda OnGoing":
                     url = "https://chart.googleapis.com/chart?cht=qr&chl=" + sendEmailDto.RequestGuid + "&chs=160x160&chld=L|0";
-                    message = $"<h1>Ruanga/Fasilitas yang anda Pesan Telah Siap</h1><p>QR Dibawah digunakan untuk masuk kedalam ruangan</P><img src='{url}' img-thumbnail img-responsive/>";
+                    detailEmail.QrMassage = $"<br><div align=\"center\">\r\n      <p>Silahkan Lakukan Scan QR yang tersedia untuk melakukan pengambilan atau pemakaian peminjaman yang kamu pinjam :</p>\r\n      <br>\r\n      <img src='{url}' img-thumbnail img-responsive/>\r\n      <br>\r\n    </div>";
+                    detailEmail.TipeEmail = "Employee";
                     break;
                 default:
                     message = $"<h1>{sendEmailDto.Message}</h1><p>QR Dibawah digunakan untuk masuk kedalam ruangan</P><img src='{url}' img-thumbnail img-responsive/>";
                     break;
             }
+            var employee = _employeeRepository.GetByGuid(request.EmployeeGuid);
+            detailEmail.Name = string.Concat(employee.FirstName, " ", employee.LastName);
+            detailEmail.TanggalMulai = request.StartDate.ToString("dd-MM-yyyy");
+            detailEmail.TanggalAkhir = request.EndDate.ToString("dd-MM-yyyy");
+            
 
-            _emailHandlerRepository.Send("Peminjaman Ruangan/Fasilitas", message, sendEmailDto.RecipientEmail, sendEmailDto.FromEmail);
+            _emailHandlerRepository.Send(sendEmailDto.Message, detailEmail, sendEmailDto.RecipientEmail, sendEmailDto.FromEmail);
             return Ok(new ResponseOKHandler<SendEmailDto>("Success send Email", sendEmailDto));
 
         }
