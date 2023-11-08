@@ -24,7 +24,7 @@ public class RequestRepository : GeneralRepository<Request>, IRequestRepository
         {
 
             var requestStatusList = _context.Set<Request>()
-            .Where(rq => rq.RoomGuid == entity.roomGuid)
+            .Where(rq => rq.RoomGuid == entity.roomGuid && rq.Status != Utilities.Enums.StatusLevel.Rejected)
             .ToList();
 
             foreach (var room in requestStatusList)

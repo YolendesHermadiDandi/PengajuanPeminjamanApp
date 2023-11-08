@@ -38,6 +38,8 @@ function kalenderPeminjaman() {
         for (var i = 0; i < objRoom.length; i++) {
             var startDate = new Date(objRoom[i].start);
             var endDate = new Date(objRoom[i].end);
+            startDate.setDate(startDate.getDate() + 1);
+            endDate.setDate(endDate.getDate() + 1);
 
             var formattedStartDate = startDate.toISOString().split('T')[0];
             var formattedEndDate = endDate.toISOString().split('T')[0];
@@ -45,7 +47,7 @@ function kalenderPeminjaman() {
             objRoom[i].start = formattedStartDate;
             objRoom[i].end = formattedEndDate;
         }
-
+        console.log(objRoom)
         var calendarEl = document.getElementById('calendar');
         var today = new Date();
         var calendar = new FullCalendar.Calendar(calendarEl, {

@@ -1,6 +1,7 @@
 ﻿using API.Contracts;
 using API.DTOs.Rooms;
 using API.Models;
+using API.Utilities.Enums;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -68,7 +69,7 @@ public class RoomController : ControllerBase
 
         IEnumerable<RoomDateRequestDto> result = (from roo in room
                                                   join req in requests on roo.Guid equals req.RoomGuid into roomRequests
-                                                  from req in roomRequests
+                                                  from req in roomRequests where req.Status != StatusLevel.Rejected
                                                   select new RoomDateRequestDto
                                                   {
                                                       title = "Ruangan " + roo.Name,
