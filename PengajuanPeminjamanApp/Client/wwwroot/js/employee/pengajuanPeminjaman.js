@@ -220,9 +220,22 @@ function hapusRuangan(idBtn) {
     button.removeAttribute("disabled");
 }
 
+function showLoading() {
+    var loadingOverlay = document.querySelector('.loading-overlay');
+    if (loadingOverlay) {
+        loadingOverlay.style.display = 'flex';
+    }
+}
+
+function hideLoading() {
+    var loadingOverlay = document.querySelector('.loading-overlay');
+    if (loadingOverlay) {
+        loadingOverlay.style.display = 'none';
+    }
+}
 
 function ajukanRequest() {
-
+    showLoading();
     let req;
     var tbl = $('#tablePeminjamanFasility tr:has(td)').map(function (i, v) {
         var $td = $('td', this);
@@ -254,6 +267,7 @@ function ajukanRequest() {
     })
 
     if ((!isReqFasility && !isReqRoom) || startDates == "" && endDates == "") {
+        hideLoading();
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -301,7 +315,7 @@ function ajukanRequest() {
                             }).done((result) => {
                             }).fail((error) => {
                             });
-
+                            hideLoading();
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Add Request Success',
@@ -314,6 +328,7 @@ function ajukanRequest() {
                         }
                     })
                 }).fail((error) => {
+                    hideLoading();
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -322,6 +337,7 @@ function ajukanRequest() {
                     })
                 });
             } else {
+                hideLoading();
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -357,6 +373,7 @@ function ajukanRequest() {
                     url: "/request/insert",
                     data: objRequest,
                 }).done((rstRequest) => {
+                    hideLoading();
                     Swal.fire({
                         icon: 'success',
                         title: 'Add Request Success',
@@ -364,6 +381,7 @@ function ajukanRequest() {
                         timer: 1500
                     })
                 }).fail((error) => {
+                    hideLoading();
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -372,6 +390,7 @@ function ajukanRequest() {
                     })
                 });
             } else {
+                hideLoading();
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -410,7 +429,7 @@ function ajukanRequest() {
                     }).done((result) => {
                     }).fail((error) => {
                     });
-
+                    hideLoading();
                     Swal.fire({
                         icon: 'success',
                         title: 'Add Request Success',
@@ -420,6 +439,7 @@ function ajukanRequest() {
                 }
             })
         }).fail((error) => {
+            hideLoading();
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',

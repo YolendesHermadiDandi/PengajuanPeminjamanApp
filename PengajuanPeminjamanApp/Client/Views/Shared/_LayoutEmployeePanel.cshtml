@@ -24,6 +24,18 @@
             margin: 0 auto;
         }
 
+        
+        .loading-overlays {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+
+            display: none !important; /* Initially hidden */
+            z-index: 999; /* Make sure it's on top of other elements */
+        }
     </style>
 
     <link rel="stylesheet" href="~/assets/css/croppie.css" />
@@ -39,12 +51,13 @@
     
     <link rel="stylesheet" href="~/assets/plugins/icons/typicons/typicons.css">
     <link rel="stylesheet" href="~/assets/css/style.css">
-
+    
     <link rel="stylesheet" href="~/assets/plugins/twitter-bootstrap-wizard/form-wizard.css">
 
     <link rel="stylesheet" href="~/assets/css/bootstrap-datetimepicker.min.css">
 </head>
 <body>
+    
     <div id="global-loader">
         <div class="whirly-loader"> </div>
     </div>
@@ -140,7 +153,7 @@
     <script src="~/assets/js/jquery-3.6.0.min.js"></script>
 
     <script src="~/assets/js/feather.min.js"></script>
-
+    
     <script src="~/assets/js/jquery.slimscroll.min.js"></script>
     <script src="~/assets/js/jquery.dataTables.min.js"></script>
     <script src="~/assets/js/dataTables.bootstrap4.min.js"></script>
@@ -167,10 +180,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
-
+    
 
 
 
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

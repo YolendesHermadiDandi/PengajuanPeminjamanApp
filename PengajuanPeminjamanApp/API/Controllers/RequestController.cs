@@ -331,6 +331,23 @@ public class RequestController : ControllerBase
             toUpdate.Status = (StatusLevel)Enum.Parse(typeof(StatusLevel), updateStatusDto.Status, true);
             var result = _requestRespository.Update(toUpdate);
 
+            if (toUpdate.Status == Utilities.Enums.StatusLevel.Deleted || toUpdate.Status == Utilities.Enums.StatusLevel.Completed || toUpdate.Status == Utilities.Enums.StatusLevel.Canceled || toUpdate.Status == Utilities.Enums.StatusLevel.Rejected)
+            {
+                var listFasility = _listFasilityRepository.GetAllListFasilityByReqGuid(updateStatusDto.Guid);
+                if (listFasility is null)
+                {
+                    return Ok(new ResponseOKHandler<String>("Updated Data Success"));
+                }
+
+                foreach (var data in listFasility)
+                {
+                    var fasility = _fasilityRepository.GetByGuid(data.FasilityGuid);
+                    fasility.Stock = fasility.Stock + data.TotalFasility;
+                    _fasilityRepository.Update(fasility);
+                }
+
+            }
+
             return Ok(new ResponseOKHandler<String>("Updated Data Success"));
         }
         catch (Exception ex)
