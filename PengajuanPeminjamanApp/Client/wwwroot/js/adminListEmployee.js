@@ -102,7 +102,11 @@ function getUpdateEmployee(guid) {
         $('#uEmpId').val(`${result.guid}`);
         $('#uNik').val(`${result.nik}`);
         $("#firstName").val(`${result.firstName}`);
-        $("#lastName").val(`${result.lastName}`);
+        if (result.lastName == null) {
+            $('#lastName').val("");
+        } else {
+        $("#lastName").val(`${result.lastName}`);        
+        }
         $("#birthDate").val(`${DateFormat(result.birthDate)}`);
         $("#genderSelect").val(`${result.gender}`);
         $("#hiringDate").val(`${DateFormat(result.hiringDate)}`);
@@ -127,11 +131,18 @@ function Update() {
     if (employee.birthDate == '' || employee.hiringDate == '') {
         return alert('birth date or hiring date cant null');
     }
+
+    let birthDate = moment(employee.birthDate, "DD/MM/YYYY");
+    let hiringDate = moment(employee.hiringDate, "DD/MM/YYYY");
+    employee.birthDate = new Date(birthDate).toISOString();
+    employee.hiringDate = new Date(hiringDate).toISOString();
+
     $.ajax({
         type: "post",
         url: "/admin/employee/update",
         data: employee,
     }).done((result) => {
+        console.log(result);
         if (result.code == 200) {
 
             Swal.fire({
@@ -178,6 +189,11 @@ function Insert() {
     employee.phoneNumber = $("#phoneNumber").val();
     employee.password = $("#password").val();
     employee.confirmPassword = $("#passwords").val();
+
+    let birthDate = moment(employee.birthDate, "DD/MM/YYYY");
+    let hiringDate = moment(employee.hiringDate, "DD/MM/YYYY");
+    employee.birthDate = new Date(birthDate).toISOString();
+    employee.hiringDate = new Date(hiringDate).toISOString();
     if (employee.password == employee.confirmPassword) {
 
         $.ajax({
@@ -204,6 +220,7 @@ function Insert() {
             }
             $('#tabelEmployee').DataTable().ajax.reload();
         }).fail((error) => {
+            console.log(error);
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -215,11 +232,11 @@ function Insert() {
 
     } else {
         Swal.fire({
-            icon: 'success',
-            title: 'Password not match',
-            showConfirmButton: false,
-            timer: 1500
-        });
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Failed to insert data',
+
+        })
     }
 
 
@@ -236,3 +253,4 @@ function DateFormat(date) {
 
     return formattedToday = dd + '-' + mm + '-' + yyyy
 }
+
