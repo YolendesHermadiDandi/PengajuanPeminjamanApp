@@ -88,4 +88,16 @@ public class AccountRepository : GeneralRepository<AccountDto, Guid>, IAccountRe
         }
         return entityVM;
     }
+
+    public async Task<ResponseOKHandler<ChangePasswordAccountDto>> ChangePassword(ChangePasswordAccountDto entity)
+    {
+        ResponseOKHandler<ChangePasswordAccountDto> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+        using (var response = httpClient.PutAsync(request + "ChangePassword", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOKHandler<ChangePasswordAccountDto>>(apiResponse);
+        }
+        return entityVM;
+    }
 }

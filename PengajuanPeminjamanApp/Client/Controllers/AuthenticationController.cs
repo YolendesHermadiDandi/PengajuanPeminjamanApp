@@ -43,17 +43,29 @@ public class AuthenticationController : Controller
     }
     
     [HttpPost]
-    public async Task<IActionResult> ResetPasswordUser(string email)
+    public async Task<IActionResult> ResetPasswordAccount(ChangePasswordAccountDto changePassword)
+    {
+        var result = await _accountRepository.ChangePassword(changePassword);
+        if(result.Message != "CHANGE PASSWORD SUCCESS")
+        {
+            TempData["Alerts"] = "Mohon Maaf Terjadi Kesalahan dalam server, Silahkan hubungi admin.";
+            return RedirectToAction("ForgetPassword", "Auth");
+        }
+            TempData["Alerts"] = "Password Berhasil Di Reset";
+            return RedirectToAction("Login", "Auth");
+        
+    }
+
+    [HttpGet("Auth/ResetPasswordEmail/{email}")]
+    public async Task<JsonResult> ResetPasswordUser(string email)
     {
         var result = await _accountRepository.ResetPassword(email);
         if(result.Data == null)
         {
-            TempData["Alerts"] = "Email Tidak Di Temukan";
-            return RedirectToAction("ForgetPassword", "Auth");
+            return Json(null);
         }
         
-        TempData["Alerts"] = "Silahkan Periksa Email Anda";
-        return RedirectToAction("ForgetPassword", "Auth");
+        return Json(result.Data);
     }
 
     [HttpGet("Auth/Signup")]
