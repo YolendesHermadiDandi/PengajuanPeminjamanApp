@@ -99,27 +99,37 @@ function Update() {
     fasility.guid = $('#uFasilityId').val();
     fasility.name = $("#name").val();
     fasility.stock = $("#stock").val();
-    $.ajax({
-        type: "post",
-        url: "/fasility/update",
-        data: fasility,
-    }).done((result) => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Update Success',
-            showConfirmButton: false,
-            timer: 1500
-        })
-        $('#tabelFasility').DataTable().ajax.reload();
-    }).fail((error) => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Failed to update data',
+        $.ajax({
+            type: "post",
+            url: "/fasility/update",
+            data: fasility,
+        }).done((result) => {
+            if (result.code == 400) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to update data',
 
-        })
-        $('#tabelFasility').DataTable().ajax.reload();
-    });
+                })
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Update Success',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+            }
+            $('#tabelFasility').DataTable().ajax.reload();
+        }).fail((error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to update data',
+
+            })
+            $('#tabelFasility').DataTable().ajax.reload();
+        });
 }
 //Delete
 function Delete(guid) {
@@ -175,27 +185,36 @@ function Insert() {
     let fasility = new Object();
     fasility.name = $("#name").val();
     fasility.stock = $("#stock").val();
-    $.ajax({
-        type: "post",
-        url: "/fasility/insert",
-        data: fasility,
-    }).done((result) => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Insert Success',
-            showConfirmButton: false,
-            timer: 1500
+        $.ajax({
+            type: "post",
+            url: "/fasility/insert",
+            data: fasility,
+        }).done((result) => {
+            if (result.code == 400) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to insert data',
+
+                })
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Insert Success',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+            }
+            $('#tabelFasility').DataTable().ajax.reload();
+        }).fail((error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to insert data',
+
+            })
+            $('#tabelFasility').DataTable().ajax.reload();
         });
-        $('#tabelFasility').DataTable().ajax.reload();
-    }).fail((error) => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Failed to insert data',
-
-        })
-        $('#tabelFasility').DataTable().ajax.reload();
-    });
-
 
 }
