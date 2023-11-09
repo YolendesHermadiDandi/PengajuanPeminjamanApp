@@ -73,7 +73,6 @@ function kalenderPeminjaman() {
     }, 170);
 }
 
-let valueDefaultFasiity;
 let isAvalibe = false;
 document.getElementById('btnModalFasilitas').addEventListener('click', () => {
     if (isAvalibe ==  false) {
@@ -84,18 +83,29 @@ document.getElementById('btnModalFasilitas').addEventListener('click', () => {
             dataType: 'json',
             success: function (data) {
                 data.forEach(Elements => {
-                    valueDefaultFasiity = Elements.stock;
-                    $("#tbodyListFasility").append(
-                        `<tr>
+                    if (Elements.stock == 0) {
+                        $("#tbodyListFasility").append(
+                            `<tr>
                         <td>${Elements.name}</td>
                         <td><input type="number" min="1" value="${Elements.stock}" id="value${Elements.name}" max="${Elements.stock}" /></td>
                         <td>
                         <div class="page-btn">
-                            <button type="button" class="btn btn-primary" id="btnTambahFasility${Elements.name}" onclick="tambahFasilityTabel('${Elements.guid}')">Tambah Fasilitas</button>
+                            <button type="button" class="btn btn-primary" id="btnTambahFasility${Elements.name}" onclick="tambahFasilityTabel('${Elements.guid}','${Elements.stock}')" disabled>Tambah Fasilitas</button>
                         </div>
                         </td>
                     </tr>`);
-
+                    } else {
+                        $("#tbodyListFasility").append(
+                            `<tr>
+                        <td>${Elements.name}</td>
+                        <td><input type="number" min="1" value="${Elements.stock}" id="value${Elements.name}" max="${Elements.stock}" /></td>
+                        <td>
+                        <div class="page-btn">
+                            <button type="button" class="btn btn-primary" id="btnTambahFasility${Elements.name}" onclick="tambahFasilityTabel('${Elements.guid}','${Elements.stock}')">Tambah Fasilitas</button>
+                        </div>
+                        </td>
+                    </tr>`);
+                    }
                     isAvalibe = true;
                 })
 
@@ -108,15 +118,15 @@ document.getElementById('btnModalFasilitas').addEventListener('click', () => {
 
 })
 
-function tambahFasilityTabel(guid) {
+function tambahFasilityTabel(guid, maxStock) {
     $.ajax({
         url: '/GetFasility/' + guid,
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-
             let valuePinjam = document.getElementById(`value${data.name}`).value
-            if ((valueDefaultFasiity - valuePinjam) < 1) {
+            console.log(maxStock - valuePinjam)
+            if ((maxStock - valuePinjam) < 0) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -243,13 +253,14 @@ function ajukanRequest() {
         }
     })
 
-    if ((!isReqFasility && !isReqRoom) || startDates == null && endDates == null) {
+    if ((!isReqFasility && !isReqRoom) || startDates == "" && endDates == "") {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: 'Please Fill Data Courectly',
-
         })
+        isReqRoom = false;
+        isReqFasility = false;
     }
     if (isReqRoom && isReqFasility) {
         let objRequest = {

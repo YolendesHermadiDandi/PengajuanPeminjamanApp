@@ -59,53 +59,7 @@
     });
 
     
-    // Mendapatkan nilai "data" dari atribut
-    var statusElements = document.querySelectorAll("#statusPeminjaman");
-    var startDatePinjam = document.querySelectorAll("#startDatePinjam");
-    var endDatePinjam = document.querySelectorAll("#endDatePinjam");
-
-    for (var i = 0; i < statusElements.length; i++) {
-        var statusElement = statusElements[i];
-        var status = statusElement.getAttribute("data");
-        var statusBadge;
-
-        switch (status) {
-            case "Requested":
-                statusBadge = '<span class="badges bg-lightyellow">Requested</span>';
-                break;
-            case "OnProssesed":
-                statusBadge = '<span class="badges bg-lightgreen">OnProssesed</span>';
-                break;
-            case "Rejected":
-                statusBadge = '<span class="badges bg-lightred">Rejected</span>';
-                break;
-            case "OnGoing":
-                statusBadge = '<span class="badges bg-lightgreen">OnGoing</span>';
-                break;
-            case "Completed":
-                statusBadge = '<span class="badges bg-lightgreen">Completed</span>';
-                break;
-            default:
-                statusBadge = status;
-                break;
-        }
-
-        statusElement.innerHTML = statusBadge;
-    }
-
-    for (var i = 0; i < startDatePinjam.length; i++) {
-        var dateElement = startDatePinjam[i];
-        var originalDate = dateElement.textContent;
-        var formattedDate = formatDateDashboard(originalDate);
-        dateElement.textContent = formattedDate;
-    }
-
-    for (var i = 0; i < endDatePinjam.length; i++) {
-        var dateElement = endDatePinjam[i];
-        var originalDate = dateElement.textContent;
-        var formattedDate = formatDateDashboard(originalDate);
-        dateElement.textContent = formattedDate;
-    }
+    
 
 })
 function ProgressBarPeminjaman(status, guid) {
