@@ -56,6 +56,7 @@ button.addEventListener("click", function () {
             dataType: 'json',
             async: false,
             success: function (data) {
+
                 startCountdown();
                 Swal.fire({
                     icon: 'success',

@@ -134,7 +134,7 @@ function tambahFasilityTabel(guid, maxStock) {
 
                 })
             } else {
-            $('#tableDaftarPeminjaman').append(`<tr>
+                $('#tableDaftarPeminjaman').append(`<tr id= "btnTambahFasility${data.name}Fasility">
             <td>${data.name}</td>
             <td>${valuePinjam} Unit</td>
             <td>Fasilitas</td>
@@ -153,6 +153,7 @@ function tambahFasilityTabel(guid, maxStock) {
 }
 
 function hapusFaslity(idBtn) {
+    document.getElementById(`${idBtn}Fasility`).outerHTML = "";
     button = document.getElementById(`${idBtn}`);
     button.removeAttribute("disabled");
 }
@@ -197,7 +198,7 @@ function tambahRuangan(guid) {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            $('#tableDaftarPeminjaman').append(`<tr>
+            $('#tableDaftarPeminjaman').append(`<tr id="btnTambahRuangan${data.data.name}Ruangan">
             <td>${data.data.name}</td>
             <td>Lantai ${data.data.floor}</td>
             <td>Ruangan</td>
@@ -216,6 +217,7 @@ function tambahRuangan(guid) {
 
 
 function hapusRuangan(idBtn) {
+    document.getElementById(`${idBtn}Ruangan`).outerHTML = "";
     button = document.getElementById(`btnModalRuangan`);
     button.removeAttribute("disabled");
 }

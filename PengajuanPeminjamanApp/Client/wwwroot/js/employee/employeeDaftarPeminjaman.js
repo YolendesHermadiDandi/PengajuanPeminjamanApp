@@ -90,9 +90,3 @@
         $('button#submitButton').removeAttr('hidden');
     })
 })
-
-var next = document.getElementsByClassName("page-link");
-
-next.addEventListener("click", function () {
-    $(".tabelListPeminjaman").data.reload();
-});
