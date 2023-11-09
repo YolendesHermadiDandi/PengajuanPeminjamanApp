@@ -262,34 +262,38 @@ function Update(status) {
         url: "/request/statusUpdate",
         data: statusUpdate
     }).done((result) => {
-        if (request.status) {
-            $.ajax({
-                type: "post",
-                url: "/request/sendEmail",
-                data: sendEmail
-            }).done((result) => {
+        /*if (request.status) {*/
+        $.ajax({
+            type: "post",
+            url: "/request/sendEmail",
+            data: sendEmail
+        }).done((result) => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            $('#tabelPeminjaman').DataTable().ajax.reload();
 
         }).fail((error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to update data',
 
+            })
+            $('#tabelPeminjaman').DataTable().ajax.reload();
         });
-        //}
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            showConfirmButton: false,
-            timer: 1500
-        });
-        $('#tabelPeminjaman').DataTable().ajax.reload();
     }).fail((err) => {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'Failed to insert data',
+            text: 'Failed to update data',
 
         })
         $('#tabelPeminjaman').DataTable().ajax.reload();
-    })
-
+    });
 }
 function DateFormat(date) {
     const today = new Date(date);
