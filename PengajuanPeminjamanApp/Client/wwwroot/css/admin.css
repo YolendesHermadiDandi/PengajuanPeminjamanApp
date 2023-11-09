@@ -1,0 +1,45 @@
+#html5-qrcode-button-camera-stop, #html5-qrcode-button-camera-start {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #F4623A;
+    border-radius: 5px;
+    color: #ffffff;
+    background-color: #F4623A;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    #html5-qrcode-button-camera-stop:hover, #html5-qrcode-button-camera-start:hover {
+        background-color: #CF5331;
+        border: 2px solid #CF5331;
+    }
+
+#html5-qrcode-anchor-scan-type-change {
+    display: none !important;
+}
+
+#qr-reader img {
+    display: none !important;
+}
+
+#html5-qrcode-select-camera {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #CF5331;
+    border-radius: 5px;
+    outline: none; /* Menghapus garis fokus pada klik */
+    color: #333;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+#html5-qrcode-select-camera option {
+    padding: 10px !important;
+}
+
+#html5-qrcode-select-camera option:hover {
+    background-color: #ddd !important;
+}

@@ -178,20 +178,27 @@ function Insert() {
     employee.phoneNumber = $("#phoneNumber").val();
     employee.password = $("#password").val();
     employee.confirmPassword = $("#passwords").val();
-    if (employee.birthDate == '' || employee.hiringDate == '') {
-        return alert('birth date or hiring date cant null');
-    }
     $.ajax({
         type: "post",
         url: "/admin/insertEmployee",
         data: employee,
     }).done((result) => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Insert Success',
-            showConfirmButton: false,
-            timer: 1500
-        });
+        if (result.code == 400) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to insert data',
+
+            })
+        } else {
+            Swal.fire({
+                icon: 'success',
+                title: 'Insert Success',
+                showConfirmButton: false,
+                timer: 1500
+            });
+
+        }
         $('#tabelEmployee').DataTable().ajax.reload();
     }).fail((error) => {
         Swal.fire({
