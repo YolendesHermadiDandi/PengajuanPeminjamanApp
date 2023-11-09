@@ -163,12 +163,22 @@ function Insert() {
         url: "/fasility/insert",
         data: fasility,
     }).done((result) => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Insert Success',
-            showConfirmButton: false,
-            timer: 1500
-        });
+        if (result.code == 200) {
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Insert Success',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to insert data',
+
+            })
+        }
         $('#tabelFasility').DataTable().ajax.reload();
     }).fail((error) => {
         Swal.fire({

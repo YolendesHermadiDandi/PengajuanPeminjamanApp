@@ -138,17 +138,31 @@
                         </span>
                         </a>
                         </li> *@
-                        <li class="submenu">
-                            <a href="javascript:void(0);">
+                        <li class="@ViewData["AdminListEmployee"]">
+                            <a href="/admin/listEmployee">
                                 <img src="~/assets/img/icons/users1.svg" alt="img"><span>
-                                    Manage Employee
-                                </span> <span class="menu-arrow"></span>
+                                    List Employee
+                                </span>
                             </a>
-                            <ul>
-                                <li><a href="/admin/listEmployee" class="@ViewData["AdminListEmployee"]">List Employee</a></li>
-                            </ul>
                         </li>
-                        <li class="submenu">
+                        <li class="@ViewData["AdminListPeminjaman"]">
+                            <a href="/admin/listPeminjaman">
+                                <img src="~/assets/img/icons/product.svg" alt="img"><span>
+                                    List Peminjaman
+                                </span>
+                            </a>
+                        </li>
+                        @*    <li class="submenu">
+                        <a href="javascript:void(0);">
+                        <img src="~/assets/img/icons/users1.svg" alt="img"><span>
+                        Manage Employee
+                        </span> <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                        <li><a href="/admin/listEmployee" class="@ViewData["AdminListEmployee"]">List Employee</a></li>
+                        </ul>
+                        </li> *@
+                        @* <li class="submenu">
                             <a href="javascript:void(0);">
                                 <img src="~/assets/img/icons/product.svg" alt="img"><span>
                                     Manage Peminjaman
@@ -157,7 +171,7 @@
                             <ul>
                                 <li><a href="/admin/listPeminjaman" class="@ViewData["AdminListPeminjaman"]">List Peminjaman</a></li>
                             </ul>
-                        </li>
+                        </li> *@
                         <li class="submenu">
                             <a href="javascript:void(0);">
                                 <i class="fa-solid fa-gears"></i><span>

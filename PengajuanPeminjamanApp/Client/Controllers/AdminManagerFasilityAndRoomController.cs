@@ -1,5 +1,6 @@
 ﻿using API.DTOs.Fasilities;
 using API.DTOs.Rooms;
+using API.Models;
 using Client.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,18 @@ namespace Client.Controllers
         [HttpPost("fasility/insert")]
         public async Task<JsonResult> InsertFasility(CreateFasilityDto createFasilityDto)
         {
+            var fasility = await _fasilityRepository.Get();
+
+            foreach (var item in fasility.Data)
+            {
+                if (item.Name.ToLower() == createFasilityDto.Name.ToLower() || createFasilityDto.Stock < 1)
+                {
+                    fasility.Code = 400;
+                    return Json(fasility);
+                }
+            }
+
+
             var result = await _fasilityRepository.Insert(createFasilityDto);
             if (result.Code == 200)
             {
@@ -67,6 +80,30 @@ namespace Client.Controllers
         [HttpPost("fasility/update")]
         public async Task<JsonResult> UpdateFasility(FasilityDto fasility)
         {
+            var data = await _fasilityRepository.Get(fasility.Guid);
+
+            var allFasility = await _fasilityRepository.Get();
+
+            foreach (var item in allFasility.Data)
+            {
+                if (data.Data.Name != fasility.Name)
+                {
+                    if (item.Name.ToLower() == fasility.Name.ToLower() || fasility.Stock < 1)
+                    {
+                        allFasility.Code = 400;
+                        return Json(allFasility);
+                    }
+                }
+                else
+                {
+                    if(fasility.Stock < 1)
+                    {
+                        allFasility.Code = 400;
+                        return Json(allFasility);
+                    }
+                }
+
+            }
             var result = await _fasilityRepository.Put(fasility.Guid, fasility);
 
             if (result.Code == 200)
@@ -87,7 +124,6 @@ namespace Client.Controllers
             }
             return Json(result);
         }
-
 
         //End of fasility
 
@@ -120,6 +156,18 @@ namespace Client.Controllers
         [HttpPost("room/insert")]
         public async Task<JsonResult> InsertRoom(CreateRoomDto createRoomDto)
         {
+
+            var room = await _roomRepository.Get();
+
+            foreach (var item in room.Data)
+            {
+                if (item.Name.ToLower() == createRoomDto.Name.ToLower() || createRoomDto.Floor < 1)
+                {
+                    room.Code = 400;
+                    return Json(room);
+                }
+            }
+
             var result = await _roomRepository.Insert(createRoomDto);
             if (result.Code == 200)
             {
@@ -148,6 +196,31 @@ namespace Client.Controllers
         [HttpPost("room/update")]
         public async Task<JsonResult> UpdateRoom(RoomDto roomDto)
         {
+            var data = await _roomRepository.Get(roomDto.Guid);
+
+            var allRoom = await _roomRepository.Get();
+
+            foreach (var item in allRoom.Data)
+            {
+                if (data.Data.Name != roomDto.Name)
+                {
+                    if (item.Name.ToLower() == roomDto.Name.ToLower() || roomDto.Floor < 1)
+                    {
+                        allRoom.Code = 400;
+                        return Json(allRoom);
+                    }
+                }
+                else
+                {
+                    if (roomDto.Floor < 1)
+                    {
+                        allRoom.Code = 400;
+                        return Json(allRoom);
+                    }
+                }
+
+            }
+
             var result = await _roomRepository.Put(roomDto.Guid, roomDto);
 
             if (result.Code == 200)

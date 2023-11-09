@@ -40,12 +40,14 @@
                 });
 
                 var arrColors = ['#FF788F', '#FEB019', '#3D449C', '#268FB2', '#74DE00'];
-                new Morris.Donut({
+                var morris = new Morris.Donut({
                     element: 'morrisDonut1',
                     data: morrisData,
                     colors: arrColors,
                     resize: true
                 });
+
+                morris.redraw();
 
 
                 if ($("#s-line").length > 0) {
@@ -70,20 +72,7 @@
                     var chart = new ApexCharts(document.querySelector("#s-line"), sline);
                     chart.render();
                 }
-
-
-
-
-
-
-            } catch (e) {
-
-            }
-
-
-
-
-
+            } catch (e) { }
         }).fail((err) => { });
 
         $.ajax({
@@ -96,7 +85,6 @@
                 dataSrc: "data",
                 dataType: "JSON"
             }).done((result) => {
-
                 if (result.img == "") {
                     $("#navUserImage").attr("src", "/assets/img/profiles/default-profile.jpg");
                     $("#navImgageProfile").attr("src", "/assets/img/profiles/default-profile.jpg");
@@ -108,11 +96,76 @@
             $("#uUserId").val(result.data.userGuid);
             $("div.profilesets").html(`<h6>${result.data.name}</h6>
                                    <h5>Admin</h5>`)
-
         }).fail((err) => { });
+        $("#newRequest").DataTable({
+            ajax: {
+                url: "/request/get-all",
+                "dataSrc": function (data) {
+                    if (data == null) {
+                        return [];
+                    } else {
+                        console.log(data);
+                        return data;
+                    };
+                },
+                dataType: "JSON"
+            },
+            pageLength: 5,
+            searching: false,
+            info: false,
+            order: [[0, 'desc']],
+            //paging: false,
+            //ordering: false,
+            columns: [
+                {
+                    defaultContent: "",
+                    data: "",
+                    render: function (data, type, row, meta) {
+                        return `<p hidden>${meta.row} </p>`;
+                    }
+                },
+                {
+                    "defaultContent": "",
+                    data: "nama",
+                },
+                {
+                    "defaultContent": "",
+                    data: "status",
+                    render: function (data, type, row) {
+                        switch (row.status) {
+                            case "Requested":
+                                return ` <span class="badges bg-lightyellow">Requested</span>`
+                                break;
+                            case "OnProssesed":
+                                return ` <span class="badges bg-lightgreen">OnProssesed</span>`
+                                break;
+                            case "Rejected":
+                                return ` <span class="badges bg-lightred">Rejected</span>`
+                                break;
+                            case "OnGoing":
+                                return ` <span class="badges bg-lightgreen">OnGoing</span>`
+                                break;
+                            case "Completed":
+                                return ` <span class="badges bg-lightgreen">Completed</span>`
+                                break;
+                            default:
+                                return row.status;
+                                break;
+                        }
+                    }
+                },
+            ],
+            columnDefs: [
+                {
+                    targets: 0,
+                    className: 'd-none'
+                }
+            ]
+        });
 
 
     });
 }
 GetData();
+
 

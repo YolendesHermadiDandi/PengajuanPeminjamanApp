@@ -97,27 +97,37 @@ function Update() {
     room.guid = $('#uRoomId').val();
     room.name = $("#name").val();
     room.floor = $("#floor").val();
-    $.ajax({
-        type: "post",
-        url: "/room/update",
-        data: room,
-    }).done((result) => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Update Success',
-            showConfirmButton: false,
-            timer: 1500
-        })
-        $('#tabelRoom').DataTable().ajax.reload();
-    }).fail((error) => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Failed to update data',
+        $.ajax({
+            type: "post",
+            url: "/room/update",
+            data: room,
+        }).done((result) => {
+            if (result.code == 400) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to update data',
 
-        })
-        $('#tabelRoom').DataTable().ajax.reload();
-    });
+                })
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Update Success',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+            }
+            $('#tabelRoom').DataTable().ajax.reload();
+        }).fail((error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to update data',
+
+            })
+            $('#tabelRoom').DataTable().ajax.reload();
+        });
 }
 //Delete
 function Delete(guid) {
@@ -167,18 +177,28 @@ function Delete(guid) {
 function Insert() {
     let room = new Object();
     room.name = $("#name").val();
-    room.floor = $("#floor").val();;
+    room.floor = $("#floor").val();
     $.ajax({
         type: "post",
         url: "/room/insert",
         data: room,
     }).done((result) => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Insert Success',
-            showConfirmButton: false,
-            timer: 1500
-        });
+        if (result.code == 400) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to insert data',
+
+            })
+        } else {
+            Swal.fire({
+                icon: 'success',
+                title: 'Insert Success',
+                showConfirmButton: false,
+                timer: 1500
+            });
+
+        }
         $('#tabelRoom').DataTable().ajax.reload();
     }).fail((error) => {
         Swal.fire({
@@ -189,8 +209,6 @@ function Insert() {
         })
         $('#tabelRoom').DataTable().ajax.reload();
     });
-
-
 }
 
 $('#addRoom').on('click', () => {
