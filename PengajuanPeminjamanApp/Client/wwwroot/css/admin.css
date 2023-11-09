@@ -43,3 +43,9 @@
 #html5-qrcode-select-camera option:hover {
     background-color: #ddd !important;
 }
+
+#newRequest_length, #newRequest_paginate {
+    display: none;
+}
+
+

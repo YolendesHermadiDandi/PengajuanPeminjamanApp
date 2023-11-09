@@ -553,9 +553,12 @@ public class RequestController : ControllerBase
                 });
             }
         }
-        data = data.OrderByDescending(d => int.Parse(d.Category.Split('-')[0]))
-            .ThenByDescending(d => int.Parse(d.Category.Split('-')[1]))
-            .ToList();
+        //data = data.OrderByDescending(d => int.Parse(d.Category.Split('-')[0]))
+        //    .ThenByDescending(d => int.Parse(d.Category.Split('-')[1]))
+        //    .ToList();
+        data = data.OrderBy(d => int.Parse(d.Category.Split('-')[0]))
+           .ThenBy(d => int.Parse(d.Category.Split('-')[1]))
+           .ToList();
 
         return Ok(new ResponseOKHandler<IEnumerable<RequestCountMonthDto>>(data));
 

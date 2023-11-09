@@ -100,22 +100,32 @@ function ProgressBarPeminjaman(guid) {
         dataSrc: "data",
         dataType: "JSON"
     }).done((result) => {
+        console.log(result);
         $('#uRequestId').val(`${result.request.data[0].guid}`);
         $('#uEmpEmail').val(`${result.email}`);
         $("ul#requestDetail li#namaEmployee").html(`<h4>Nama employee</h4> <h6>${result.nama}</h6>`)
         $("ul#requestDetail li#startDate").html(`<h4>Tanggal peminjaman</h4> <h6>${DateFormat(result.request.data[0].startDate)}</h6 >`)
         $("ul#requestDetail li#endDate").html(`<h4>Tanggal berakhir peminjaman</h4> <h6>${DateFormat(result.request.data[0].endDate)}</h6>`)
         $("ul#requestDetail li#statusPeminjaman").html(`<h4>Status Peminjaman</h4> <h6>${result.requestStatus}</h6>`)
-        $("ul#requestDetail li#namaRuangan").html(`<h4>Nama Ruangan</h4> <h6>${result.request.data[0].rooms.name}</h6>`)
+        $("ul#requestDetail li#namaRuangan").html(`<h4>Nama Ruangan</h4>`)
+        if (result.request.data[0].rooms != null) {
+            $("ul#requestDetail li#namaRuangan").html(`<h4>Nama Ruangan</h4> <h6>${result.request.data[0].rooms.name}</h6>`)
+        } else {
+            $("ul#requestDetail li#namaRuangan").html(`<h4>Nama Ruangan</h4> <h6>Data Kosong</h6>`)
+        };
         $("ul#requestDetail li#listFasilitas").html('<h4>Nama Fasilitas</h4>');
-        if (result.request.data[0].fasilities != null) {
+
+        if (result.request.data[0].fasilities != null && result.request.data[0].fasilities.length > 0) {
             result.request.data[0].fasilities.forEach(elemets => {
                 $("ul#requestDetail li#listFasilitas").append(` <p class="list-group-item list-group-item-info m-1 text-center">
                                                             ${elemets.name}
                                                             <span class="badge d-block bg-primary">Qty : ${elemets.totalFasility}</span>
                                                             </p>`);
-
             });
+        } else {
+            $("ul#requestDetail li#listFasilitas").append(` <p class="list-group-item list-group-item-info m-1 text-center">
+                                        Kosong                                                           
+                                        </p>`);
         }
 
         status = result.requestStatus

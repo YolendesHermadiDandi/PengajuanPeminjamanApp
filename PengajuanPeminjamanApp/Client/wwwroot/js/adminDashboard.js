@@ -110,11 +110,11 @@
                 },
                 dataType: "JSON"
             },
+            pageLength: 5,
             searching: false,
             info: false,
             order: [[0, 'desc']],
-            paging: false,
-            pageLength: 3,
+            //paging: false,
             //ordering: false,
             columns: [
                 {
@@ -167,4 +167,5 @@
     });
 }
 GetData();
+
 
