@@ -237,7 +237,7 @@ function tambahFasilityTabel(guid) {
 
                 })
             } else {
-                $('#tableDaftarPeminjaman').append(`<tr>
+                $('#tableDaftarPeminjaman').append(`<tr id="btnTambahFasility${data.name}Fasility">
             <td>${data.name}</td>
             <td>${valuePinjam} Unit</td>
             <td>Fasilitas</td>
@@ -261,7 +261,7 @@ function tambahRuangan(guid) {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            $('#tableDaftarPeminjaman').append(`<tr>
+            $('#tableDaftarPeminjaman').append(`<tr id="btnTambahRuangan${data.data.name}Ruangan">
             <td>${data.data.name}</td>
             <td>Lantai ${data.data.floor}</td>
             <td>Ruangan</td>
