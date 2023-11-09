@@ -8,6 +8,7 @@ $(document).ready(function () {
         dataType: 'json',
         async : false,
         success: function (data) {
+            console.log(data);
             objRoom = data
         },
         error: function (error) {
