@@ -242,7 +242,7 @@ function Update(status) {
     sendEmail.recipientEmail = $('#uEmpEmail').val();
     sendEmail.message = "Pengajuan Peminjaman Anda " + request.status;
     sendEmail.requestGuid = request.guid;
- 
+
     let statusUpdate = new Object();
     statusUpdate.Guid = request.guid;
     statusUpdate.Status = request.status;
@@ -252,17 +252,17 @@ function Update(status) {
         url: "/request/statusUpdate",
         data: statusUpdate
     }).done((result) => {
-        if (request.status == "OnGoing") {
-            $.ajax({
-                type: "post",
-                url: "/request/sendEmail",
-                data: sendEmail
-            }).done((result) => {
+        /*if (request.status == "OnGoing") {*/
+        $.ajax({
+            type: "post",
+            url: "/request/sendEmail",
+            data: sendEmail
+        }).done((result) => {
 
-            }).fail((error) => {
+        }).fail((error) => {
 
-            });
-        }
+        });
+        //}
         Swal.fire({
             icon: 'success',
             title: 'Success',
