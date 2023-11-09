@@ -178,38 +178,49 @@ function Insert() {
     employee.phoneNumber = $("#phoneNumber").val();
     employee.password = $("#password").val();
     employee.confirmPassword = $("#passwords").val();
-    $.ajax({
-        type: "post",
-        url: "/admin/insertEmployee",
-        data: employee,
-    }).done((result) => {
-        if (result.code == 400) {
+    if (employee.password == employee.confirmPassword) {
+
+        $.ajax({
+            type: "post",
+            url: "/admin/insertEmployee",
+            data: employee,
+        }).done((result) => {
+            console.log(result);
+            if (result.code == 400) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to insert data',
+
+                })
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Insert Success',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+            }
+            $('#tabelEmployee').DataTable().ajax.reload();
+        }).fail((error) => {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Failed to insert data',
 
             })
-        } else {
-            Swal.fire({
-                icon: 'success',
-                title: 'Insert Success',
-                showConfirmButton: false,
-                timer: 1500
-            });
+            $('#tabelEmployee').DataTable().ajax.reload();
+        });
 
-        }
-        $('#tabelEmployee').DataTable().ajax.reload();
-    }).fail((error) => {
+    } else {
         Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Failed to insert data',
-
-        })
-        $('#tabelEmployee').DataTable().ajax.reload();
-    });
-
+            icon: 'success',
+            title: 'Password not match',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
 
 
 }
