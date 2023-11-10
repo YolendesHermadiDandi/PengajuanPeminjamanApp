@@ -324,9 +324,11 @@ function ajukanRequest() {
                                 showConfirmButton: false,
                                 timer: 1500
 
+                            }).then((result) => {
+                                isReqFasility = false;
+                                isReqRoom = false;
+                                location.reload();
                             })
-                            isReqFasility = false;
-                            isReqRoom = false;
                         }
                     })
                 }).fail((error) => {
@@ -381,6 +383,8 @@ function ajukanRequest() {
                         title: 'Add Request Success',
                         showConfirmButton: false,
                         timer: 1500
+                    }).then((result) => {
+                        location.reload();
                     })
                 }).fail((error) => {
                     hideLoading();
@@ -437,6 +441,8 @@ function ajukanRequest() {
                         title: 'Add Request Success',
                         showConfirmButton: false,
                         timer: 1500
+                    }).then((result) => {
+                        location.reload();
                     })
                 }
             })
