@@ -1,4 +1,5 @@
-﻿using Client.Contracts;
+﻿using API.Utilities.Enums;
+using Client.Contracts;
 using Client.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +42,8 @@ namespace Client.Controllers
             {
                 result.Code = 404;
             }
-            else if (result.Data.EndDate < DateTime.Now && result.Code != 404)
+            else if (result.Data.EndDate < DateTime.Now && result.Code != 404 || 
+                result.Data.Status == StatusLevel.Completed || result.Data.Status == StatusLevel.Rejected)
             {
                 result.Code = 410;
             }
